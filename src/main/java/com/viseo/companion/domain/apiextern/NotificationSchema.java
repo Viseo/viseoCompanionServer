@@ -13,6 +13,11 @@ public class NotificationSchema {
     @Expose
     private Data data;
 
+    public NotificationSchema(String to, Data data) {
+        this.to = to;
+        this.data = data;
+    }
+
     public String getTo() {
         return to;
     }
