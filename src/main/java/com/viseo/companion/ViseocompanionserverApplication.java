@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ViseocompanionserverApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(ViseocompanionserverApplication.class, args);
 	}
 }
