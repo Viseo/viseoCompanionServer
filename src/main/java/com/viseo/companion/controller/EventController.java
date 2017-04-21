@@ -15,7 +15,6 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    @CrossOrigin
     @RequestMapping(value = "${endpoint.addEvent}", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> addEvent(@Valid @RequestBody Event event, BindingResult bindingResult) {
