@@ -11,20 +11,19 @@
 	<name>viseocompanionserver</name>
 	<description>Backend server for ViseoCompanion project</description>
 
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.2.3.RELEASE</version>
+		<relativePath />
+	</parent>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<springBootProperties>1.5.2.RELEASE</springBootProperties>
 	</properties>
-
-
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.2.RELEASE</version>
-	</parent>
-
 
 	<dependencies>
 		<dependency>
@@ -45,9 +44,8 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 			<version>${springBootProperties}</version>
 		</dependency>
-
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
+            <groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 		</dependency>
 		<dependency>

@@ -4,7 +4,7 @@ package com.viseo.companion.domain.apiextern;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class NotificationSchema {
+public class NotificationSchemaIOS {
 
     @SerializedName("to")
     @Expose
@@ -12,6 +12,11 @@ public class NotificationSchema {
     @SerializedName("data")
     @Expose
     private Data data;
+
+    public NotificationSchemaIOS(String to, Data data) {
+        this.to = to;
+        this.data = data;
+    }
 
     public String getTo() {
         return to;

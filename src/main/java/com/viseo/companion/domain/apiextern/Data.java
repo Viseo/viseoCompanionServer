@@ -13,6 +13,10 @@ public class Data {
     @Expose
     private CustomNotification customNotification;
 
+    public Data(CustomNotification customNotification) {
+        this.customNotification = customNotification;
+    }
+
     public String getType() {
         return type;
     }
