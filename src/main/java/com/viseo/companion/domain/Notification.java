@@ -4,7 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.viseo.companion.domain.apiextern.CustomNotification;
 import com.viseo.companion.domain.apiextern.Data;
-import com.viseo.companion.domain.apiextern.NotificationSchema;
+import com.viseo.companion.domain.apiextern.NotificationSchemaAndroid;
+import com.viseo.companion.domain.apiextern.NotificationSchemaIOS;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.*;
@@ -76,10 +77,35 @@ public class Notification {
         );
 
         Data data = new Data(customNotification);
-        NotificationSchema notificationSchema = new NotificationSchema("/topics/newEvent", data);
+        NotificationSchemaAndroid notificationSchemaAndroid = new NotificationSchemaAndroid("/topics/newEvent", data);
 
         Gson gson = new GsonBuilder().create();
-        String JSONrequest = gson.toJson(notificationSchema);
+        String JSONrequest = gson.toJson(notificationSchemaAndroid);
+
+        byte[] JSONrequestUTF8 = new byte[0];
+        try {
+            JSONrequestUTF8 = JSONrequest.getBytes("UTF8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return new String(JSONrequestUTF8);
+    }
+
+    public String buildIOSNotification(String topic) {
+        CustomNotification customNotification = new CustomNotification(
+                this.body,
+                this.title,
+                this.color,
+                "high",
+                this.icon,
+                "true"
+        );
+
+        Data data = new Data(customNotification);
+        NotificationSchemaIOS notificationSchemaIOS = new NotificationSchemaIOS("/topics/newEvent", data);
+
+        Gson gson = new GsonBuilder().create();
+        String JSONrequest = gson.toJson(notificationSchemaIOS);
 
         byte[] JSONrequestUTF8 = new byte[0];
         try {
