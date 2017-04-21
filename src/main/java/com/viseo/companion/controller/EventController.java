@@ -1,17 +1,29 @@
 package com.viseo.companion.controller;
 
-import com.viseo.companion.domain.Notification;
+import com.viseo.companion.domain.Event;
+import com.viseo.companion.service.EventService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 public class EventController {
+    @Autowired
+    private EventService eventService;
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.addEvent}", method = RequestMethod.POST)
     @ResponseBody
-    public void addEvent(BindingResult bindingResult) {
-        Notification noti = new Notification();
+    public ResponseEntity<String> addEvent(@Valid @RequestBody Event event, BindingResult bindingResult) {
+        if(eventService.addEvent(event)!=null){
+            return new ResponseEntity<String>("Event added.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("Event not added.", HttpStatus.CONFLICT);
+        }
     }
 
     @RequestMapping(value = "${endpoint.getEvents}", method = RequestMethod.GET)
