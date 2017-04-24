@@ -1,6 +1,7 @@
 package com.viseo.companion.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +14,7 @@ public class Uzer extends BaseEntity {
     String lastName;
     String password;
 
-    @ManyToMany(mappedBy = "participants")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "participants")
     private Set<Event> events = new HashSet<Event>();
 
     @ManyToMany

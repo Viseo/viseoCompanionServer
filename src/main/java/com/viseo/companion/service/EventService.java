@@ -31,7 +31,7 @@ public class EventService {
         return eventRepository.save(event);
 
     }
-/*
+
     public boolean deletEvent(Event event) {
         if (eventRepository.exists(event.getId())) {
             eventRepository.delete(event.getId());
@@ -41,11 +41,15 @@ public class EventService {
     }
 
     public Event updateEvent(Event event) {
-       return eventRepository.save(event);
+        return eventRepository.save(event);
 
     }
 
-    public boolean addParticipant(long eventId, long userId) {
+    public Event getEvent(long id) {
+        Event result = eventRepository.findOne(id);
+        return result;
+    }
+    /*  public boolean addParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);
         if (event != null) {
            /* Uzer user = userDao.getUser(userId);
@@ -58,10 +62,7 @@ public class EventService {
     }
 
 
-    public Event getEvent(long id) {
-        Event result = eventRepository.getEvent(id);
-        return result;
-    }
+
 
     public List<Event> getEvents() {
         return eventRepository.getEvents();
@@ -100,12 +101,13 @@ public class EventService {
     public boolean removeParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);
         if (event != null) {
-            /*Uzer user = userDao.getUser(userId);
+         /*   Uzer user = userDao.getUser(userId);
             if (user != null) {
                 event.removeParticipant(user);
                 return true;
             }
+        }
         return false;
-    }
-    */
+    }*/
+
 }

@@ -17,7 +17,9 @@ public class Event extends BaseEntity {
     private String keyWords;
     private String place;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "event_uzer",joinColumns = { @JoinColumn(name = "events_id") }, inverseJoinColumns = { @JoinColumn(name = "participants_id") })
+
     private Set<Uzer> participants = new HashSet<Uzer>();
 
     public Event() {
