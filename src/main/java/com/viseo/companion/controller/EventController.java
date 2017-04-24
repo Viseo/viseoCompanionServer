@@ -27,7 +27,7 @@ public class EventController {
         }
     }
 
-    @RequestMapping(value = "${endpoint.getEvents}", method = RequestMethod.GET)
+   /* @RequestMapping(value = "${endpoint.getEvents}", method = RequestMethod.GET)
     @ResponseBody
     public List<Event> getEvents() {
         return eventService.getEvents();
@@ -67,5 +67,5 @@ public class EventController {
     @ResponseBody
     public Uzer getParticipant(@PathVariable("eventId") long eventId, @PathVariable("userId") long userId) {
         return eventService.getParticipant(eventId, userId);
-    }
+    }*/
 }

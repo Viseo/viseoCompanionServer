@@ -7,21 +7,23 @@ package com.viseo.companion.service;
 
 import com.viseo.companion.ViseocompanionserverApplication;
 import com.viseo.companion.domain.Event;
+
 import java.util.Calendar;
 
 
 import com.viseo.companion.exception.CompanionException;
 import org.junit.Assert;
-        import org.junit.Test;
-        import org.junit.runner.RunWith;
-        import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import com.viseo.companion.service.EventService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes=ViseocompanionserverApplication.class)
+@SpringApplicationConfiguration(classes = ViseocompanionserverApplication.class)
 public class EventServiceTest {
 
 
@@ -29,7 +31,7 @@ public class EventServiceTest {
     EventService eventService;
 
     @Test
-    public void addEventTest(){
+    public void addEventTest() {
         final Event event = new Event();
         event.setCategory(0);
         Calendar now = Calendar.getInstance();
@@ -49,7 +51,6 @@ public class EventServiceTest {
         }
 
     }
-
 
 
 }

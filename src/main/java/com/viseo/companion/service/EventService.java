@@ -31,7 +31,7 @@ public class EventService {
         return eventRepository.save(event);
 
     }
-
+/*
     public boolean deletEvent(Event event) {
         if (eventRepository.exists(event.getId())) {
             eventRepository.delete(event.getId());
@@ -52,7 +52,7 @@ public class EventService {
             if (user != null) {
                 event.addParticipant(user);
                 return true;
-            }*/
+            }
         }
         return false;
     }
@@ -104,8 +104,8 @@ public class EventService {
             if (user != null) {
                 event.removeParticipant(user);
                 return true;
-            }*/
-        }
+            }
         return false;
     }
+    */
 }
