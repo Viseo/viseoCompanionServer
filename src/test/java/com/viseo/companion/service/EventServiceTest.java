@@ -10,18 +10,14 @@ import com.viseo.companion.domain.Event;
 import java.util.Calendar;
 
 
-import com.viseo.companion.exception.SPIException;
+import com.viseo.companion.exception.CompanionException;
 import org.junit.Assert;
         import org.junit.Test;
         import org.junit.runner.RunWith;
         import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-        import com.viseo.companion.ViseocompanionserverApplication;
-        import com.viseo.companion.domain.Event;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -48,7 +44,7 @@ public class EventServiceTest {
             Assert.assertNotNull(newEvent.getId());
             Assert.assertEquals(event.getId(), newEvent.getId());
             // Assert.fail();
-        } catch (final SPIException ex) {
+        } catch (final CompanionException ex) {
             Assert.assertEquals("l'evenement que vous souhaitez ajouter exsite déja ", ex.getMessage());
         }
 

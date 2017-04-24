@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+
 public class Event extends BaseEntity {
     private long category;
     private String name;
