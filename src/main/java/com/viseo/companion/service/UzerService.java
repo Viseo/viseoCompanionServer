@@ -17,31 +17,50 @@ import java.util.List;
  * Created by HEL3666 on 24/04/2017.
  */
 @Service
+@Transactional
 public class UzerService {
 
 
     @Autowired
     private UzerRepository uzerRepository;
-    BCryptPasswordEncoder passwordEncoder;
 
-    public void addUser(long id, String email, String password, String username) {
-        Uzer uzer = new Uzer();
-        uzer.setEmail(email);
-        uzer.setPassword(password);
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
+
+    public Uzer addUser(Uzer uzer) {
         uzer.setPassword(passwordEncoder.encode(uzer.getPassword()));
-        uzerRepository.save(uzer);
+        if (ExistsEmail(uzer.getEmail()) == true)
+            return null;
+        else
+            return uzerRepository.save(uzer);
 
     }
 
-    public  List<Uzer> getUserByEmail(String email) {
 
-     return uzerRepository.getUserByEmail(email);
+    public boolean deletUzer(Long id) {
+        if (uzerRepository.exists(id)) {
+            uzerRepository.delete(id);
+            return true;
+        }
+        return false;
     }
 
-   public Uzer getEvent(long id) {
-       return uzerRepository.findOne(id);
-   }
+
+    public Boolean ExistsEmail(String Email) {
+        if (uzerRepository.getUserByEmail(Email).size() > 0)
+            return true;
+        else
+
+            return false;
+    }
+
+
+    public List<Uzer> getUserByEmail(String email) {
+        return uzerRepository.getUserByEmail(email);
+    }
+
+    public Uzer getEvent(long id) {
+        return uzerRepository.findOne(id);
+    }
 
     public boolean isUzerAlreadySaved(String email) {
         List<Uzer> list = getUserByEmail(email);
@@ -49,14 +68,18 @@ public class UzerService {
     }
 
     public Uzer checkCredentials(String email, String password) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
         Collection<Uzer> list = getUserByEmail(email);
-        if(list.iterator().hasNext()) {
-            Uzer user = list.iterator().next();
-            if(encoder.matches(password, user.getPassword()))
-                return user;
+        Uzer result = null;
+        for (Uzer u : list) {
+            if (passwordEncoder.matches(password, u.getPassword())) {
+                result = u;
+                break;
+            }
+
         }
-        return  null;
+        return result;
+
     }
 
 
@@ -65,9 +88,8 @@ public class UzerService {
     }
 
     public List<Uzer> getUsers() {
-        return (List<Uzer>)uzerRepository.findAll();
+        return (List<Uzer>) uzerRepository.findAll();
     }
-
 
 
     public Uzer getUserIdByEmail(String email) {
