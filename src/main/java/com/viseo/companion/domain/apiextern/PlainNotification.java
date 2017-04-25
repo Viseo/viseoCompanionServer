@@ -4,7 +4,7 @@ package com.viseo.companion.domain.apiextern;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Notification {
+public class PlainNotification {
 
     @SerializedName("body")
     @Expose
@@ -31,7 +31,7 @@ public class Notification {
     @Expose
     private String showInForeground;
 
-    public Notification(String body, String title, String color, String priority, String icon, String showInForeground) {
+    public PlainNotification(String body, String title, String color, String priority, String icon, String showInForeground) {
         this.body = body;
         this.title = title;
         this.color = color;

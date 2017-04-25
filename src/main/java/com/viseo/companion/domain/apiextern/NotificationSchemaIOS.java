@@ -9,13 +9,13 @@ public class NotificationSchemaIOS {
     @SerializedName("to")
     @Expose
     private String to;
-    @SerializedName("data")
+    @SerializedName("notification")
     @Expose
-    private Data data;
+    private PlainNotification notification;
 
-    public NotificationSchemaIOS(String to, Data data) {
+    public NotificationSchemaIOS(String to, PlainNotification notification) {
         this.to = to;
-        this.data = data;
+        this.notification = notification;
     }
 
     public String getTo() {
@@ -26,12 +26,12 @@ public class NotificationSchemaIOS {
         this.to = to;
     }
 
-    public Data getData() {
-        return data;
+    public PlainNotification getNotification() {
+        return notification;
     }
 
-    public void setData(Data data) {
-        this.data = data;
+    public void setNotification(PlainNotification notification) {
+        this.notification = notification;
     }
 
 }
