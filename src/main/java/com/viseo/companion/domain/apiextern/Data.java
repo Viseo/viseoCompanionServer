@@ -11,9 +11,9 @@ public class Data {
     private String type;
     @SerializedName("custom_notification")
     @Expose
-    private CustomNotification customNotification;
+    private PlainNotification customNotification;
 
-    public Data(CustomNotification customNotification) {
+    public Data(PlainNotification customNotification) {
         this.customNotification = customNotification;
     }
 
@@ -25,11 +25,11 @@ public class Data {
         this.type = type;
     }
 
-    public CustomNotification getCustomNotification() {
+    public PlainNotification getCustomNotification() {
         return customNotification;
     }
 
-    public void setCustomNotification(CustomNotification customNotification) {
+    public void setCustomNotification(PlainNotification customNotification) {
         this.customNotification = customNotification;
     }
 

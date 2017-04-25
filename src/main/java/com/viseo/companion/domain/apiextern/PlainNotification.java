@@ -21,24 +21,39 @@ public class PlainNotification {
     @SerializedName("icon")
     @Expose
     private String icon;
-    @SerializedName("group")
-    @Expose
-    private String group;
     @SerializedName("id")
     @Expose
-    private String id;
+    private long id;
     @SerializedName("show_in_foreground")
     @Expose
     private String showInForeground;
+    @SerializedName("click_action")
+    @Expose
+    private String click_action;
+    @SerializedName("badge")
+    @Expose
+    private Integer badge;
 
-    public PlainNotification(String body, String title, String color, String priority, String icon, String showInForeground) {
+    public PlainNotification(String body, String title, String color, String priority, String icon, long id, String showInForeground, String click_action, Integer badge) {
         this.body = body;
         this.title = title;
         this.color = color;
         this.priority = priority;
         this.icon = icon;
+        this.id = id;
         this.showInForeground = showInForeground;
+        this.click_action = click_action;
+        this.badge = badge;
     }
+
+//    public PlainNotification(String body, String title, String color, String priority, String icon, String showInForeground) {
+//        this.body = body;
+//        this.title = title;
+//        this.color = color;
+//        this.priority = priority;
+//        this.icon = icon;
+//        this.showInForeground = showInForeground;
+//    }
 
     public String getBody() {
         return body;
@@ -80,19 +95,11 @@ public class PlainNotification {
         this.icon = icon;
     }
 
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

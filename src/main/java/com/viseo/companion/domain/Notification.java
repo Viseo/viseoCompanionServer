@@ -18,11 +18,12 @@ public class Notification {
     private static String fireBaseURL;
     private static String fireBaseServerKey;
 
-    String title;
-    String body;
-    String sound = "default";
-    String icon = "ic_notif";
-    String color = "#498ff7";
+    private String title;
+    private String body;
+    private String sound = "default";
+    private String icon = "ic_notif";
+    private String color = "#498ff7";
+    private long id = 1;
     //todo make this a non default argument
     //"/topics/
     String topic = "\"/topics/newEvent\"";
@@ -30,18 +31,21 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(String title, String body, String sound, String icon, String color, String topic) {
+    public Notification(String title, String body, String sound, String icon, String color, String topic, long id) {
         this.title = title;
         this.body = body;
         this.sound = sound;
         this.icon = icon;
         this.color = color;
         this.topic = topic;
+        this.id = id;
     }
 
-    public Notification(Event event) {
+    public Notification(Event event, String topic) {
+        this.topic = topic;
         this.title = event.getName();
         this.body = event.getDateTimeToString() + " - " + event.getPlace();
+        this.id = event.getId();
     }
 
     @Value("${fireBase.URL}")
@@ -66,28 +70,22 @@ public class Notification {
     }
 
     public String buildAndroidNotification(String topic) {
-        CustomNotification customNotification = new CustomNotification(
+        PlainNotification customNotification = new PlainNotification(
                 this.body,
                 this.title,
                 this.color,
                 "high",
                 this.icon,
-                "true"
+                this.id,
+                "true",
+                "DEFAULT_ACTION",
+                1
         );
 
         Data data = new Data(customNotification);
         NotificationSchemaAndroid notificationSchemaAndroid = new NotificationSchemaAndroid(topic, data);
 
-        Gson gson = new GsonBuilder().create();
-        String JSONrequest = gson.toJson(notificationSchemaAndroid);
-
-        byte[] JSONrequestUTF8 = new byte[0];
-        try {
-            JSONrequestUTF8 = JSONrequest.getBytes("UTF8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return new String(JSONrequestUTF8);
+        return formatToJSON(notificationSchemaAndroid);
     }
 
     public String buildIOSNotification(String topic) {
@@ -97,17 +95,24 @@ public class Notification {
                 this.color,
                 "high",
                 this.icon,
-                "true"
+                this.id,
+                "true",
+                "DEFAULT_ACTION",
+                1
         );
 
         NotificationSchemaIOS notificationSchemaIOS = new NotificationSchemaIOS(topic, notification);
 
+        return formatToJSON(notificationSchemaIOS);
+    }
+
+    private String formatToJSON(Object object){
         Gson gson = new GsonBuilder().create();
-        String JSONrequest = gson.toJson(notificationSchemaIOS);
+        String JSONstring = gson.toJson(object);
 
         byte[] JSONrequestUTF8 = new byte[0];
         try {
-            JSONrequestUTF8 = JSONrequest.getBytes("UTF8");
+            JSONrequestUTF8 = JSONstring.getBytes("UTF8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

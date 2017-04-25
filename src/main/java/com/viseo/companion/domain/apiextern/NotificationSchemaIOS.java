@@ -12,6 +12,9 @@ public class NotificationSchemaIOS {
     @SerializedName("notification")
     @Expose
     private PlainNotification notification;
+    @SerializedName("priority")
+    @Expose
+    private String priority;
 
     public NotificationSchemaIOS(String to, PlainNotification notification) {
         this.to = to;
@@ -34,4 +37,11 @@ public class NotificationSchemaIOS {
         this.notification = notification;
     }
 
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
 }
