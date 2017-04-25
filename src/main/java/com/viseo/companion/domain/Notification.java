@@ -2,10 +2,7 @@ package com.viseo.companion.domain;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.viseo.companion.domain.apiextern.CustomNotification;
-import com.viseo.companion.domain.apiextern.Data;
-import com.viseo.companion.domain.apiextern.NotificationSchemaAndroid;
-import com.viseo.companion.domain.apiextern.NotificationSchemaIOS;
+import com.viseo.companion.domain.apiextern.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.*;
@@ -26,20 +23,19 @@ public class Notification {
     String sound = "default";
     String icon = "ic_notif";
     String color = "#498ff7";
-    String data;
     //todo make this a non default argument
+    //"/topics/
     String topic = "\"/topics/newEvent\"";
 
     public Notification() {
     }
 
-    public Notification(String title, String body, String sound, String icon, String color, String data, String topic) {
+    public Notification(String title, String body, String sound, String icon, String color, String topic) {
         this.title = title;
         this.body = body;
         this.sound = sound;
         this.icon = icon;
         this.color = color;
-        this.data = data;
         this.topic = topic;
     }
 
@@ -60,10 +56,13 @@ public class Notification {
 
 
     public boolean sendNotification() {
-        String androidNotification = buildAndroidNotification(this.topic);
-        String iosNotification = buildIOSNotification(this.topic);
+        String androidNotification = buildAndroidNotification(this.topic + "Android");
+        String iosNotification = buildIOSNotification(this.topic + "IOS");
 
-        return pushNotification(androidNotification) && pushNotification(iosNotification);
+        System.out.println("Android send : " + pushNotification(androidNotification));
+        System.out.println("IOS send : " + pushNotification(iosNotification));
+
+        return true;
     }
 
     public String buildAndroidNotification(String topic) {
@@ -77,7 +76,7 @@ public class Notification {
         );
 
         Data data = new Data(customNotification);
-        NotificationSchemaAndroid notificationSchemaAndroid = new NotificationSchemaAndroid("/topics/newEvent", data);
+        NotificationSchemaAndroid notificationSchemaAndroid = new NotificationSchemaAndroid(topic, data);
 
         Gson gson = new GsonBuilder().create();
         String JSONrequest = gson.toJson(notificationSchemaAndroid);
@@ -92,7 +91,7 @@ public class Notification {
     }
 
     public String buildIOSNotification(String topic) {
-        CustomNotification customNotification = new CustomNotification(
+        PlainNotification notification = new PlainNotification(
                 this.body,
                 this.title,
                 this.color,
@@ -101,8 +100,7 @@ public class Notification {
                 "true"
         );
 
-        Data data = new Data(customNotification);
-        NotificationSchemaIOS notificationSchemaIOS = new NotificationSchemaIOS("/topics/newEvent", data);
+        NotificationSchemaIOS notificationSchemaIOS = new NotificationSchemaIOS(topic, notification);
 
         Gson gson = new GsonBuilder().create();
         String JSONrequest = gson.toJson(notificationSchemaIOS);
