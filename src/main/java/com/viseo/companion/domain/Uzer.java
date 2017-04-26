@@ -3,10 +3,14 @@ package com.viseo.companion.domain;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "uzer")
+@XmlRootElement
 public class Uzer extends BaseEntity {
 
     String email;
@@ -27,7 +31,8 @@ public class Uzer extends BaseEntity {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.password = password;
+        switch (this.password = password) {
+        }
     }
 
     public String getEmail() {

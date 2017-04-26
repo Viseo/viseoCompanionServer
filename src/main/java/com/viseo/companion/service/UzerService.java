@@ -17,7 +17,7 @@ import java.util.List;
  * Created by HEL3666 on 24/04/2017.
  */
 @Service
-@Transactional
+
 public class UzerService {
 
 

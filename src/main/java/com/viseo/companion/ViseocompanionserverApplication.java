@@ -3,6 +3,7 @@ package com.viseo.companion;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -11,12 +12,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-@SpringBootApplication
-@ComponentScan
+
 @EnableAutoConfiguration
 @Configuration
 @EnableJpaRepositories
-@EnableTransactionManagement
+@ComponentScan({ "com.viseo.companion.service", "com.viseo.companion.controller"})
+@EntityScan("com.viseo.companion.domain")
+@SpringBootApplication
 public class ViseocompanionserverApplication extends WebMvcConfigurerAdapter {
 
 	public static void main(String[] args) {
