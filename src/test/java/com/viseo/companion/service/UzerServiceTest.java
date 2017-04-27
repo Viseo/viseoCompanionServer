@@ -3,6 +3,7 @@ package com.viseo.companion.service;
 import com.viseo.companion.ViseocompanionserverApplication;
 import com.viseo.companion.dao.UzerRepository;
 import com.viseo.companion.domain.Event;
+import com.viseo.companion.domain.Role;
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.exception.CompanionException;
 import org.junit.Assert;
@@ -31,10 +32,10 @@ public class UzerServiceTest {
     @Test
     public void addUserTest() {
         final Uzer uzer = new Uzer();
-        uzer.setEmail("iballlazzz@gmail.com");
-        uzer.setPassword("ibllazzzz");
-        uzer.setFirstName("ibllazzz");
-        uzer.setLastName("bstllazzzzz");
+        uzer.setEmail("me@gmail.com");
+        uzer.setPassword("me");
+        uzer.setFirstName("meee");
+        uzer.setLastName("meee");
         try {
 
             final Uzer newUzer = uzerService.addUser(uzer);
@@ -46,13 +47,37 @@ public class UzerServiceTest {
         }
 
     }
+    @Test
+    public final void updateUzerTest() {
+        final Long id = 19L;
 
+        final Uzer uzer = uzerService.getUser(id);
+        uzer.setEmail("ibal@gmail.com");
+        uzer.setPassword("ib");
+        uzer.setFirstName("ib");
+        uzer.setLastName("bst");
+        Uzer user = uzerService.getUser(18L);
+        Role role = new Role("admin", "admin");
+        user.getRoles().add(role);
+
+        Uzer newUzer= uzerService.updateUzer(uzer);
+
+        try {
+
+
+            // Assert.assertNotNull(newEvent.getId());
+            Assert.assertEquals(uzer.getId(), newUzer.getId());
+            // Assert.fail();
+        } catch (final CompanionException ex) {
+            Assert.assertEquals("l'uzer que vous souhaitez modifier n'exsite pas", ex.getMessage());
+        }
+    }
 
     @Test
     public void checkCredentialsTest() {
         final Uzer uzer = new Uzer();
-        uzer.setEmail("ibtisami@gmail.com");
-        uzer.setPassword("ibtisami");
+        uzer.setEmail("me@gmail.com");
+        uzer.setPassword("me");
 
         Uzer user = uzerService.checkCredentials(uzer.getEmail(), uzer.getPassword());
 

@@ -1,6 +1,7 @@
 package com.viseo.companion.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.viseo.companion.ViseocompanionserverApplication;
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.service.UzerService;
@@ -69,7 +70,7 @@ public class UzerControllerTest {
 
         // Création du client et éxécution d'une requete GET
         final HttpClient client = HttpClientBuilder.create().build();
-        final HttpGet mockRequest = new HttpGet("http://localhost:8080/users/3");
+        final HttpGet mockRequest = new HttpGet("http://localhost:8080/users/17");
         final HttpResponse mockResponse = client.execute(mockRequest);
 
         // Le code retour HTTP doit être un succès (200)
@@ -83,6 +84,55 @@ public class UzerControllerTest {
                 final Uzer us = map.readValue(rd, Uzer.class);
                 Assert.assertNotNull(us);
 
+
+
+            } catch (Exception ex) {
+            }
+
+
+        }
+
+    }
+
+    @Test
+    public final void getUsersTest() throws IOException {
+
+
+        // Création du client et éxécution d'une requete GET
+        final HttpClient client = HttpClientBuilder.create().build();
+        final HttpGet mockRequest = new HttpGet("http://localhost:8080/users");
+        final HttpResponse mockResponse = client.execute(mockRequest);
+
+        // Le code retour HTTP doit être un succès (200)
+        Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
+
+        final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
+        final ObjectMapper mapper = new ObjectMapper();
+        final Iterable<Uzer> uz = mapper.readValue(rd, Iterable.class);
+
+        Assert.assertNotNull(uz);
+
+    }
+    @Test
+    public final void getUsersByEmailTest() throws IOException {
+
+        // Création du client et éxécution d'une requete GET
+        final HttpClient client = HttpClientBuilder.create().build();
+        String email="me@gmail.com";
+        final HttpGet mockRequest = new HttpGet("http://localhost:8080/users/email");
+        final HttpResponse mockResponse = client.execute(mockRequest);
+
+        // Le code retour HTTP doit être un succès (200)
+        org.junit.Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
+        HttpEntity entity = mockResponse.getEntity();
+        if (entity != null) {
+            final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
+
+            try {
+                final ObjectMapper map = new ObjectMapper();
+                final Iterable<Uzer> uz = map.readValue(rd, Iterable.class);
+
+                Assert.assertNotNull(uz);
 
 
             } catch (Exception ex) {
@@ -113,19 +163,13 @@ public class UzerControllerTest {
 
         // Le code retour HTTP doit être un succès (200)
         Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
-
-        HttpEntity entity = mockResponse.getEntity();
-        if (entity != null) {
-            final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
-
-            try {
-                final ObjectMapper map = new ObjectMapper();
-                final Uzer us = map.readValue(rd, Uzer.class);
-
-            } catch (Exception ex) {
-            }
+        final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
+        final ObjectMapper map = new ObjectMapper();
+        final Uzer us = map.readValue(rd, Uzer.class);
 
 
-        }
+
+
+
     }
 }

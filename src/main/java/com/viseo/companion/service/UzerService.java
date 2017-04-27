@@ -4,6 +4,7 @@ import com.viseo.companion.dao.EventRepository;
 import com.viseo.companion.dao.UzerRepository;
 import com.viseo.companion.domain.Event;
 import com.viseo.companion.domain.Uzer;
+import com.viseo.companion.exception.CompanionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class UzerService {
     @Transactional
     public Uzer addUser(Uzer uzer) {
         uzer.setPassword(passwordEncoder.encode(uzer.getPassword()));
+
         if (ExistsEmail(uzer.getEmail()) == true)
             return null;
         else
@@ -36,6 +38,12 @@ public class UzerService {
 
     }
 
+
+    @Transactional
+    public Uzer updateUzer(Uzer uzer) {
+        return uzerRepository.save(uzer);
+
+    }
     @Transactional
     public boolean deletUzer(Long id) {
         if (uzerRepository.exists(id)) {
