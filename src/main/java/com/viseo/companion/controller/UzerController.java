@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 
-@RequestMapping("uzer")
 @RestController
 public class UzerController {
 
@@ -18,13 +17,9 @@ public class UzerController {
     @Autowired
     private UzerService uzerService;
 
-    /*@RequestMapping(value = "${endpoint.addUser}", method = POST,consumes = { "application/json;charset=UTF-8" })
-    public void addUser(@RequestBody final Uzer u){
-        UzerService uzerService = new UzerService();
-        uzerService.addUser(u);
-    }*/
-    @RequestMapping(value = "/adduser", method = RequestMethod.POST,  produces = { MediaType.APPLICATION_JSON_VALUE })
-    public Uzer addUser(@RequestBody final  Uzer us) {
+    @RequestMapping(value = "/adduser", method = RequestMethod.POST)
+    @ResponseBody
+    public Uzer addUser(@RequestBody Uzer us) {
         return uzerService.addUser(us);
 
     }
@@ -32,8 +27,10 @@ public class UzerController {
     public void authenticate(BindingResult bindingResult){
     }
 
-    @RequestMapping(value = "${endpoint.getUser}", method = GET)
-    public void getUser(@PathVariable("userId") long userId){
+    @RequestMapping(value = "/users/{userId}", method = GET)
+    @ResponseBody
+    public Uzer getUser(@PathVariable("userId") long userId){
+        return uzerService.getUser(userId);
 
     }
 

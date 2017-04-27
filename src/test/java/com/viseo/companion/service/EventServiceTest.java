@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import com.viseo.companion.service.EventService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -34,6 +33,8 @@ public class EventServiceTest {
 
     @Autowired
     EventService eventService;
+    @Autowired
+    UzerService uzerService;
 
     @Test
     public void addEventTest() {
@@ -41,10 +42,13 @@ public class EventServiceTest {
         event.setCategory(0);
         Calendar now = Calendar.getInstance();
         event.setDatetime(now);
-        event.setDescription("NADA");
-        event.setName("ibtissam");
-        event.setKeyWords("");
-        event.setPlace("HELL");
+        event.setDescription("NADAAAAA");
+        event.setName("ibtissamEventttt");
+        event.setKeyWords("HELLLLL");
+        event.setPlace("HELLLLLL");
+        final Uzer uzer = uzerService.getUser(1L);
+
+        event.addParticipant(uzer);
         try {
 
             final Event newEvent = eventService.addEvent(event);
@@ -53,55 +57,99 @@ public class EventServiceTest {
             // Assert.fail();
         } catch (final CompanionException ex) {
             Assert.assertEquals("l'evenement que vous souhaitez ajouter exsite déja ", ex.getMessage());
+
+
         }
 
     }
+
     @Test
-    public final void  deletEvent() {
-        final Long id = 1L;
-        final Event event= eventService.getEvent(id);
+    public final void deletEventTest() {
+        final Long id = 2L;
         try {
-            eventService. deletEvent(event);
-        } catch (final CompanionException  ex) {
+            eventService.deleteEvent(id);
+        } catch (final CompanionException ex) {
             Assert.assertEquals("Cant delete evenement", ex.getMessage());
         }
     }
 
     @Test
-    public void updateEvent() {
-        final Long id = 1L;
+    public final void updateEventTest() {
+        final Long id = 2L;
 
         final Event event = eventService.getEvent(id);
-
-        try{
-            Set<Uzer> listUsers=event.getParticipants();
-            for (Uzer uzer : listUsers) {
-                System.out.println(uzer.getId());
-
-            }
-
-        }catch(LazyInitializationException ex)
-        {
-            ex.printStackTrace();
-        }
-
         event.setCategory(0);
         Calendar now = Calendar.getInstance();
         event.setDatetime(now);
-        event.setDescription("NADALLLLLLLLLLLLLLLLLLLLLL");
+        event.setDescription("HALLLLLLLLLLLLLLLLLLLLLLA");
         event.setName("ibtissadddddddddddddddm");
         event.setKeyWords("HELLLLLLLLL");
         event.setPlace("HELLrrrrrrrrrrr");
+        Uzer user = uzerService.getUser(3L);
+
+        event.addParticipant(user);
+        Event newEvent=eventService.updateEvent(event);
 
         try {
-            final  Event newEvent = eventService.updateEvent(event);
 
-            Assert.assertNotNull(newEvent.getId());
+
+           // Assert.assertNotNull(newEvent.getId());
             Assert.assertEquals(event.getName(), newEvent.getName());
             // Assert.fail();
-        } catch (final  CompanionException ex) {
+        } catch (final CompanionException ex) {
             Assert.assertEquals("l'evenement que vous souhaitez modifier n'exsite pas", ex.getMessage());
         }
+    }
+
+    @Test
+    public void getEventsTest() {
+        final List<Event> lisEvents = eventService.getEvents();
+        try {
+            Assert.assertEquals(1,lisEvents.size());
+            //Assert.assertEquals(2, lisEvents.size());
+        } catch (final CompanionException ex) {
+            Assert.assertEquals("liste d'evenements introuvables", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void getEventsByRegisteredUser() {
+        Long userId = 4L;
+        List<Event> events = eventService.getEventsByRegisteredUser(userId);
+        try {
+            Assert.assertNotNull(events);
+            Assert.assertNotNull(events.size());
+        } catch (final CompanionException ex) {
+            Assert.assertEquals("liste d'evenements introuvables", ex.getMessage());
+        }
+    }
+
+
+
+   @Test
+    public void removeParticipant() {
+        Long userId = 1L;
+        Long eventId = 4L;
+        try {
+            Assert.assertTrue(eventService.removeParticipant(eventId, userId));
+        } catch (final CompanionException ex) {
+            Assert.assertEquals("impossible supprimer le participant", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void getParticipants() {
+
+        Long eventId = 4L;
+
+        try {
+            Assert.assertNotNull(eventService.getParticipants(eventId));
+            Assert.assertEquals(0, eventService.getParticipants(eventId).size());
+        } catch (final CompanionException ex) {
+            Assert.assertEquals("impossible de supprimer le participant", ex.getMessage());
+        }
+
+
     }
 
 

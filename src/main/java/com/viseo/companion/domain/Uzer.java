@@ -1,5 +1,6 @@
 package com.viseo.companion.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
@@ -9,8 +10,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "uzer")
-@XmlRootElement
 public class Uzer extends BaseEntity {
 
     String email;
@@ -18,10 +17,10 @@ public class Uzer extends BaseEntity {
     String lastName;
     String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "participants")
+    @ManyToMany(mappedBy = "participants",fetch = FetchType.EAGER)
     private Set<Event> events = new HashSet<Event>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<Role>();
 
     public Uzer() {

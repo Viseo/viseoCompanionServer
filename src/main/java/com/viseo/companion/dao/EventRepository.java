@@ -10,18 +10,16 @@ import com.viseo.companion.domain.Uzer;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import javax.transaction.Transactional;
+import org.springframework.data.repository.query.Param;
 import java.util.List;
 
-@Transactional
+
 public interface EventRepository extends CrudRepository<Event, Long> {
 
-     /* @Query("select a from Event a left join fetch a.participants p left join fetch p.roles where p.id = :id order by a.datetime")
-    List<Event> getEventsByRegisteredUser(long userId);
+   @Query("select a from Event a left join fetch a.participants p left join fetch p.roles where p.id = :id order by a.datetime")
+    List<Event> getEventsByRegisteredUser(@Param("id") long userId);
 
-    @Query("select distinct a from Event a left join fetch a.participants p left join fetch p.roles where a.datetime >= CURRENT_DATE order by a.datetime")
+    @Query("select distinct a from Event a left join fetch a.participants p where a.datetime >= CURRENT_DATE order by a.datetime")
     List<Event> getEvents() ;
-    Uzer getParticipant(long eventId, long userId);
-    List<Uzer> getParticipants(long eventId);*/
 
 }

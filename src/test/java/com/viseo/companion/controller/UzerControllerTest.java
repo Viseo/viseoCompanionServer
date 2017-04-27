@@ -1,46 +1,46 @@
-package com.viseo.companion.ControlleurTest;
+package com.viseo.companion.controller;
 
-import junit.framework.Assert;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.viseo.companion.ViseocompanionserverApplication;
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.service.UzerService;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 /**
  * Created by HEL3666 on 25/04/2017.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ViseocompanionserverApplication.class)
-public class UzerControlleurTest {
+public class UzerControllerTest {
 
 
     @Autowired
-   private UzerService uzerService;
+    private UzerService uzerService;
 
     @Test
     public void addUserTest() throws IOException {
         final Uzer uzer = new Uzer();
-        uzer.setEmail("iballlaz@gmail.com");
-        uzer.setPassword("ibllaz");
-        uzer.setFirstName("ibllaz");
-        uzer.setLastName("bstllaz");
+        uzer.setEmail("HAIFAAAAA@gmail.com");
+        uzer.setPassword("HAIFA");
+        uzer.setFirstName("HAIFA");
+        uzer.setLastName("haifa");
 
         // Création du client et éxécution d'une requete POST
         final HttpClient client = HttpClientBuilder.create().build();
@@ -59,7 +59,7 @@ public class UzerControlleurTest {
         final ObjectMapper map = new ObjectMapper();
         final Uzer us = map.readValue(rd, Uzer.class);
 
-        uzerService.deletUzer(15l);
+        // uzerService.deletUzer(us.getId());
 
 
     }
@@ -69,18 +69,27 @@ public class UzerControlleurTest {
 
         // Création du client et éxécution d'une requete GET
         final HttpClient client = HttpClientBuilder.create().build();
-        final HttpGet mockRequest = new HttpGet("http://localhost:8090/users/{userId}");
+        final HttpGet mockRequest = new HttpGet("http://localhost:8080/users/3");
         final HttpResponse mockResponse = client.execute(mockRequest);
 
         // Le code retour HTTP doit être un succès (200)
         org.junit.Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
+        HttpEntity entity = mockResponse.getEntity();
+        if (entity != null) {
+            final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
 
-        final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
-        final ObjectMapper mapper = new ObjectMapper();
-        final Uzer user = mapper.readValue(rd, Uzer.class);
+            try {
+                final ObjectMapper map = new ObjectMapper();
+                final Uzer us = map.readValue(rd, Uzer.class);
+                Assert.assertNotNull(us);
 
 
-        Assert.assertNotNull(user);
+
+            } catch (Exception ex) {
+            }
+
+
+        }
 
     }
 
@@ -104,12 +113,19 @@ public class UzerControlleurTest {
 
         // Le code retour HTTP doit être un succès (200)
         Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
-        final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
-        final ObjectMapper map = new ObjectMapper();
-        final Uzer us = map.readValue(rd, Uzer.class);
 
-        uzerService.deletUzer(15l);
+        HttpEntity entity = mockResponse.getEntity();
+        if (entity != null) {
+            final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
+
+            try {
+                final ObjectMapper map = new ObjectMapper();
+                final Uzer us = map.readValue(rd, Uzer.class);
+
+            } catch (Exception ex) {
+            }
 
 
+        }
     }
 }

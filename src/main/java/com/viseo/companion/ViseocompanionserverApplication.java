@@ -7,17 +7,17 @@ import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 
-@EnableAutoConfiguration
 @Configuration
+@EnableAutoConfiguration
 @EnableJpaRepositories
-@ComponentScan({ "com.viseo.companion.service", "com.viseo.companion.controller"})
-@EntityScan("com.viseo.companion.domain")
+//@ComponentScan({ "com.viseo.companion.service", "com.viseo.companion.controller"})
 @SpringBootApplication
 public class ViseocompanionserverApplication extends WebMvcConfigurerAdapter {
 
@@ -26,8 +26,4 @@ public class ViseocompanionserverApplication extends WebMvcConfigurerAdapter {
 		SpringApplication.run(ViseocompanionserverApplication.class, args);
 	}
 
-	@Override
-	public final void addResourceHandlers(final ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/**").addResourceLocations("classpath:/client/").addResourceLocations("classpath:/.tmp/");
-	}
 }

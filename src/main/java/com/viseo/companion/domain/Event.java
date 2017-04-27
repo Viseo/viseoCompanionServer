@@ -1,15 +1,26 @@
 package com.viseo.companion.domain;
 
-import javax.persistence.*;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Version;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+@SuppressWarnings("serial")
 @Entity
-
-public class Event extends BaseEntity {
+public class Event implements java.io.Serializable {
+    @Id
+    @GeneratedValue
+    private long id;
+    @Version
+    private long version;
     private long category;
     private String name;
     private Calendar datetime;
@@ -17,10 +28,11 @@ public class Event extends BaseEntity {
     private String keyWords;
     private String place;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "event_uzer",joinColumns = { @JoinColumn(name = "events_id") }, inverseJoinColumns = { @JoinColumn(name = "participants_id") })
-
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Uzer> participants = new HashSet<Uzer>();
+
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.event", cascade = CascadeType.ALL)
+//	private Set<AccountEvent> accountEvents = new HashSet<AccountEvent>();
 
     public Event() {
     }
@@ -40,6 +52,10 @@ public class Event extends BaseEntity {
 
     public void removeParticipant(Uzer participant) {
         participants.remove(participant);
+    }
+
+    public long getId() {
+        return id;
     }
 
     public long getCategory() {

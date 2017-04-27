@@ -26,6 +26,7 @@ public class UzerService {
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
 
+    @Transactional
     public Uzer addUser(Uzer uzer) {
         uzer.setPassword(passwordEncoder.encode(uzer.getPassword()));
         if (ExistsEmail(uzer.getEmail()) == true)
@@ -35,7 +36,7 @@ public class UzerService {
 
     }
 
-
+    @Transactional
     public boolean deletUzer(Long id) {
         if (uzerRepository.exists(id)) {
             uzerRepository.delete(id);
@@ -44,7 +45,7 @@ public class UzerService {
         return false;
     }
 
-
+    @Transactional
     public Boolean ExistsEmail(String Email) {
         if (uzerRepository.getUserByEmail(Email).size() > 0)
             return true;
@@ -53,20 +54,23 @@ public class UzerService {
             return false;
     }
 
-
+    @Transactional
     public List<Uzer> getUserByEmail(String email) {
         return uzerRepository.getUserByEmail(email);
     }
 
+    @Transactional
     public Uzer getEvent(long id) {
         return uzerRepository.findOne(id);
     }
 
+    @Transactional
     public boolean isUzerAlreadySaved(String email) {
         List<Uzer> list = getUserByEmail(email);
         return !list.isEmpty();
     }
 
+    @Transactional
     public Uzer checkCredentials(String email, String password) {
 
         Collection<Uzer> list = getUserByEmail(email);
@@ -82,16 +86,17 @@ public class UzerService {
 
     }
 
-
+    @Transactional
     public Uzer getUser(long userId) {
         return uzerRepository.findOne(userId);
     }
 
+    @Transactional
     public List<Uzer> getUsers() {
         return (List<Uzer>) uzerRepository.findAll();
     }
 
-
+    @Transactional
     public Uzer getUserIdByEmail(String email) {
         List<Uzer> list = getUserByEmail(email);
         return list.iterator().hasNext() ? list.iterator().next() : null;

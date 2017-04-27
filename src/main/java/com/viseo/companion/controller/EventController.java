@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 public class EventController {
@@ -19,15 +17,15 @@ public class EventController {
 
     @RequestMapping(value = "${endpoint.addEvent}", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addEvent(@Valid @RequestBody Event event, BindingResult bindingResult) {
+    public ResponseEntity<String> addEvent(@RequestBody Event event) {
         if(eventService.addEvent(event)!=null){
             return new ResponseEntity<String>("Event added.", HttpStatus.OK);
         } else {
             return new ResponseEntity<String>("Event not added.", HttpStatus.CONFLICT);
         }
     }
-
-   /* @RequestMapping(value = "${endpoint.getEvents}", method = RequestMethod.GET)
+/*
+   @RequestMapping(value = "${endpoint.getEvents}", method = RequestMethod.GET)
     @ResponseBody
     public List<Event> getEvents() {
         return eventService.getEvents();
@@ -50,6 +48,22 @@ public class EventController {
     public Boolean removeParticipant(@PathVariable("eventId") long eventId, @PathVariable("userId") long userId) {
         return eventService.removeParticipant(eventId, userId);
     }
+
+    @RequestMapping(value = "${endpoint.removeEvent}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Boolean removeEvent(@PathVariable("eventId") long eventId) {
+
+        return eventService.deleteEvent(eventId);
+    }
+
+    @RequestMapping(value = "${endpoint.updateEvent}", method = RequestMethod.PUT)
+    @ResponseBody
+    public Event updateEvent(@PathVariable("eventId") long eventId) {
+
+        Event event=eventService.getEvent(eventId);
+        return eventService.updateEvent(event);
+    }
+
 
     @RequestMapping(value = "${endpoint.getEventParticipants}", method = RequestMethod.GET)
     @ResponseBody

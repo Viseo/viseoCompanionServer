@@ -31,15 +31,15 @@ public class UzerServiceTest {
     @Test
     public void addUserTest() {
         final Uzer uzer = new Uzer();
-        uzer.setEmail("iballlaz@gmail.com");
-        uzer.setPassword("ibllaz");
-        uzer.setFirstName("ibllaz");
-        uzer.setLastName("bstllaz");
+        uzer.setEmail("iballlazzz@gmail.com");
+        uzer.setPassword("ibllazzzz");
+        uzer.setFirstName("ibllazzz");
+        uzer.setLastName("bstllazzzzz");
         try {
 
             final Uzer newUzer = uzerService.addUser(uzer);
             Assert.assertNotNull(newUzer.getId());
-            Assert.assertEquals(uzer.getId(), newUzer.getId());
+            Assert.assertEquals(uzer.getEmail(), newUzer.getEmail());
             // Assert.fail();
         } catch (final CompanionException ex) {
             Assert.assertEquals("l'utilisateur que vous souhaitez ajouter exsite déja ", ex.getMessage());
