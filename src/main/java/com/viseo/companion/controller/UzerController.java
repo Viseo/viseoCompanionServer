@@ -28,6 +28,7 @@ public class UzerController {
 
     }
     @RequestMapping(value = "/authenticate", method = POST)
+    @ResponseBody
     public  Uzer authenticate(@PathVariable("email,password")String email, String password){
 
         return uzerService.checkCredentials(email,password);
@@ -57,6 +58,16 @@ public class UzerController {
 
     public final List<Uzer> getUsers() {
         return uzerService.getUsers();
+
+    }
+
+    @RequestMapping(value = "/users/{userId}" ,method = RequestMethod.DELETE)
+    public final void deleteUser(@PathVariable(value = "userId")  final long id) {
+        uzerService.deletUzer(id);
+    }
+    @RequestMapping(value = "/users/{userId}", method = RequestMethod.PUT, consumes = { "application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })
+    public final Uzer updateUser(@RequestBody final Uzer user) {
+        return  uzerService.updateUzer(user);
 
     }
 }

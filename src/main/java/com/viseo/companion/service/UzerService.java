@@ -41,6 +41,7 @@ public class UzerService {
 
     @Transactional
     public Uzer updateUzer(Uzer uzer) {
+        uzer.setPassword(passwordEncoder.encode(uzer.getPassword()));
         return uzerRepository.save(uzer);
 
     }

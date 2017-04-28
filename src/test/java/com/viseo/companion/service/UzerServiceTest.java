@@ -76,7 +76,7 @@ public class UzerServiceTest {
     @Test
     public void checkCredentialsTest() {
         final Uzer uzer = new Uzer();
-        uzer.setEmail("me@gmail.com");
+        uzer.setEmail("ihate@gmail.com");
         uzer.setPassword("me");
 
         Uzer user = uzerService.checkCredentials(uzer.getEmail(), uzer.getPassword());
