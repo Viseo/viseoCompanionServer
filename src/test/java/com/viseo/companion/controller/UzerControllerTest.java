@@ -46,10 +46,10 @@ public class UzerControllerTest {
     @Test
     public void addUserTest() throws IOException {
         final Uzer uzer = new Uzer();
-        uzer.setEmail("haifaaa@gmail.com");
+        uzer.setEmail("haifa@gmail.com");
         uzer.setPassword("oui");
-        uzer.setFirstName("oui");
-        uzer.setLastName("oui");
+        uzer.setFirstName("elh");
+        uzer.setLastName("ha");
 
         // Création du client et éxécution d'une requete POST
         final HttpClient client = HttpClientBuilder.create().build();
@@ -126,7 +126,7 @@ public class UzerControllerTest {
 
         // Création du client et éxécution d'une requete GET
         final HttpClient client = HttpClientBuilder.create().build();
-        String email="me@gmail.com";
+        String email="haifa@gmail.com";
         final HttpGet mockRequest = new HttpGet("http://localhost:8080/users/email");
         final HttpResponse mockResponse = client.execute(mockRequest);
 
@@ -163,7 +163,7 @@ public class UzerControllerTest {
         final com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
 
         ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-        postParameters.add(new BasicNameValuePair("email", "haifaaa@gmail.com"));
+        postParameters.add(new BasicNameValuePair("email", "haifa@gmail.com"));
         postParameters.add(new BasicNameValuePair("password", "oui"));
 
         mockRequestPost.setEntity(new UrlEncodedFormEntity(postParameters));
@@ -182,31 +182,29 @@ public class UzerControllerTest {
     }
 
         @Test
-        public void updateUserTest() throws ClientProtocolException, IOException{
-            final Uzer uzer = uzerService.getUser(26L);
-            uzer.setEmail("ihate@gmail.com");
-            uzer.setPassword("bbbbbeeeeeeeeb");
-            uzer.setLastName("haifa");
+        public final void updateUserTest() throws ClientProtocolException, IOException{
+            final Uzer uzer = uzerService.getUser(28L);
+            uzer.setEmail("heloooooowwwwwww@gmail.com");
+            uzer.setPassword("yakh");
+            uzer.setLastName("wa");
 
 
+            // Création du client et éxécution d'une requete POST
             final HttpClient client = HttpClientBuilder.create().build();
-            final HttpPut mockPost = new HttpPut("http://localhost:8080/users/26");
-            ObjectMapper mapper = new ObjectMapper();
-            com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-
+            final HttpPut mockRequestPut = new HttpPut("http://localhost:8080/users");
+            final ObjectMapper mapper = new ObjectMapper();
+            final com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
             final String jsonInString = ow.writeValueAsString(uzer);
-            // Ã©tablition de la requette (header+body)
-            mockPost.addHeader("content-type", "application/json");
-            mockPost.setEntity(new StringEntity(jsonInString));
+            mockRequestPut.addHeader("Content-type", "application/json");
+            mockRequestPut.setEntity(new StringEntity(jsonInString));
 
-            HttpResponse mockResponse = client.execute(mockPost);
+            final org.apache.http.HttpResponse mockResponse = client.execute(mockRequestPut);
 
-
+            // Le code retour HTTP doit être un succès (200)
             Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
-
-        /*    final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
-            final Uzer uz = mapper.readValue(rd, Uzer.class);
-*/
+         /*   final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
+            final ObjectMapper map = new ObjectMapper();
+            final Uzer us = map.readValue(rd, Uzer.class);*/
 
         }
 

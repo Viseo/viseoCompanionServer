@@ -47,20 +47,21 @@ public class UzerServiceTest {
         }
 
     }
+
     @Test
     public final void updateUzerTest() {
-        final Long id = 19L;
+        final Long id = 28L;
 
         final Uzer uzer = uzerService.getUser(id);
-        uzer.setEmail("ibal@gmail.com");
-        uzer.setPassword("ib");
-        uzer.setFirstName("ib");
+        uzer.setEmail("woooooooooooooooooooooo@gmail.com");
+        uzer.setPassword("ibbbb");
+        uzer.setFirstName("ibbbbbb");
         uzer.setLastName("bst");
-        Uzer user = uzerService.getUser(18L);
-        Role role = new Role("admin", "admin");
-        user.getRoles().add(role);
 
-        Uzer newUzer= uzerService.updateUzer(uzer);
+        Role role = new Role("admin", "admin");
+        uzer.getRoles().add(role);
+
+        Uzer newUzer = uzerService.updateUzer(uzer);
 
         try {
 
@@ -68,6 +69,7 @@ public class UzerServiceTest {
             // Assert.assertNotNull(newEvent.getId());
             Assert.assertEquals(uzer.getId(), newUzer.getId());
             // Assert.fail();
+
         } catch (final CompanionException ex) {
             Assert.assertEquals("l'uzer que vous souhaitez modifier n'exsite pas", ex.getMessage());
         }
@@ -92,13 +94,14 @@ public class UzerServiceTest {
 
 
     }
+
     @Test
-    public final void  deletUzerTest() {
+    public final void deletUzerTest() {
         final Long id = 12L;
-        final Uzer uzer= uzerService.getUser(id);
+        final Uzer uzer = uzerService.getUser(id);
         try {
-            uzerService. deletUzer(id);
-        } catch (final CompanionException  ex) {
+            uzerService.deletUzer(id);
+        } catch (final CompanionException ex) {
             Assert.assertEquals("Cant delete utilisateur", ex.getMessage());
         }
     }
@@ -115,7 +118,7 @@ public class UzerServiceTest {
     }
 
     @Test
-    public void getUsersTest(){
+    public void getUsersTest() {
 
 
         final List<Uzer> listUsers = uzerService.getUsers();
@@ -123,14 +126,12 @@ public class UzerServiceTest {
         Assert.assertEquals(4, listUsers.size());
     }
 
-   @Test
-    public void getUserByEmailTest(){
+    @Test
+    public void getUserByEmailTest() {
         final List<Uzer> listUsers = uzerService.getUserByEmail("ibtisami@gmail.com");
         Assert.assertNotNull(listUsers);
         Assert.assertEquals(1, listUsers.size());
     }
-
-
 
 
 }

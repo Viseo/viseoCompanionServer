@@ -25,7 +25,7 @@ public class UzerService {
     @Autowired
     private UzerRepository uzerRepository;
 
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Transactional
     public Uzer addUser(Uzer uzer) {
@@ -97,7 +97,9 @@ public class UzerService {
 
     @Transactional
     public Uzer getUser(long userId) {
-        return uzerRepository.findOne(userId);
+        Uzer uzer = uzerRepository.findOne(userId);
+        if (uzer!=null) uzer.getRoles().size();
+        return uzer;
     }
 
     @Transactional

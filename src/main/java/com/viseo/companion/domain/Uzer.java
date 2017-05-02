@@ -17,10 +17,11 @@ public class Uzer extends BaseEntity {
     String lastName;
     String password;
 
+
     @ManyToMany(mappedBy = "participants",fetch = FetchType.EAGER)
     private Set<Event> events = new HashSet<Event>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade=CascadeType.ALL)
     private Set<Role> roles = new HashSet<Role>();
 
     public Uzer() {

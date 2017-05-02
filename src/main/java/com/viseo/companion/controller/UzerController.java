@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -65,9 +66,22 @@ public class UzerController {
     public final void deleteUser(@PathVariable(value = "userId")  final long id) {
         uzerService.deletUzer(id);
     }
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.PUT, consumes = { "application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })
-    public final Uzer updateUser(@RequestBody final Uzer user) {
-        return  uzerService.updateUzer(user);
+
+
+    @RequestMapping(value = "/users", method = RequestMethod.PUT)
+    @ResponseBody
+    public final Uzer updateUser(@RequestBody Uzer use) {
+
+        Uzer uzer =null;
+        try {
+            uzer =uzerService.updateUzer(use);
+            uzer.getRoles().size();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+
+        return uzer;
 
     }
 }
