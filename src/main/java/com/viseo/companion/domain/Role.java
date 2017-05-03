@@ -16,7 +16,7 @@ public class Role extends BaseEntity {
     String name;
     String description;
 
-    @ManyToMany(mappedBy = "roles",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "roles")
     private Set<Uzer> users = new HashSet<Uzer>();
 
     public String getName() {

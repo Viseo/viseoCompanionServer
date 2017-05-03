@@ -1,25 +1,102 @@
 package com.viseo.companion.dao;
 
-/**
- * Created by IBO3693 on 21/04/2017.
- */
-
-
 import com.viseo.companion.domain.Event;
-import com.viseo.companion.domain.Uzer;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import org.springframework.data.repository.query.Param;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Created by IBO3693 on 21/04/2017.
+ **/
 
-public interface EventRepository extends CrudRepository<Event, Long> {
+@Repository
+public class EventRepository {
 
-   @Query("select a from Event a left join fetch a.participants p left join fetch p.roles where p.id = :id order by a.datetime")
+  /* @Query("select a from Event a left join fetch a.participants p left join fetch p.roles where p.id = :id order by a.datetime")
     List<Event> getEventsByRegisteredUser(@Param("id") long userId);
 
     @Query("select distinct a from Event a left join fetch a.participants p where a.datetime >= CURRENT_DATE order by a.datetime")
     List<Event> getEvents() ;
+*/
 
+    @Autowired
+    UzerRepository userDao;
+
+    @PersistenceContext
+    EntityManager em;
+
+
+    public void addEvent(String name, Calendar date, String description, String KeyWords, String place) {
+        Event event = new Event();
+        event.setDatetime(date);
+        event.setDescription(description);
+        event.setName(name);
+        event.setPlace(place);
+        event.setKeyWords(KeyWords);
+        em.persist(event);
+    }
+
+    @Transactional
+    public boolean addEvent(Event event) {
+        try {
+            em.persist(event);
+        } catch (EntityExistsException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Transactional
+    public boolean deleteEvent(Event event) {
+        try {
+            em.remove(em.contains(event) ? event : em.merge(event));
+            em.flush();
+        } catch (EntityExistsException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Transactional
+    public Event updateEvent(Event event) {
+
+        try {
+            event = em.merge(event);
+
+        } catch (EntityExistsException e) {
+            throw new RuntimeException(e);
+        }
+        return event;
+    }
+
+    @Transactional
+    public Event getEvent(long id) {
+        Query query = em.createQuery("select a from Event a left join fetch a.participants p left join fetch p.roles where a.id = :id");
+        query.setParameter("id", id);
+        List<Event> result = query.getResultList();
+        if (result.size() > 0)
+            return result.iterator().next();
+        return null;
+    }
+
+    @Transactional
+    public List<Event> getEvents() {
+        return em.createQuery("select distinct a from Event a left join fetch a.participants p left join fetch p.roles where a.datetime >= CURRENT_DATE order by a.datetime", Event.class).getResultList();
+    }
+
+    @Transactional
+    public List<Event> getEventsByRegisteredUser(long userId) {
+        Query query = em.createQuery("select a from Event a left join fetch a.participants p left join fetch p.roles where p.id = :id order by a.datetime");
+        query.setParameter("id", userId);
+        return (List<Event>) query.getResultList();
+    }
 }

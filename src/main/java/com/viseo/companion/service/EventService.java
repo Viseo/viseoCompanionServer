@@ -1,5 +1,6 @@
 package com.viseo.companion.service;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.viseo.companion.dao.EventRepository;
 import com.viseo.companion.domain.Event;
 import com.viseo.companion.domain.Notification;
@@ -27,43 +28,44 @@ public class EventService {
     @Autowired
     private UzerService userService;
 
-    @Transactional
-    public Event addEvent(Event event) {
+
+    public Boolean addEvent(Event event) {
         /*Notification notif = new Notification(event);
         notif.sendNotification();*/
         Event ev = null;
         try {
-            ev = eventRepository.save(event);
+           eventRepository.addEvent(event);
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            return false;
         }
-        return ev;
+        return true;
 
     }
 
-    @Transactional
+
     public Event getEvent(long id) {
-        Event result = eventRepository.findOne(id);
+        Event result = eventRepository.getEvent(id);
         return result;
     }
 
-    @Transactional
+
     public boolean deleteEvent(Long eventId) {
-        if (eventRepository.exists(eventId)) {
-            eventRepository.delete(eventId);
+        if (eventRepository.getEvent(eventId)!=null) {
+             eventRepository.deleteEvent(eventRepository.getEvent(eventId));
             return true;
         }
         return false;
     }
 
-    @Transactional
+
     public Event updateEvent(Event event) {
-        return eventRepository.save(event);
+        return eventRepository.updateEvent(event);
 
     }
 
-    @Transactional
+
     public List<Event> getEvents() {
         List<Event> events = null;
 
@@ -75,13 +77,24 @@ public class EventService {
         }
         return events;
     }
-    @Transactional
+
+
     public List<Event> getEventsByRegisteredUser(long userId) {
 
         return eventRepository.getEventsByRegisteredUser(userId);
     }
 
-    @Transactional
+    public Uzer getParticipant(long eventId, long userId) {
+        Event event = getEvent(eventId);
+        if (event != null) {
+            for (Uzer user : event.getParticipants()) {
+                if (user.getId() == userId)
+                    return user;
+            }
+        }
+        return null;
+    }
+
     public List<Uzer> getParticipants(long eventId) {
         List<Uzer> participants = new ArrayList<Uzer>();
         Event event = getEvent(eventId);
@@ -91,7 +104,6 @@ public class EventService {
         return participants;
     }
 
-    @Transactional
     public boolean removeParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);
         if (event != null) {
@@ -105,4 +117,15 @@ public class EventService {
     }
 
 
+    public boolean addParticipant(long eventId, long userId) {
+        Event event = getEvent(eventId);
+        if (event != null) {
+            Uzer user = userService.getUser(userId);
+            if (user != null) {
+                event.addParticipant(user);
+                return true;
+            }
+        }
+        return false;
+    }
 }

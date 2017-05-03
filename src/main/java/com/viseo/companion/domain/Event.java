@@ -3,24 +3,17 @@ package com.viseo.companion.domain;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Version;
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 
-@SuppressWarnings("serial")
+
 @Entity
-public class Event implements java.io.Serializable {
-    @Id
-    @GeneratedValue
-    private long id;
-    @Version
-    private long version;
+
+public class Event extends BaseEntity {
+
     private long category;
     private String name;
     private Calendar datetime;
@@ -28,7 +21,7 @@ public class Event implements java.io.Serializable {
     private String keyWords;
     private String place;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Set<Uzer> participants = new HashSet<Uzer>();
 
 //	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.event", cascade = CascadeType.ALL)
@@ -46,6 +39,12 @@ public class Event implements java.io.Serializable {
         this.category = 0;
     }
 
+
+
+    //@Transient
+    // private String dateTimeToString;
+
+
     public void addParticipant(Uzer participant) {
         participants.add(participant);
     }
@@ -54,9 +53,9 @@ public class Event implements java.io.Serializable {
         participants.remove(participant);
     }
 
-    public long getId() {
-        return id;
-    }
+    // public long getId() {
+//        return id;
+  //  }
 
     public long getCategory() {
         return category;
@@ -66,13 +65,9 @@ public class Event implements java.io.Serializable {
         return this.name;
     }
 
-    public Date getDatetime() {
-        return this.datetime.getTime();
-    }
-
-    public String getDateTimeToString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM à HH:mm");
-        return sdf.format(this.datetime.getTime());
+    public Calendar getDatetime() {
+        return this.datetime;
+        //.getTime()
     }
 
     public String getDescription() {

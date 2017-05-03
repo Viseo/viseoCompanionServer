@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 @Component
 @PropertySource("classpath:keys.properties")
@@ -40,9 +43,14 @@ public class Notification {
 
     public Notification(Event event) {
         this.title = event.getName();
-        this.body = event.getDateTimeToString() + " - " + event.getPlace();
+        this.body = getDateTimeToString(event.getDatetime().getTime()) + " - " + event.getPlace();
     }
 
+
+    public String getDateTimeToString(Date datetime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM HH:mm");
+        return sdf.format(datetime.getTime());
+    }
     @Value("${fireBase.URL}")
     public void setFireBaseURL(String url) {
         fireBaseURL = url;

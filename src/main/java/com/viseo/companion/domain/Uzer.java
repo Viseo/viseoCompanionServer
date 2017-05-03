@@ -21,7 +21,7 @@ public class Uzer extends BaseEntity {
     @ManyToMany(mappedBy = "participants",fetch = FetchType.EAGER)
     private Set<Event> events = new HashSet<Event>();
 
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     private Set<Role> roles = new HashSet<Role>();
 
     public Uzer() {

@@ -1,9 +1,7 @@
 package com.viseo.companion.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.viseo.companion.ViseocompanionserverApplication;
-import com.viseo.companion.dao.UzerRepository;
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.service.UzerService;
 import org.apache.http.HttpEntity;
@@ -62,7 +60,7 @@ public class UzerControllerTest {
 
         final org.apache.http.HttpResponse mockResponse = client.execute(mockRequestPost);
 
-        // Le code retour HTTP doit être un succès (200)
+        // Le code retour HTTP doit être un succès (200)z
         Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
         final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
         final ObjectMapper map = new ObjectMapper();

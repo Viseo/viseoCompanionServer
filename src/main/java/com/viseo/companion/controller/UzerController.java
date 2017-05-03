@@ -37,10 +37,8 @@ public class UzerController {
 
     }
 
-    @RequestMapping(value = "/users/{userId}", method = GET)
-    @ResponseBody
-    public Uzer getUser(@PathVariable("userId") long userId){
-        return uzerService.getUser(userId);
+    @RequestMapping(value = "${endpoint.getUser}", method = GET)
+    public void getUser(@PathVariable("userId") long userId){
 
     }
 

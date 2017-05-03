@@ -4,10 +4,9 @@ import com.viseo.companion.domain.Event;
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -15,17 +14,16 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    @RequestMapping(value = "${endpoint.addEvent}", method = RequestMethod.POST)
+    @RequestMapping(value = "/addevent", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addEvent(@RequestBody Event event) {
-        if(eventService.addEvent(event)!=null){
-            return new ResponseEntity<String>("Event added.", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<String>("Event not added.", HttpStatus.CONFLICT);
-        }
+    public Boolean addEvent(@RequestBody Event event) {
+        eventService.addEvent(event);
+        return true;
+
     }
-/*
-   @RequestMapping(value = "${endpoint.getEvents}", method = RequestMethod.GET)
+
+
+    @RequestMapping(value = "/events", method = RequestMethod.GET)
     @ResponseBody
     public List<Event> getEvents() {
         return eventService.getEvents();
@@ -34,13 +32,13 @@ public class EventController {
     @RequestMapping(value = "${endpoint.getEvent}", method = RequestMethod.GET)
     @ResponseBody
     public Event getEvent(@PathVariable("eventId") long eventId) {
-        return  eventService.getEvent(eventId);
+        return eventService.getEvent(eventId);
     }
 
     @RequestMapping(value = "${endpoint.addEventParticipant}", method = RequestMethod.POST)
     @ResponseBody
     public Boolean addParticipant(@PathVariable("eventId") long eventId, @PathVariable("userId") long userId) {
-        return eventService.addParticipant(eventId,userId);
+        return eventService.addParticipant(eventId, userId);
     }
 
     @RequestMapping(value = "${endpoint.removeEventParticipant}", method = RequestMethod.DELETE)
@@ -49,31 +47,36 @@ public class EventController {
         return eventService.removeParticipant(eventId, userId);
     }
 
-    @RequestMapping(value = "${endpoint.removeEvent}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/events/{eventId}", method = RequestMethod.DELETE)
     @ResponseBody
     public Boolean removeEvent(@PathVariable("eventId") long eventId) {
 
         return eventService.deleteEvent(eventId);
     }
 
-    @RequestMapping(value = "${endpoint.updateEvent}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/events", method = RequestMethod.PUT)
     @ResponseBody
-    public Event updateEvent(@PathVariable("eventId") long eventId) {
+    public Event updateEvent(@RequestBody Event event) {
 
-        Event event=eventService.getEvent(eventId);
-        return eventService.updateEvent(event);
+        try {
+
+           return eventService.updateEvent(event);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
 
-    @RequestMapping(value = "${endpoint.getEventParticipants}", method = RequestMethod.GET)
+    @RequestMapping(value = "/participants/{eventId}", method = RequestMethod.GET)
     @ResponseBody
-    public  List<Uzer>  getParticipants(@PathVariable("eventId") long eventId) {
+    public List<Uzer> getParticipants(@PathVariable("eventId") long eventId) {
         return eventService.getParticipants(eventId);
     }
 
     @RequestMapping(value = "${endpoint.getEventsByRegisteredUser}", method = RequestMethod.GET)
     @ResponseBody
-    public  List<Event> getEventsByRegisteredUser(@PathVariable("userId") long userId) {
+    public List<Event> getEventsByRegisteredUser(@PathVariable("userId") long userId) {
         return eventService.getEventsByRegisteredUser(userId);
     }
 
@@ -81,5 +84,5 @@ public class EventController {
     @ResponseBody
     public Uzer getParticipant(@PathVariable("eventId") long eventId, @PathVariable("userId") long userId) {
         return eventService.getParticipant(eventId, userId);
-    }*/
+    }
 }
