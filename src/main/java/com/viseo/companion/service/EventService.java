@@ -1,26 +1,16 @@
 package com.viseo.companion.service;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.viseo.companion.dao.EventRepository;
 import com.viseo.companion.domain.Event;
 import com.viseo.companion.domain.Notification;
 import com.viseo.companion.domain.Uzer;
-import com.viseo.companion.exception.CompanionException;
-import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by IBO3693 on 21/04/2017.
- */
 @Service
-
 public class EventService {
 
     @Autowired
@@ -30,45 +20,37 @@ public class EventService {
 
 
     public Boolean addEvent(Event event) {
-        /*Notification notif = new Notification(event);
-        notif.sendNotification();*/
-        Event ev = null;
         try {
-           eventRepository.addEvent(event);
+            eventRepository.addEvent(event);
 
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
         }
+        Notification notif = new Notification(event);
+        notif.sendNotification();
         return true;
-
     }
-
 
     public Event getEvent(long id) {
         Event result = eventRepository.getEvent(id);
         return result;
     }
 
-
     public boolean deleteEvent(Long eventId) {
-        if (eventRepository.getEvent(eventId)!=null) {
-             eventRepository.deleteEvent(eventRepository.getEvent(eventId));
+        if (eventRepository.getEvent(eventId) != null) {
+            eventRepository.deleteEvent(eventRepository.getEvent(eventId));
             return true;
         }
         return false;
     }
 
-
     public Event updateEvent(Event event) {
         return eventRepository.updateEvent(event);
-
     }
-
 
     public List<Event> getEvents() {
         List<Event> events = null;
-
         try {
             events = eventRepository.getEvents();
 
@@ -78,9 +60,7 @@ public class EventService {
         return events;
     }
 
-
     public List<Event> getEventsByRegisteredUser(long userId) {
-
         return eventRepository.getEventsByRegisteredUser(userId);
     }
 
@@ -115,7 +95,6 @@ public class EventService {
         }
         return false;
     }
-
 
     public boolean addParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);

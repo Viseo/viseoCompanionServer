@@ -110,6 +110,11 @@
 			<artifactId>spring-core</artifactId>
 			<version>4.3.7.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.ranger</groupId>
+			<artifactId>ldapconfigcheck</artifactId>
+			<version>0.5.0.2.4.2.12-1</version>
+		</dependency>
 	</dependencies>
 
 	<build>

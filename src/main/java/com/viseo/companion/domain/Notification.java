@@ -51,6 +51,7 @@ public class Notification {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM HH:mm");
         return sdf.format(datetime.getTime());
     }
+
     @Value("${fireBase.URL}")
     public void setFireBaseURL(String url) {
         fireBaseURL = url;

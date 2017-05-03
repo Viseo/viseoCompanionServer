@@ -12,26 +12,14 @@ import javax.persistence.Query;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- * Created by IBO3693 on 21/04/2017.
- **/
-
 @Repository
 public class EventRepository {
-
-  /* @Query("select a from Event a left join fetch a.participants p left join fetch p.roles where p.id = :id order by a.datetime")
-    List<Event> getEventsByRegisteredUser(@Param("id") long userId);
-
-    @Query("select distinct a from Event a left join fetch a.participants p where a.datetime >= CURRENT_DATE order by a.datetime")
-    List<Event> getEvents() ;
-*/
 
     @Autowired
     UzerRepository userDao;
 
     @PersistenceContext
     EntityManager em;
-
 
     public void addEvent(String name, Calendar date, String description, String KeyWords, String place) {
         Event event = new Event();
@@ -62,13 +50,11 @@ public class EventRepository {
         } catch (EntityExistsException e) {
             return false;
         }
-
         return true;
     }
 
     @Transactional
     public Event updateEvent(Event event) {
-
         try {
             event = em.merge(event);
 

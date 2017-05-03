@@ -4,10 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 
 
 @Entity
@@ -21,11 +17,8 @@ public class Event extends BaseEntity {
     private String keyWords;
     private String place;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Uzer> participants = new HashSet<Uzer>();
-
-//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.event", cascade = CascadeType.ALL)
-//	private Set<AccountEvent> accountEvents = new HashSet<AccountEvent>();
 
     public Event() {
     }
@@ -38,12 +31,8 @@ public class Event extends BaseEntity {
         this.place = place;
         this.category = 0;
     }
-
-
-
     //@Transient
     // private String dateTimeToString;
-
 
     public void addParticipant(Uzer participant) {
         participants.add(participant);
@@ -52,10 +41,6 @@ public class Event extends BaseEntity {
     public void removeParticipant(Uzer participant) {
         participants.remove(participant);
     }
-
-    // public long getId() {
-//        return id;
-  //  }
 
     public long getCategory() {
         return category;
@@ -67,7 +52,7 @@ public class Event extends BaseEntity {
 
     public Calendar getDatetime() {
         return this.datetime;
-        //.getTime()
+        //.getTime();
     }
 
     public String getDescription() {

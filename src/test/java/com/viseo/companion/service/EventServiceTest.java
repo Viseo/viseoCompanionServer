@@ -8,20 +8,15 @@ package com.viseo.companion.service;
 import com.viseo.companion.ViseocompanionserverApplication;
 import com.viseo.companion.domain.Event;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Set;
-
 
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.exception.CompanionException;
-import org.hibernate.LazyInitializationException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -29,7 +24,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ViseocompanionserverApplication.class)
 public class EventServiceTest {
-
 
     @Autowired
     EventService eventService;
@@ -49,17 +43,11 @@ public class EventServiceTest {
         final Uzer uzer = uzerService.getUser(3L);
         event.addParticipant(uzer);
         try {
-
             Boolean b = eventService.addEvent(event);
-            //  Assert.assertNotNull(newEvent.getId());
             Assert.assertEquals(true, b);
-            // Assert.fail();
         } catch (final CompanionException ex) {
             Assert.assertEquals("l'evenement que vous souhaitez ajouter exsite déja ", ex.getMessage());
-
-
         }
-
     }
 
     @Test
@@ -84,17 +72,12 @@ public class EventServiceTest {
         event.setName("ibtissadddddddddddddddm");
         event.setKeyWords("HELLLLLLLLL");
         event.setPlace("HELLrrrrrrrrrrr");
-       Uzer user = uzerService.getUser(3L);
+        Uzer user = uzerService.getUser(3L);
 
         event.addParticipant(user);
         Event newEvent = eventService.updateEvent(event);
-
         try {
-
-
             Assert.assertNotNull(newEvent.getId());
-
-
         } catch (final CompanionException ex) {
             Assert.assertEquals("l'evenement que vous souhaitez modifier n'exsite pas", ex.getMessage());
         }
@@ -105,7 +88,6 @@ public class EventServiceTest {
         final List<Event> lisEvents = eventService.getEvents();
         try {
             Assert.assertEquals(1, lisEvents.size());
-            //Assert.assertEquals(2, lisEvents.size());
         } catch (final CompanionException ex) {
             Assert.assertEquals("liste d'evenements introuvables", ex.getMessage());
         }
@@ -122,7 +104,6 @@ public class EventServiceTest {
             Assert.assertEquals("liste d'evenements introuvables", ex.getMessage());
         }
     }
-
 
     @Test
     public void removeParticipant() {
@@ -146,9 +127,5 @@ public class EventServiceTest {
         } catch (final CompanionException ex) {
             Assert.assertEquals("impossible de supprimer le participant", ex.getMessage());
         }
-
-
     }
-
-
 }

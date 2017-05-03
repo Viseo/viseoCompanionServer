@@ -40,7 +40,6 @@ public class Role extends BaseEntity {
     }
 
     public Role(String name, String description) {
-
         this.name = name;
         this.description = description;
     }

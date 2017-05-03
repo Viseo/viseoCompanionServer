@@ -4,8 +4,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,11 +15,10 @@ public class Uzer extends BaseEntity {
     String lastName;
     String password;
 
-
-    @ManyToMany(mappedBy = "participants",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "participants", fetch = FetchType.EAGER)
     private Set<Event> events = new HashSet<Event>();
 
-    @ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<Role>();
 
     public Uzer() {
