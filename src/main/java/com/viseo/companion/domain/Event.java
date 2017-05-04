@@ -1,14 +1,15 @@
 package com.viseo.companion.domain;
 
-import javax.persistence.*;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+
+import javax.persistence.*;
+
 
 @Entity
+
 public class Event extends BaseEntity {
+
     private long category;
     private String name;
     private Calendar datetime;
@@ -16,7 +17,7 @@ public class Event extends BaseEntity {
     private String keyWords;
     private String place;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Uzer> participants = new HashSet<Uzer>();
 
     public Event() {
@@ -30,6 +31,8 @@ public class Event extends BaseEntity {
         this.place = place;
         this.category = 0;
     }
+    //@Transient
+    // private String dateTimeToString;
 
     public void addParticipant(Uzer participant) {
         participants.add(participant);
@@ -47,13 +50,9 @@ public class Event extends BaseEntity {
         return this.name;
     }
 
-    public Date getDatetime() {
-        return this.datetime.getTime();
-    }
-
-    public String getDateTimeToString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM à HH:mm");
-        return sdf.format(this.datetime.getTime());
+    public Calendar getDatetime() {
+        return this.datetime;
+        //.getTime();
     }
 
     public String getDescription() {
