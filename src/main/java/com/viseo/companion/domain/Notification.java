@@ -63,8 +63,8 @@ public class Notification {
         String androidNotification = buildAndroidNotification(this.topic + "Android");
         String iosNotification = buildIOSNotification(this.topic + "IOS");
 
-        System.out.println("Android send : " + pushNotification(androidNotification));
-        System.out.println("IOS send : " + pushNotification(iosNotification));
+        System.out.println("Android notification sent : " + pushNotification(androidNotification));
+        System.out.println("IOS notification sent : " + pushNotification(iosNotification));
 
         return true;
     }

@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ViseocompanionserverApplication.class)
 public class EventServiceTest {
@@ -30,41 +29,38 @@ public class EventServiceTest {
     @Autowired
     UzerService uzerService;
 
+    static Event event;
+
+    @Test
+    public void main() {
+        addEventTest();
+        updateEventTest();
+    }
+
     @Test
     public void addEventTest() {
-        final Event event = new Event();
+        event = new Event();
         event.setCategory(0);
         Calendar now = Calendar.getInstance();
         event.setDatetime(now);
-        event.setDescription("NADAAAAA");
-        event.setName("ibtissamEventttt");
-        event.setKeyWords("HELLLLL");
-        event.setPlace("HELLLLLL");
-        final Uzer uzer = uzerService.getUser(3L);
-        event.addParticipant(uzer);
+        event.setDescription("NADAl");
+        event.setName("ibtisam");
+        event.setKeyWords("Haifa");
+        event.setPlace("Haifa");
         try {
-            Boolean b = eventService.addEvent(event);
-            Assert.assertEquals(true, b);
-        } catch (final CompanionException ex) {
-            Assert.assertEquals("l'evenement que vous souhaitez ajouter exsite déja ", ex.getMessage());
+            Event newEvent = eventService.addEvent(event);
+            Assert.assertNotNull(newEvent.getId());
+            Assert.assertEquals(event.getName(), newEvent.getName());
+            event = newEvent;
+        } catch (CompanionException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
     @Test
-    public final void deletEventTest() {
-        final Long id = 39L;
-        try {
-            eventService.deleteEvent(id);
-        } catch (final CompanionException ex) {
-            Assert.assertEquals("Cant delete evenement", ex.getMessage());
-        }
-    }
-
-    @Test
-    public final void updateEventTest() {
-        final Long id = 35L;
-
-        final Event event = eventService.getEvent(id);
+    public void updateEventTest() {
+        event.getId();
+        event = eventService.getEvent(event.getId());
         event.setCategory(0);
         Calendar now = Calendar.getInstance();
         event.setDatetime(now);
@@ -72,14 +68,12 @@ public class EventServiceTest {
         event.setName("ibtissadddddddddddddddm");
         event.setKeyWords("HELLLLLLLLL");
         event.setPlace("HELLrrrrrrrrrrr");
-        Uzer user = uzerService.getUser(3L);
-
-        event.addParticipant(user);
         Event newEvent = eventService.updateEvent(event);
         try {
-            Assert.assertNotNull(newEvent.getId());
-        } catch (final CompanionException ex) {
-            Assert.assertEquals("l'evenement que vous souhaitez modifier n'exsite pas", ex.getMessage());
+            Assert.assertEquals(newEvent.getName(), event.getName());
+            event = newEvent;
+        } catch (CompanionException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
@@ -87,9 +81,9 @@ public class EventServiceTest {
     public final void getEventsTest() {
         final List<Event> lisEvents = eventService.getEvents();
         try {
-            Assert.assertEquals(1, lisEvents.size());
+            Assert.assertEquals(9, lisEvents.size());
         } catch (final CompanionException ex) {
-            Assert.assertEquals("liste d'evenements introuvables", ex.getMessage());
+            throw new RuntimeException(ex);
         }
     }
 
@@ -101,31 +95,51 @@ public class EventServiceTest {
             Assert.assertNotNull(events);
             Assert.assertNotNull(events.size());
         } catch (final CompanionException ex) {
-            Assert.assertEquals("liste d'evenements introuvables", ex.getMessage());
+            throw new RuntimeException(ex);
         }
     }
 
     @Test
-    public void removeParticipant() {
-        Long userId = 1L;
-        Long eventId = 4L;
+    public void addParticipant() {
+        event = eventService.getEvent(65L);
+        final Uzer uzer = uzerService.getUser(43L);
+        event.addParticipant(uzer);
         try {
-            Assert.assertTrue(eventService.removeParticipant(eventId, userId));
+            Assert.assertNotNull(uzer);
         } catch (final CompanionException ex) {
-            Assert.assertEquals("impossible supprimer le participant", ex.getMessage());
+            throw new RuntimeException(ex);
         }
     }
 
     @Test
     public final void getParticipants() {
-
-        Long eventId = 4L;
-
+        event = eventService.getEvent(65L);
         try {
-            Assert.assertNotNull(eventService.getParticipants(eventId));
-            Assert.assertEquals(0, eventService.getParticipants(eventId).size());
+            Assert.assertNotNull(eventService.getParticipants(event.getId()));
+            Assert.assertEquals(0, eventService.getParticipants(event.getId()).size());
         } catch (final CompanionException ex) {
-            Assert.assertEquals("impossible de supprimer le participant", ex.getMessage());
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Test
+    public void removeParticipant() {
+        event = eventService.getEvent(65L);
+        Long userId = 43L;
+        try {
+            Assert.assertTrue(eventService.removeParticipant(event.getId(), userId));
+        } catch (final CompanionException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Test
+    public final void deleteEventTest() {
+        event = eventService.getEvent(65L);
+        try {
+            eventService.deleteEvent(event.getId());
+        } catch (final CompanionException ex) {
+            throw new RuntimeException(ex);
         }
     }
 }

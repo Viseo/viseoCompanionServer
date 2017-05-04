@@ -46,12 +46,9 @@ public class EventControllerTest {
         Calendar now = Calendar.getInstance();
         final Event event = new Event("ibtisAMOOOOO", now, "Hello World!", "HELLLLL", "HELLLLL");
 
-        final Uzer uzer = uzerService.getUser(4L);
-        event.addParticipant(uzer);
-
         // Création du client et éxécution d'une requete POST
         final HttpClient client = HttpClientBuilder.create().build();
-        final HttpPost mockRequestPost = new HttpPost("http://localhost:8080/addevent");
+        final HttpPost mockRequestPost = new HttpPost("http://localhost:8080/events");
         final ObjectMapper mapper = new ObjectMapper();
         final ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         final String jsonInString = ow.writeValueAsString(event);
@@ -98,7 +95,7 @@ public class EventControllerTest {
 
         // Création du client et éxécution d'une requete GET
         final HttpClient client = HttpClientBuilder.create().build();
-        final HttpGet mockRequest = new HttpGet("http://localhost:8080/events/15");
+        final HttpGet mockRequest = new HttpGet("http://localhost:8080/events/74");
         final HttpResponse mockResponse = client.execute(mockRequest);
 
         // Le code retour HTTP doit être un succès (200)
@@ -112,43 +109,34 @@ public class EventControllerTest {
 
     @Test
     public void updateEventTest() throws ClientProtocolException, IOException {
-        Event event = new Event();
-        try {
-            Long id = 45L;
-            if (eventService.getEvent(id) != null) {
-                event = eventService.getEvent(id);
-            }
-        } catch (NullPointerException ex) {
-            ex.printStackTrace();
-        }
+        Event event = eventService.getEvent(76L);
+
 
         event.setDescription("HELLO SPEEDYYYY");
 
-        Uzer user = uzerService.getUser(4L);
+       Uzer user = uzerService.getUser(51L);
 
-        event.getParticipants().remove(user);
+        event.getParticipants().add(user);
+//        event.getParticipants().remove(user);
 
         final HttpClient client = HttpClientBuilder.create().build();
-        final HttpPut mockPost = new HttpPut("http://localhost:8080/events");
+        final HttpPut mockRequestPutt = new HttpPut("http://localhost:8080/events/76");
         ObjectMapper mapper = new ObjectMapper();
         com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         final String jsonInString = ow.writeValueAsString(event);
         // Ã©tablition de la requette (header+body)
-        mockPost.addHeader("content-type", "application/json");
-        mockPost.setEntity(new StringEntity(jsonInString));
-        HttpResponse mockResponse = client.execute(mockPost);
-
+        mockRequestPutt.addHeader("content-type", "application/json");
+        mockRequestPutt.setEntity(new StringEntity(jsonInString));
+        HttpResponse mockResponse = client.execute(mockRequestPutt);
+        final org.apache.http.HttpResponse mockResponses = client.execute(mockRequestPutt);
         Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
-
-        final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
-        final Event event1 = mapper.readValue(rd, Event.class);
     }
 
     @Test
     public void getParticipants() throws IOException {
         // Création du client et éxécution d'une requete GET
         final HttpClient client = HttpClientBuilder.create().build();
-        final HttpGet mockRequest = new HttpGet("http://localhost:8080/participants/37");
+        final HttpGet mockRequest = new HttpGet("http://localhost:8080/events/76/users/");
         final HttpResponse mockResponse = client.execute(mockRequest);
 
         // Le code retour HTTP doit être un succès (200)

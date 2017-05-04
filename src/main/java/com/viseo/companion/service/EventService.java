@@ -19,18 +19,18 @@ public class EventService {
     private UzerService userService;
 
 
-    public Boolean addEvent(Event event) {
+    public Event addEvent(Event event) {
         try {
             eventRepository.addEvent(event);
-
         } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
+            throw new RuntimeException(ex);
         }
         Notification notif = new Notification(event, "/topics/newEvent/");
         notif.sendNotification();
-        return true;
+        return event;
     }
+
+
 
     public Event getEvent(long id) {
         Event result = eventRepository.getEvent(id);
