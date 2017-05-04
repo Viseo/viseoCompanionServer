@@ -1,6 +1,7 @@
 package com.viseo.companion.dao;
 
 import com.viseo.companion.domain.Event;
+import com.viseo.companion.domain.Uzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,4 +86,31 @@ public class EventRepository {
         query.setParameter("id", userId);
         return (List<Event>) query.getResultList();
     }
+
+    @Transactional
+    public boolean addParticipant(long eventId, long userId) {
+        Event event = getEvent(eventId);
+        if (event != null) {
+            Uzer user = userDao.getUzer(userId);
+            if (user != null) {
+                event.addParticipant(user);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Transactional
+    public boolean removeParticipant(long eventId, long userId){
+        Event event = getEvent(eventId);
+        if (event != null) {
+            Uzer user = userDao.getUzer(userId);
+            if (user != null) {
+                event.removeParticipant(user);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
