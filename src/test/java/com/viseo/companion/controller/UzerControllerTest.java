@@ -33,6 +33,8 @@ public class UzerControllerTest {
     @Autowired
     private UzerService uzerService;
 
+
+
     @Test
     public void addUserTest() throws IOException {
         final Uzer uzer = new Uzer();

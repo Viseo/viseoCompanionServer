@@ -45,7 +45,7 @@ public class EventController {
     }
 
     @RequestMapping(value = "${endpoint.updateEvent}", method = RequestMethod.PUT)
-    public Event updateEvent(@RequestBody Event event) {
+    public Event updateEvent(@PathVariable("eventId") Long userId,@RequestBody Event event) {
         try {
             return eventService.updateEvent(event);
         } catch (Exception ex) {
