@@ -31,8 +31,6 @@ public class Event extends BaseEntity {
         this.place = place;
         this.category = 0;
     }
-    //@Transient
-    // private String dateTimeToString;
 
     public void addParticipant(Uzer participant) {
         participants.add(participant);
@@ -53,6 +51,11 @@ public class Event extends BaseEntity {
     public Calendar getDatetime() {
         return this.datetime;
         //.getTime();
+    }
+
+    public String getDateTimeToString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM à HH:mm");
+        return sdf.format(this.datetime.getTime());
     }
 
     public String getDescription() {

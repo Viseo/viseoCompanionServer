@@ -27,7 +27,7 @@ public class EventService {
             ex.printStackTrace();
             return false;
         }
-        Notification notif = new Notification(event);
+        Notification notif = new Notification(event, "/topics/newEvent/");
         notif.sendNotification();
         return true;
     }

@@ -40,13 +40,6 @@ public class UzerService {
         return false;
     }
 
-    public Boolean ExistsEmail(String Email) {
-        if (uzerRepository.getUserByEmail(Email).size() > 0)
-            return true;
-        else
-            return false;
-    }
-
     public List<Uzer> getUserByEmail(String email) {
         return uzerRepository.getUserByEmail(email);
     }
