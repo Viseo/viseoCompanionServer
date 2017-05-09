@@ -77,7 +77,8 @@ public class EventRepository {
 
     @Transactional
     public List<Event> getEvents() {
-        return em.createQuery("select distinct a from Event a left join fetch a.participants p left join fetch p.roles where a.datetime >= CURRENT_DATE order by a.datetime", Event.class).getResultList();
+        //
+        return em.createQuery("select distinct a from Event a left join fetch a.participants p left join fetch p.roles  where a.datetime >= CURRENT_DATE order by a.datetime", Event.class).getResultList();
     }
 
     @Transactional

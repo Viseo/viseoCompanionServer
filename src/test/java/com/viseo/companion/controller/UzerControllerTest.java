@@ -1,6 +1,7 @@
 package com.viseo.companion.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
 import com.viseo.companion.ViseocompanionserverApplication;
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.service.UzerService;
@@ -18,6 +19,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,13 +28,41 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
 @RunWith(SpringJUnit4ClassRunner.class)
+
+//@RunWith(MockitoJUnitRunner.class)
 @SpringApplicationConfiguration(classes = ViseocompanionserverApplication.class)
 public class UzerControllerTest {
-
     @Autowired
-    private UzerService uzerService;
+    UzerService uzerService;
+    /*
+    @InjectMocks
+    UzerController uzerController;
 
+    @Mock
+    UzerService uzerService;
+    
+
+    String url = "http://localhost:8080/users/adduser";
+
+    @Test
+    public void addUserTest() throws IOException {
+        final Uzer uzer = new Uzer();
+        uzer.setEmail("haifaaa@gmail.com");
+        uzer.setPassword("nonnn");
+        uzer.setFirstName("elhh");
+        uzer.setLastName("haa");
+
+        RestAssuredMockMvc.given().standaloneSetup(uzerController)
+                .contentType("application/json").body(uzer).when()
+                .post(url).then().statusCode(200);
+    }
+
+
+}*/
 
 
     @Test
@@ -60,6 +90,7 @@ public class UzerControllerTest {
         final ObjectMapper map = new ObjectMapper();
         final Uzer us = map.readValue(rd, Uzer.class);
     }
+
 
     @Test
     public final void getUserTest() throws IOException {

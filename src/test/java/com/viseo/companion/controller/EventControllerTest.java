@@ -88,6 +88,7 @@ public class EventControllerTest {
         List<Event> Listevents = new ObjectMapper().readValue(rd, new TypeReference<List<Event>>() {
         });
         Assert.assertNotNull(Listevents);
+        System.out.println(Listevents.size());
     }
 
     @Test
