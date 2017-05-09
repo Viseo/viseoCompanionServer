@@ -44,7 +44,8 @@ public class EventControllerTest {
     public void addEventTest() throws IOException {
 
         Calendar now = Calendar.getInstance();
-        final Event event = new Event("ibtisAMOOOOO", now, "Hello World!", "HELLLLL", "HELLLLL");
+        Uzer user=uzerService.getUser(1L);
+        final Event event = new Event("ibtisAMOOOOO", now, "Hello World!", "HELLLLL", "HELLLLL",user);
 
         // Création du client et éxécution d'une requete POST
         final HttpClient client = HttpClientBuilder.create().build();

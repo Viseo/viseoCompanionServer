@@ -20,16 +20,23 @@ public class Event extends BaseEntity {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Uzer> participants = new HashSet<Uzer>();
 
+
+    @ManyToOne
+    private Uzer host;
+
+
     public Event() {
     }
 
-    public Event(String name, Calendar date, String description, String keyWords, String place) {
+    public Event(String name, Calendar date, String description, String keyWords, String place, Uzer host) {
         this.name = name;
         this.datetime = date;
         this.description = description;
         this.keyWords = keyWords;
         this.place = place;
         this.category = 0;
+        host = host;
+
     }
     //@Transient
     // private String dateTimeToString;
@@ -93,6 +100,15 @@ public class Event extends BaseEntity {
 
     public void setPlace(String lieu) {
         this.place = lieu;
+    }
+
+    public void setHost(Uzer host) {
+        this.host = host;
+    }
+
+    public Uzer getHost() {
+
+        return host;
     }
 
 }
