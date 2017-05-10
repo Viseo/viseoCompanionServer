@@ -46,15 +46,6 @@ public class PlainNotification {
         this.badge = badge;
     }
 
-//    public PlainNotification(String body, String title, String color, String priority, String icon, String showInForeground) {
-//        this.body = body;
-//        this.title = title;
-//        this.color = color;
-//        this.priority = priority;
-//        this.icon = icon;
-//        this.showInForeground = showInForeground;
-//    }
-
     public String getBody() {
         return body;
     }

@@ -24,9 +24,8 @@ public class Notification {
     private String icon = "ic_notif";
     private String color = "#498ff7";
     private long id = 1;
-    //todo make this a non default argument
-    //"/topics/
-    String topic = "\"/topics/newEvent\"";
+
+    private String topic = "";
 
     public Notification() {
     }
