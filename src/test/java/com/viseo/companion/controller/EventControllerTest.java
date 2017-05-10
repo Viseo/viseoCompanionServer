@@ -44,7 +44,10 @@ public class EventControllerTest {
     public void addEventTest() throws IOException {
 
         Calendar now = Calendar.getInstance();
+        Uzer user = uzerService.getUser(1L);
         final Event event = new Event("ibtisAMOOOOO", now, "Hello World!", "HELLLLL", "HELLLLL");
+
+        event.setHost(user);
 
         // Création du client et éxécution d'une requete POST
         final HttpClient client = HttpClientBuilder.create().build();
@@ -88,6 +91,7 @@ public class EventControllerTest {
         List<Event> Listevents = new ObjectMapper().readValue(rd, new TypeReference<List<Event>>() {
         });
         Assert.assertNotNull(Listevents);
+        System.out.println(Listevents.size());
     }
 
     @Test
@@ -95,7 +99,7 @@ public class EventControllerTest {
 
         // Création du client et éxécution d'une requete GET
         final HttpClient client = HttpClientBuilder.create().build();
-        final HttpGet mockRequest = new HttpGet("http://localhost:8080/events/74");
+        final HttpGet mockRequest = new HttpGet("http://localhost:8080/events/2");
         final HttpResponse mockResponse = client.execute(mockRequest);
 
         // Le code retour HTTP doit être un succès (200)
@@ -104,6 +108,7 @@ public class EventControllerTest {
         final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
         final ObjectMapper mapper = new ObjectMapper();
         final Event ev = mapper.readValue(rd, Event.class);
+
         Assert.assertNotNull(ev);
     }
 
@@ -114,7 +119,7 @@ public class EventControllerTest {
 
         event.setDescription("HELLO SPEEDYYYY");
 
-       Uzer user = uzerService.getUser(51L);
+        Uzer user = uzerService.getUser(51L);
 
         event.getParticipants().add(user);
 //        event.getParticipants().remove(user);

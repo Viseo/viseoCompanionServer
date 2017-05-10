@@ -103,4 +103,5 @@ public class UzerRepository {
         Collection<Uzer> list = getUserByEmail(email);
         return list.iterator().hasNext() ? list.iterator().next() : null;
     }
+
 }

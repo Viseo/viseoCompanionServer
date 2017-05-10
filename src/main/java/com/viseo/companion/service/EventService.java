@@ -85,26 +85,10 @@ public class EventService {
     }
 
     public boolean removeParticipant(long eventId, long userId) {
-        Event event = getEvent(eventId);
-        if (event != null) {
-            Uzer user = userService.getUser(userId);
-            if (user != null) {
-                event.removeParticipant(user);
-                return true;
-            }
-        }
-        return false;
+         return eventRepository.removeParticipant(eventId,userId);
     }
 
     public boolean addParticipant(long eventId, long userId) {
-        Event event = getEvent(eventId);
-        if (event != null) {
-            Uzer user = userService.getUser(userId);
-            if (user != null) {
-                event.addParticipant(user);
-                return true;
-            }
-        }
-        return false;
+        return eventRepository.addParticipant(eventId, userId);
     }
 }
