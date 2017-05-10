@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 public class Uzer extends BaseEntity {
-
+    
     String email;
     String firstName;
     String lastName;

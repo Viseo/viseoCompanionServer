@@ -79,28 +79,27 @@ public class UzerRepository {
     }
 
     @Transactional
-    public List<Uzer> getUserByEmail(String email) {
+    public Uzer getUserByEmail(String email) {
         Query query = em.createQuery("select c from Uzer c where c.email like :email");
         query.setParameter("email", "%" + email + "%");
-        List<Uzer> list = query.getResultList();
-        return list;
+        List<Uzer> result = query.getResultList();
+        if (result.size() > 0)
+            return result.iterator().next();
+        return null;
     }
 
     @Transactional
     public Uzer checkCredentials(String email, String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        Collection<Uzer> list = getUserByEmail(email);
-        if (list.iterator().hasNext()) {
-            Uzer user = list.iterator().next();
+        Uzer user = getUserByEmail(email);
             if (encoder.matches(password, user.getPassword()))
                 return user;
-        }
         return null;
     }
 
-    @Transactional
-    public Uzer getUserIdByEmail(String email) {
-        Collection<Uzer> list = getUserByEmail(email);
-        return list.iterator().hasNext() ? list.iterator().next() : null;
-    }
+//    @Transactional
+//    public Uzer getUserIdByEmail(String email) {
+//        Collection<Uzer> list = getUserByEmail(email);
+//        return getUserByEmail(email) ? getUserByEmail(email).getId() : null;
+//    }
 }

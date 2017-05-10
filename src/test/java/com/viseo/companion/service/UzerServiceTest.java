@@ -99,8 +99,7 @@ public class UzerServiceTest {
 
     @Test
     public void getUserByEmailTest() {
-        final List<Uzer> listUsers = uzerService.getUserByEmail("woooo@gmail.com");
-        Assert.assertNotNull(listUsers);
-        Assert.assertEquals(1, listUsers.size());
+        final Uzer User = uzerService.getUserByEmail("woooo@gmail.com");
+        Assert.assertNotNull(User);
     }
 }
