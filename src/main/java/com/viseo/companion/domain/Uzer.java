@@ -1,5 +1,7 @@
 package com.viseo.companion.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,14 +14,14 @@ public class Uzer extends BaseEntity {
     String lastName;
     String password;
 
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "host", fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToMany(mappedBy = "host",fetch = FetchType.LAZY)
     private Set<Event> organisedEvents = new HashSet<>();
 
-    @ManyToMany(mappedBy = "participants", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "participants", fetch = FetchType.LAZY)
     private Set<Event> events = new HashSet<Event>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Role> roles = new HashSet<Role>();
 
 
