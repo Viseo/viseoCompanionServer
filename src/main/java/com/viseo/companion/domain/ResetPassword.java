@@ -9,6 +9,15 @@ public class ResetPassword {
     private String tokenGuid;
     private String password;
 
+    public ResetPassword() {
+    }
+
+    public ResetPassword(long uzerId, String tokenGuid, String password) {
+        this.uzerId = uzerId;
+        this.tokenGuid = tokenGuid;
+        this.password = password;
+    }
+
     public long getUzerId() {
         return uzerId;
     }

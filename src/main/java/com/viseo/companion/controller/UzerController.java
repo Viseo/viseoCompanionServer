@@ -1,6 +1,8 @@
 package com.viseo.companion.controller;
 
 import com.viseo.companion.domain.ResetPassword;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -83,11 +85,13 @@ public class UzerController {
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.changePassword}", method = POST)
-    public void showChangePasswordPage(@RequestBody ResetPassword resetPassword) {
+    public boolean showChangePasswordPage(@RequestBody ResetPassword resetPassword) {
         if(uzerService.isTokenValid(resetPassword.getUzerId(), resetPassword.getTokenGuid())){
             uzerService.changePassword(resetPassword.getUzerId(), resetPassword.getPassword());
             uzerService.deleteToken(resetPassword.getTokenGuid());
+            return true;
         }
+        return false;
     }
 
     ///////////////////////////// NON-API METHODS //////////////////////////////
@@ -96,11 +100,11 @@ public class UzerController {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("companionviseo@gmail.com");
         message.setTo(uzer.getEmail());
-        message.setSubject("Récupération du mot de passe");
+        message.setSubject("Viseo Companion: Création d'un nouveau mot de passe");
         String token = createToken(uzer);
         String contextPath = getAppUrl(request);
         String resetUrl = createResetURl(contextPath, uzer.getId(), token);
-        String content = "Changer votre mote de passe : " + resetUrl;
+        String content = "Pour créer un nouveau mot de passe, merci de cliquer sur le lien suivant : " + resetUrl;
         message.setText(content);
         return message;
     }
