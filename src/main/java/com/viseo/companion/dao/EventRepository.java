@@ -114,7 +114,10 @@ public class EventRepository {
         }
         return false;
     }
+    @Transactional
+    public List<Event> getEventsExpired() {
+        return em.createQuery("select distinct a from Event a left join fetch a.participants p left join fetch p.roles  where a.datetime < CURRENT_DATE order by a.datetime", Event.class).getResultList();
 
-
+    }
 
 }
