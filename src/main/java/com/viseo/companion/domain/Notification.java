@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Component
 @PropertySource("classpath:keys.properties")
@@ -43,7 +45,7 @@ public class Notification {
     public Notification(Event event, String topic) {
         this.topic = topic;
         this.title = "Nouvel évènement : " + event.getName();
-        this.body = event.getDateTimeToString() + " - " + event.getPlace();
+        this.body = getDateTimeToString(event.getDatetime().getTime()) + " - " + event.getPlace();
         this.id = event.getId();
     }
 
@@ -130,6 +132,12 @@ public class Notification {
             return false;
         }
     }
+
+    public String getDateTimeToString(Date datetime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM à HH:mm");
+        return sdf.format(datetime.getTime());
+    }
+
 }
 
 	

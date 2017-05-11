@@ -1,7 +1,6 @@
 package com.viseo.companion.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
 import com.viseo.companion.ViseocompanionserverApplication;
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.service.UzerService;

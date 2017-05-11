@@ -59,11 +59,6 @@ public class Event extends BaseEntity {
         //.getTime();
     }
 
-    public String getDateTimeToString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM à HH:mm");
-        return sdf.format(this.datetime.getTime());
-    }
-
     public String getDescription() {
         return description;
     }

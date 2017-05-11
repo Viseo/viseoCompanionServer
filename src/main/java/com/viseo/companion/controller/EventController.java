@@ -3,6 +3,7 @@ package com.viseo.companion.controller;
 import com.viseo.companion.domain.Event;
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.service.EventService;
+import com.viseo.companion.service.UzerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +13,13 @@ import java.util.List;
 public class EventController {
     @Autowired
     private EventService eventService;
+    @Autowired
+    private UzerService userSrvice;
 
     @RequestMapping(value = "${endpoint.addEvent}", method = RequestMethod.POST)
-    public Boolean addEvent(@RequestBody Event event) {
+    public Boolean addEvent(@RequestParam(value="host", required=true) long host,@RequestBody Event event) {
+        Uzer user=userSrvice.getUser(host);
+        event.setHost(user);
         eventService.addEvent(event);
         return true;
     }

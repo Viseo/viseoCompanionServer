@@ -36,6 +36,7 @@ public class EventRepository {
     public boolean addEvent(Event event) {
         try {
             em.persist(event);
+
         } catch (EntityExistsException e) {
             e.printStackTrace();
             return false;

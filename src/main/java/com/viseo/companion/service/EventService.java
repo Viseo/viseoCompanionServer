@@ -25,8 +25,8 @@ public class EventService {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        Notification notif = new Notification(event, "/topics/newEvent/");
-        notif.sendNotification();
+        /*Notification notif = new Notification(event, "/topics/newEvent/");
+        notif.sendNotification();*/
         return event;
     }
 
