@@ -7,7 +7,6 @@ import javax.persistence.*;
 
 
 @Entity
-
 public class Event extends BaseEntity {
 
     private long category;

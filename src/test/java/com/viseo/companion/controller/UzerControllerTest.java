@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.BufferedReader;
@@ -31,9 +31,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-
-//@RunWith(MockitoJUnitRunner.class)
-@SpringApplicationConfiguration(classes = ViseocompanionserverApplication.class)
+@SpringBootTest
 public class UzerControllerTest {
     @Autowired
     UzerService uzerService;
@@ -43,7 +41,7 @@ public class UzerControllerTest {
 
     @Mock
     UzerService uzerService;
-    
+
 
     String url = "http://localhost:8080/users/adduser";
 
