@@ -16,7 +16,8 @@ public class UzerService {
     @Autowired
     private UzerRepository uzerRepository;
 
-    private PasswordTokenRepository passwordTokenRepository = new PasswordTokenRepository();
+    @Autowired
+    private PasswordTokenRepository passwordTokenRepository;
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -64,18 +65,9 @@ public class UzerService {
         return (List<Uzer>) uzerRepository.getUzers();
     }
 
-    public void createPasswordResetTokenForUser(Uzer uzer, String token) {
+    public void persistToken(Uzer uzer, String token) {
         PasswordResetToken myToken = new PasswordResetToken(token, uzer);
         passwordTokenRepository.addToken(myToken);
     }
-
-//    public String validatePasswordResetToken(long id, String token){
-//        PasswordResetToken passToken = getPassByToken(token);
-//        if((passToken == null) || (passToken.getUzer().getId() != id)) {
-//            return "invalidToken";
-//        }
-//
-//    }
-
 
 }

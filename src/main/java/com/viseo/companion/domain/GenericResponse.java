@@ -14,4 +14,8 @@ public class GenericResponse {
         this.message = message;
         this.error = error;
     }
+
+    public String toString() {
+        return message;
+    }
 }

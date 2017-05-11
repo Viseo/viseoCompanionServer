@@ -1,6 +1,5 @@
 package com.viseo.companion.controller;
 
-import com.viseo.companion.domain.GenericResponse;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.ui.Model;
@@ -68,17 +67,41 @@ public class UzerController {
     }
 
     @RequestMapping(value = "${endpoint.resetPassword}", method = POST)
-    public GenericResponse resetPassword(HttpServletRequest request,
-                                         @RequestParam("email") String userEmail) {
+    public String resetPassword(HttpServletRequest request,
+                                @RequestParam("email") String userEmail) {
         Uzer uzer = uzerService.getUserByEmail(userEmail);
-
         if (uzer == null) {
             throw new RuntimeException("User Not Found");
         }
+        SimpleMailMessage email = createResetEmail(uzer, request);
+        mailSender.send(email);
+        return "Un mail vous a été envoyé";
+    }
+
+    private SimpleMailMessage createResetEmail(Uzer uzer, HttpServletRequest request) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("companionviseo@gmail.com");
+        message.setTo(uzer.getEmail());
+        message.setSubject("Récupération du mot de passe");
+        String token = createToken(uzer);
+        String contextPath = getAppUrl(request);
+        String resetUrl = createResetURl(contextPath, uzer.getId(), token);
+        String content = "Changer votre mote de passe : " + resetUrl;
+        message.setText(content);
+        return message;
+    }
+
+    private String createResetURl(String contextPath, long id, String token) {
+        return "http://localhost:3000/resetPassword?id=" + id + "&token=" + token;
+//        return contextPath
+//                + "/user/changePassword?id="
+//                + id + "&token=" + token;
+    }
+
+    private String createToken(Uzer uzer) {
         String token = UUID.randomUUID().toString();
-        uzerService.createPasswordResetTokenForUser(uzer, token);
-        mailSender.send(constructResetTokenEmail(getAppUrl(request), token, uzer));
-        return new GenericResponse("Reinitialisation de mot de passe");
+        uzerService.persistToken(uzer, token);
+        return token;
     }
 
     @RequestMapping(value = "/user/changePassword", method = RequestMethod.GET)
@@ -86,7 +109,7 @@ public class UzerController {
                                          @RequestParam("id") long id, @RequestParam("token") String token) {
         String result = null;
 //        String result = uzerService.validatePasswordResetToken(id, token);
-        if(result != null){
+        if (result != null) {
             System.out.println("Success");
             return "redirect:/PassChangeSuccessful";
         }
@@ -94,22 +117,6 @@ public class UzerController {
         return "redirect:/updatePassword.html";
     }
 
-
-    private SimpleMailMessage constructResetTokenEmail(String contextPath, String token, Uzer uzer) {
-        String url = contextPath + "/user/changePassword?id=" +
-                uzer.getId() + "&token=" + token;
-        String message = "Reinitialisation de mot de passe";
-        return constructEmail("Reset Password", message + " \r\n" + url, uzer);
-    }
-
-    private SimpleMailMessage constructEmail(String subject, String body, Uzer uzer) {
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setSubject(subject);
-        email.setText(body);
-        email.setTo(uzer.getEmail());
-        email.setFrom("${support.email}");
-        return email;
-    }
 
     private String getAppUrl(HttpServletRequest request) {
         return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
