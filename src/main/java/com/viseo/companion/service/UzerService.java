@@ -50,10 +50,10 @@ public class UzerService {
 
     public Uzer checkCredentials(String email, String password) {
         Uzer uzer = getUserByEmail(email);
-            if (passwordEncoder.matches(password, uzer.getPassword())) {
-                return uzer;
-            }
-            return null;
+        if (passwordEncoder.matches(password, uzer.getPassword())) {
+            return uzer;
+        }
+        return null;
     }
 
     public Uzer getUser(long userId) {
@@ -70,4 +70,22 @@ public class UzerService {
         passwordTokenRepository.addToken(myToken);
     }
 
+    public boolean isTokenValid(long uzerId, String tokenGuid) {
+        PasswordResetToken myToken = passwordTokenRepository.getTokenFromUzerId(uzerId);
+        return myToken != null
+                && myToken.getGuid().equals(tokenGuid)
+                && myToken.isUnexpired();
+    }
+
+    public void changePassword(long id, String password) {
+        Uzer uzer = uzerRepository.getUzer(id);
+        if(uzer != null) {
+            uzer.setPassword(password);
+            uzerRepository.updateUzer(uzer);
+        }
+    }
+
+    public void deleteToken(String token) {
+        passwordTokenRepository.deleteToken(token);
+    }
 }

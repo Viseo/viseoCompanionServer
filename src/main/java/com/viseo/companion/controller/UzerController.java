@@ -1,9 +1,11 @@
 package com.viseo.companion.controller;
 
+import com.viseo.companion.domain.ResetPassword;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.service.UzerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ public class UzerController {
         return uzerService.addUser(us);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.authenticate}", method = POST)
     public Uzer authenticate(@RequestBody Uzer user) {
         return uzerService.checkCredentials(user.getEmail(), user.getPassword());
@@ -78,6 +81,17 @@ public class UzerController {
         return "Un mail vous a été envoyé";
     }
 
+    @CrossOrigin
+    @RequestMapping(value = "${endpoint.changePassword}", method = POST)
+    public void showChangePasswordPage(@RequestBody ResetPassword resetPassword) {
+        if(uzerService.isTokenValid(resetPassword.getUzerId(), resetPassword.getTokenGuid())){
+            uzerService.changePassword(resetPassword.getUzerId(), resetPassword.getPassword());
+            uzerService.deleteToken(resetPassword.getTokenGuid());
+        }
+    }
+
+    ///////////////////////////// NON-API METHODS //////////////////////////////
+
     private SimpleMailMessage createResetEmail(Uzer uzer, HttpServletRequest request) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("companionviseo@gmail.com");
@@ -103,20 +117,6 @@ public class UzerController {
         uzerService.persistToken(uzer, token);
         return token;
     }
-
-    @RequestMapping(value = "/user/changePassword", method = RequestMethod.GET)
-    public String showChangePasswordPage(Model model,
-                                         @RequestParam("id") long id, @RequestParam("token") String token) {
-        String result = null;
-//        String result = uzerService.validatePasswordResetToken(id, token);
-        if (result != null) {
-            System.out.println("Success");
-            return "redirect:/PassChangeSuccessful";
-        }
-        System.out.println("Fail");
-        return "redirect:/updatePassword.html";
-    }
-
 
     private String getAppUrl(HttpServletRequest request) {
         return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();

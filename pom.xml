@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.2.3.RELEASE</version>
+		<version>1.5.2.RELEASE</version>
 		<relativePath />
 	</parent>
 
@@ -38,7 +38,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>${springBootProperties}</version>
 		</dependency>
 		<dependency>
             <groupId>org.springframework.boot</groupId>
@@ -137,12 +136,12 @@
 
 	<repositories>
 		<repository>
-			<id>spring-releases</id>
+			<uzerId>spring-releases</uzerId>
 			<name>Spring Releases</name>
 			<url>https://repo.spring.io/libs-release</url>
 		</repository>
 		<repository>
-			<id>org.jboss.repository.releases</id>
+			<uzerId>org.jboss.repository.releases</uzerId>
 			<name>JBoss Maven Release Repository</name>
 			<url>https://repository.jboss.org/nexus/content/repositories/releases</url>
 		</repository>
@@ -150,7 +149,7 @@
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>spring-releases</id>
+			<uzerId>spring-releases</uzerId>
 			<name>Spring Releases</name>
 			<url>https://repo.spring.io/libs-release</url>
 		</pluginRepository>

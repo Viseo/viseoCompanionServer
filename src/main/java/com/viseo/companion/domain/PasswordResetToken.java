@@ -10,7 +10,7 @@ public class PasswordResetToken extends BaseEntity{
 
     private static final int EXPIRATION = 60 * 24;
 
-    private String token;
+    private String guid;
 
     @OneToOne(cascade= CascadeType.ALL)
     private Uzer uzer;
@@ -21,8 +21,20 @@ public class PasswordResetToken extends BaseEntity{
         return uzer;
     }
 
-    public PasswordResetToken(String token, Uzer uzer) {
-        this.token = token;
+    public PasswordResetToken(String guid, Uzer uzer) {
+        this.guid = guid;
         this.uzer = uzer;
+    }
+
+    public PasswordResetToken() {
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public boolean isUnexpired(){
+        Date now = new Date();
+        return expiryDate.before(now);
     }
 }

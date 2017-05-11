@@ -100,6 +100,6 @@ public class UzerRepository {
 //    @Transactional
 //    public Uzer getUserIdByEmail(String email) {
 //        Collection<Uzer> list = getUserByEmail(email);
-//        return getUserByEmail(email) ? getUserByEmail(email).getId() : null;
+//        return getUserByEmail(email) ? getUserByEmail(email).getUzerId() : null;
 //    }
 }
