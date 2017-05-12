@@ -19,10 +19,8 @@ public class Event extends BaseEntity {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Uzer> participants = new HashSet<Uzer>();
 
-
     @ManyToOne
     private Uzer host;
-
 
     public Event() {
     }
@@ -34,7 +32,15 @@ public class Event extends BaseEntity {
         this.keyWords = keyWords;
         this.place = place;
         this.category = 0;
+    }
 
+    public Event(Event newEvent){
+        this.name = newEvent.name;
+        this.datetime = newEvent.datetime;
+        this.description = newEvent.description;
+        this.keyWords = newEvent.keyWords;
+        this.place = newEvent.place;
+        this.category = newEvent.category;
     }
 
     public void addParticipant(Uzer participant) {
@@ -103,10 +109,8 @@ public class Event extends BaseEntity {
     }
 
     public Uzer getHost() {
-
         return host;
     }
-
 }
 
 	

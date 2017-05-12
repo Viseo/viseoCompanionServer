@@ -29,6 +29,7 @@ public class UzerController {
     @Autowired
     private JavaMailSender mailSender;
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.addUser}", method = POST)
     public Uzer addUser(@RequestBody Uzer us) {
         return uzerService.addUser(us);
@@ -40,21 +41,25 @@ public class UzerController {
         return uzerService.checkCredentials(user.getEmail(), user.getPassword());
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.getUser}", method = GET)
     public Uzer getUser(@PathVariable("userId") long userId) {
         return uzerService.getUser(userId);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.getUsers}", method = GET)
     public final List<Uzer> getUsers() {
         return uzerService.getUsers();
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.deleteUser}", method = DELETE)
     public final void deleteUser(@PathVariable(value = "userId")  final long id) {
         uzerService.deleteUzer(id);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.updateUser}", method = PUT)
     public final Uzer updateUser(@RequestBody Uzer use) {
         Uzer uzer = null;
@@ -66,21 +71,23 @@ public class UzerController {
         return uzer;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.getUserByEmail}", method = GET)
     public Uzer getUserByEmail(@PathVariable("pattern") String pattern) {
         return uzerService.getUserByEmail(pattern);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.resetPassword}", method = POST)
-    public String resetPassword(HttpServletRequest request,
+    public boolean resetPassword(HttpServletRequest request,
                                 @RequestParam("email") String userEmail) {
         Uzer uzer = uzerService.getUserByEmail(userEmail);
         if (uzer == null) {
-            throw new RuntimeException("User Not Found");
+            return false;
         }
         SimpleMailMessage email = createResetEmail(uzer, request);
         mailSender.send(email);
-        return "Un mail vous a été envoyé";
+        return true;
     }
 
     @CrossOrigin

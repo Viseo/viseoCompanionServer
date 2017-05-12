@@ -50,7 +50,7 @@ public class UzerService {
 
     public Uzer checkCredentials(String email, String password) {
         Uzer uzer = getUserByEmail(email);
-        if (passwordEncoder.matches(password, uzer.getPassword())) {
+        if (uzer != null && passwordEncoder.matches(password, uzer.getPassword())) {
             return uzer;
         }
         return null;
@@ -80,7 +80,7 @@ public class UzerService {
     public void changePassword(long id, String password) {
         Uzer uzer = uzerRepository.getUzer(id);
         if(uzer != null) {
-            uzer.setPassword(password);
+            uzer.setPassword(passwordEncoder.encode(password));
             uzerRepository.updateUzer(uzer);
         }
     }

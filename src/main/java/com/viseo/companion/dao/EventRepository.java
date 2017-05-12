@@ -57,13 +57,20 @@ public class EventRepository {
 
     @Transactional
     public Event updateEvent(Event event) {
+        Event eventToUpdate = getEvent(event.getId());
+        eventToUpdate.setName(event.getName());
+        eventToUpdate.setCategory(event.getCategory());
+        eventToUpdate.setDatetime(event.getDatetime());
+        eventToUpdate.setDescription(event.getDescription());
+        eventToUpdate.setKeyWords(event.getKeyWords());
+        eventToUpdate.setPlace(event.getPlace());
         try {
-            event = em.merge(event);
+            eventToUpdate = em.merge(eventToUpdate);
 
         } catch (EntityExistsException e) {
             throw new RuntimeException(e);
         }
-        return event;
+        return eventToUpdate;
     }
 
     @Transactional

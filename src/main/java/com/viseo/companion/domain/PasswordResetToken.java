@@ -13,7 +13,7 @@ public class PasswordResetToken extends BaseEntity{
 
     private String guid;
 
-    @OneToOne(cascade= CascadeType.ALL)
+    @OneToOne
     private Uzer uzer;
 
     private Calendar expiryDate;
