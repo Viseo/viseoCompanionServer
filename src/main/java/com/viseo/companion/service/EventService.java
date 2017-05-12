@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -59,6 +60,19 @@ public class EventService {
         }
         return events;
     }
+
+
+    public List <Event> getEventsExpired(){
+        List<Event> events = null;
+        try {
+            events = eventRepository.getEventsExpired();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return events;
+    }
+
 
     public List<Event> getEventsByRegisteredUser(long userId) {
         return eventRepository.getEventsByRegisteredUser(userId);

@@ -94,6 +94,27 @@ public class EventControllerTest {
         System.out.println(Listevents.size());
     }
 
+
+    @Test
+    public final void getEventsExpiredTest() throws ClientProtocolException, IOException {
+
+        // Création du client et éxécution d'une requete GET
+        final HttpClient client = HttpClientBuilder.create().build();
+        final HttpGet mockRequest = new HttpGet("http://localhost:8080/events/expire");
+        final HttpResponse mockResponse = client.execute(mockRequest);
+
+        // Le code retour HTTP doit être un succès (200)
+        Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
+
+        final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
+        final ObjectMapper mapper = new ObjectMapper();
+        List<Event> Listevents = new ObjectMapper().readValue(rd, new TypeReference<List<Event>>() {
+        });
+        Assert.assertNotNull(Listevents);
+        System.out.println(Listevents.size());
+    }
+
+
     @Test
     public final void getEventTest() throws ClientProtocolException, IOException {
 

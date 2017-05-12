@@ -88,6 +88,15 @@ public class EventServiceTest {
     }
 
     @Test
+    public final void getEventsExpiredTest() {
+        final List<Event> lisEvents = eventService.getEventsExpired();
+        try {
+            Assert.assertEquals(3, lisEvents.size());
+        } catch (final CompanionException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+    @Test
     public void getEventsByRegisteredUser() {
         Long userId = 4L;
         List<Event> events = eventService.getEventsByRegisteredUser(userId);

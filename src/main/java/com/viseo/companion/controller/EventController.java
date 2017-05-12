@@ -32,6 +32,12 @@ public class EventController {
     }
 
     @CrossOrigin
+    @RequestMapping(value = "${endpoint.getEventsExpired}", method = RequestMethod.GET)
+    public List<Event> getEventsExpired() {
+        return eventService.getEventsExpired();
+    }
+
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.getEvent}", method = RequestMethod.GET)
     public Event getEvent(@PathVariable("eventId") long eventId) {
         return eventService.getEvent(eventId);
