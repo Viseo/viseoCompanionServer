@@ -19,7 +19,7 @@ public class EventController {
     //TODO : remove the @cross origin where we don't need it
     @CrossOrigin
     @RequestMapping(value = "${endpoint.addEvent}", method = RequestMethod.POST)
-    public Boolean addEvent(@RequestParam(value="host", required=true) long host,@RequestBody Event event) {
+    public Boolean addEvent(@RequestParam(value = "host") long host, @RequestBody Event event) {
         Uzer user = userSrvice.getUser(host);
         event.setHost(user);
         eventService.addEvent(event);
@@ -28,8 +28,8 @@ public class EventController {
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.getEvents}", method = RequestMethod.GET)
-    public List<Event> getEvents() {
-        return eventService.getEvents();
+    public List<Event> getEvents(@RequestParam(value = "before", required = false) String before, @RequestParam(value = "after", required = false) String after) {
+        return eventService.getEvents(before, after);
     }
 
     @CrossOrigin
@@ -43,8 +43,6 @@ public class EventController {
     public Event getEvent(@PathVariable("eventId") long eventId) {
         return eventService.getEvent(eventId);
     }
-
-    //TODO: create a route for future and past event
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.addEventParticipant}", method = RequestMethod.POST)

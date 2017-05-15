@@ -79,7 +79,9 @@ public class EventServiceTest {
 
     @Test
     public final void getEventsTest() {
-        final List<Event> lisEvents = eventService.getEvents();
+        String before = null;
+        String after = null;
+        final List<Event> lisEvents = eventService.getEvents(before, after);
         try {
             Assert.assertEquals(9, lisEvents.size());
         } catch (final CompanionException ex) {
