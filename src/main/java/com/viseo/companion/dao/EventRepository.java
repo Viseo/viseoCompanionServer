@@ -11,7 +11,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+
+import static javax.persistence.TemporalType.DATE;
 
 @Repository
 public class EventRepository {
@@ -95,8 +99,8 @@ public class EventRepository {
     public List<Event> getEventsBetween(String before, String after) {
         return em.createQuery(
                 "SELECT a FROM Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime >= :after AND a.datetime <= :before order by a.datetime", Event.class)
-                .setParameter("before", before)
-                .setParameter("after", after)
+                .setParameter("before", new Date(Long.valueOf(before)), DATE )
+                .setParameter("after", new Date(Long.valueOf(after)), DATE )
                 .getResultList();
     }
 
@@ -104,7 +108,7 @@ public class EventRepository {
     public List<Event> getEventsAfter(String after) {
         return em.createQuery(
                 "SELECT a from Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime >= :after order by a.datetime", Event.class)
-                .setParameter("after", after)
+                .setParameter("after", new Date(Long.valueOf(after)), DATE )
                 .getResultList();
     }
 
@@ -112,7 +116,7 @@ public class EventRepository {
     public List<Event> getEventsBefore(String before){
         return em.createQuery(
                 "SELECT a FROM Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime <= :before ORDER BY a.datetime", Event.class)
-                .setParameter("before", before)
+                .setParameter("before", new Date(Long.valueOf(before)), DATE )
                 .getResultList();
     }
 
