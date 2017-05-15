@@ -88,6 +88,7 @@ public class Event extends BaseEntity {
         this.name = event;
     }
 
+    //TODO: Handle the 2h shift (with a localizer probably)
     public void setDatetime(Calendar date) {
         this.datetime = date;
     }

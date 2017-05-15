@@ -16,6 +16,7 @@ public class EventController {
     @Autowired
     private UzerService userSrvice;
 
+    //TODO : remove the @cross origin where we don't need it
     @CrossOrigin
     @RequestMapping(value = "${endpoint.addEvent}", method = RequestMethod.POST)
     public Boolean addEvent(@RequestParam(value="host", required=true) long host,@RequestBody Event event) {
@@ -42,6 +43,8 @@ public class EventController {
     public Event getEvent(@PathVariable("eventId") long eventId) {
         return eventService.getEvent(eventId);
     }
+
+    //TODO: create a route for future and past event
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.addEventParticipant}", method = RequestMethod.POST)
