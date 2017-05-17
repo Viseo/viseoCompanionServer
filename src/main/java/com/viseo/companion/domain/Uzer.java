@@ -18,6 +18,11 @@ public class Uzer extends BaseEntity {
     @OneToMany(mappedBy = "host",fetch = FetchType.LAZY)
     private Set<Event> organisedEvents = new HashSet<>();
 
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "uzer",fetch = FetchType.LAZY)
+    private Set<Commentaire>  commentaires = new HashSet<>();
+
     @ManyToMany(mappedBy = "participants", fetch = FetchType.LAZY)
     private Set<Event> events = new HashSet<Event>();
 

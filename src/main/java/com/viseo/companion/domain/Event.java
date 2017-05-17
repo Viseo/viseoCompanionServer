@@ -1,5 +1,7 @@
 package com.viseo.companion.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -20,6 +22,10 @@ public class Event extends BaseEntity {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Uzer> participants = new HashSet<Uzer>();
 
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "evenement",fetch = FetchType.LAZY)
+    private Set<Commentaire>  commentaires = new HashSet<>();
 
     @ManyToOne
     private Uzer host;
@@ -97,6 +103,10 @@ public class Event extends BaseEntity {
 
     public void setPlace(String lieu) {
         this.place = lieu;
+    }
+
+    public void setCommentaires(Set<Commentaire> commentaires) {
+        this.commentaires = commentaires;
     }
 
     public void setHost(Uzer host) {

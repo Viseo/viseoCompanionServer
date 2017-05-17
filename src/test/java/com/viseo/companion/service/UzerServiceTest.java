@@ -21,6 +21,10 @@ public class UzerServiceTest {
     @Autowired
     private UzerService uzerService;
 
+
+
+
+
     @Test
     public void addUserTest() {
         final Uzer uzer = new Uzer();
