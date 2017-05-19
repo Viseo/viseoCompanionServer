@@ -122,22 +122,20 @@ public class CommentaireControllerTest {
 
         Calendar now = Calendar.getInstance();
         commentaire.setDatetime(now);
-        commentaire.setCommentaire("meeh");
+        commentaire.setCommentaire("meeeeeee");
         Uzer user = uzerService.getUser(1L);
         commentaire.setUzer(user);
 
-        // Création du client et éxécution d'une requete POST
         final HttpClient client = HttpClientBuilder.create().build();
-        final HttpPut mockRequestPut = new HttpPut("http://localhost:8080/comment/3");
-        final ObjectMapper mapper = new ObjectMapper();
-        final com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        final HttpPut mockRequestPutt = new HttpPut("http://localhost:8080/comment/3");
+        ObjectMapper mapper = new ObjectMapper();
+        com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         final String jsonInString = ow.writeValueAsString(commentaire);
-        mockRequestPut.addHeader("Content-type", "application/json");
-        mockRequestPut.setEntity(new StringEntity(jsonInString));
-
-        final org.apache.http.HttpResponse mockResponse = client.execute(mockRequestPut);
-
-        // Le code retour HTTP doit être un succès (200)
+        // Ã©tablition de la requette (header+body)
+        mockRequestPutt.addHeader("content-type", "application/json");
+        mockRequestPutt.setEntity(new StringEntity(jsonInString));
+        HttpResponse mockResponse = client.execute(mockRequestPutt);
+        final org.apache.http.HttpResponse mockResponses = client.execute(mockRequestPutt);
         Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
     }
     @Test

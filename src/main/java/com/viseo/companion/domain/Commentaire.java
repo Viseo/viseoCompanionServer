@@ -3,6 +3,7 @@ package com.viseo.companion.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,9 +14,10 @@ public class Commentaire extends BaseEntity {
     private Calendar datetime;
     private String Commentaire;
 
-    @JsonIgnore
-    @OneToMany
-    private Set<Commentaire> commentaires = new HashSet<Commentaire>();
+
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<Commentaire> commentaires;
 
     @ManyToOne
     private Uzer uzer;
@@ -27,9 +29,6 @@ public class Commentaire extends BaseEntity {
         return evenement;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    private Set<Uzer> users = new HashSet<Uzer>();
-
     public String getCommentaire() {
         return Commentaire;
     }
@@ -38,18 +37,18 @@ public class Commentaire extends BaseEntity {
         Commentaire = commentaire;
     }
 
-    public Commentaire(){
-
+    public Commentaire() {
+        super();
     }
 
-    public Commentaire(Calendar datetime, String commentaire, Set<com.viseo.companion.domain.Commentaire> commentaires, Uzer uzer, Event evenement, Set<Uzer> users) {
+    public Commentaire(Calendar datetime, String commentaire, Uzer uzer, Event evenement ) {
         this.datetime = datetime;
         Commentaire = commentaire;
-
-        this.commentaires = commentaires;
+        this.commentaires = new HashSet<Commentaire>();
         this.uzer = uzer;
         this.evenement = evenement;
-        this.users = users;
+
+
     }
 
     public Calendar getDatetime() {
@@ -75,14 +74,8 @@ public class Commentaire extends BaseEntity {
     public void setUzer(Uzer uzer) {
         this.uzer = uzer;
     }
+
     public void setEvenement(Event evenement) {
         this.evenement = evenement;
-    }
-    public Set<Uzer> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<Uzer> users) {
-        this.users = users;
     }
 }

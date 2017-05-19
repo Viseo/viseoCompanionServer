@@ -36,7 +36,7 @@ public class CommentaireController {
     }
 
     @RequestMapping(value = "${endpoint.updateComment}", method = RequestMethod.PUT)
-    public final Commentaire updateCommentaire(@RequestBody Commentaire commentaire) {
+    public final Commentaire updateCommentaire(@PathVariable("commentaireId") Long userId,@RequestBody Commentaire commentaire) {
         Commentaire commentaire1 = null;
         try {
             commentaire1 = commentaireService.updateCommentaire(commentaire);

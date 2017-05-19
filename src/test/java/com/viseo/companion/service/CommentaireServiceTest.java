@@ -57,7 +57,7 @@ public class CommentaireServiceTest {
         commentaire.setCommentaire("haifa la meilleure");
         Calendar now = Calendar.getInstance();
         commentaire.setDatetime(now);
-        Uzer user = uzerService.getUser(5L);
+        Uzer user = uzerService.getUser(6L);
         commentaire.setUzer(user);
         Event event = eventService.getEvent(2L);
         commentaire.setEvenement(event);
