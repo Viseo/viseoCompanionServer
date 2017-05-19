@@ -67,19 +67,6 @@ public class EventService {
         return events;
     }
 
-
-    public List<Event> getEventsExpired() {
-        List<Event> events = null;
-        try {
-            events = eventRepository.getEventsExpired();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return events;
-    }
-
-
     public List<Event> getEventsByRegisteredUser(long userId) {
         return eventRepository.getEventsByRegisteredUser(userId);
     }

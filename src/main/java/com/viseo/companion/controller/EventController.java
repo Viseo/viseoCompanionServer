@@ -33,12 +33,6 @@ public class EventController {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "${endpoint.getEventsExpired}", method = RequestMethod.GET)
-    public List<Event> getEventsExpired() {
-        return eventService.getEventsExpired();
-    }
-
-    @CrossOrigin
     @RequestMapping(value = "${endpoint.getEvent}", method = RequestMethod.GET)
     public Event getEvent(@PathVariable("eventId") long eventId) {
         return eventService.getEvent(eventId);
@@ -46,13 +40,13 @@ public class EventController {
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.addEventParticipant}", method = RequestMethod.POST)
-    public Boolean addParticipant(@PathVariable("eventId") long eventId, @PathVariable("userId") long userId) {
+    public Boolean addParticipant(@PathVariable("eventId") long eventId, @PathVariable("uzerId") long userId) {
         return eventService.addParticipant(eventId, userId);
     }
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.removeEventParticipant}", method = RequestMethod.DELETE)
-    public Boolean removeParticipant(@PathVariable("eventId") long eventId, @PathVariable("userId") long userId) {
+    public Boolean removeParticipant(@PathVariable("eventId") long eventId, @PathVariable("uzerId") long userId) {
         return eventService.removeParticipant(eventId, userId);
     }
 
@@ -81,7 +75,7 @@ public class EventController {
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.getEventsByRegisteredUser}", method = RequestMethod.GET)
-    public List<Event> getEventsByRegisteredUser(@PathVariable("userId") long userId) {
+    public List<Event> getEventsByRegisteredUser(@PathVariable("uzerId") long userId) {
         return eventService.getEventsByRegisteredUser(userId);
     }
 

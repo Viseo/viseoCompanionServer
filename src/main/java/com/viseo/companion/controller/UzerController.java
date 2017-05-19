@@ -43,8 +43,8 @@ public class UzerController {
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.getUser}", method = GET)
-    public Uzer getUser(@PathVariable("userId") long userId) {
-        return uzerService.getUser(userId);
+    public Uzer getUser(@PathVariable("uzerId") long uzerId) {
+        return uzerService.getUser(uzerId);
     }
 
     @CrossOrigin
@@ -55,7 +55,7 @@ public class UzerController {
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.deleteUser}", method = DELETE)
-    public final void deleteUser(@PathVariable(value = "userId")  final long id) {
+    public final void deleteUser(@PathVariable(value = "uzerId") final long id) {
         uzerService.deleteUzer(id);
     }
 
