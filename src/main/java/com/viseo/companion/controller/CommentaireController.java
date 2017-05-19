@@ -23,9 +23,11 @@ public class CommentaireController {
 
     @RequestMapping(value = "${endpoint.addComment}", method = POST)
     public boolean addCommentaire(@RequestBody Commentaire cm) {
-
-
-        return commentaireService.addCommentaire(cm);
+        boolean b=false;
+        if(cm.getUzer()!=null|| cm.getEvenement()!=null) {
+            b=commentaireService.addCommentaire(cm);
+        }
+        return b;
     }
 
     @RequestMapping(value = "${endpoint.deleteComment}", method = RequestMethod.DELETE)

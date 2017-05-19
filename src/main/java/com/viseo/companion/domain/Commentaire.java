@@ -27,7 +27,7 @@ public class Commentaire extends BaseEntity {
         return evenement;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<Uzer> users = new HashSet<Uzer>();
 
     public String getCommentaire() {

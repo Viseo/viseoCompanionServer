@@ -56,7 +56,7 @@ public class CommentaireControllerTest {
         final Commentaire commentaire = new Commentaire();
         Calendar now = Calendar.getInstance();
         commentaire.setDatetime(now);
-        commentaire.setCommentaire("ccc");
+        commentaire.setCommentaire("gyizfyevfl");
         Uzer user = uzerService.getUser(1L);
         commentaire.setUzer(user);
         Event event = eventService.getEvent(2L);
@@ -75,6 +75,11 @@ public class CommentaireControllerTest {
 
         // Le code retour HTTP doit être un succès (200)z
         Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
+
+        final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
+        final boolean ev = mapper.readValue(rd,boolean.class);
+
+        Assert.assertTrue(ev);
     }
 
     @Test
