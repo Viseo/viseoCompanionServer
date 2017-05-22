@@ -33,6 +33,7 @@ public class UzerRepository {
     @Transactional
     public boolean addUzer(Uzer uzer) {
         try {
+            uzer = em.merge(uzer);
             em.persist(uzer);
         } catch (EntityExistsException e) {
             e.printStackTrace();
