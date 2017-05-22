@@ -55,11 +55,11 @@ public class CommentControllerTest {
         final Comment comment = new Comment();
         Calendar now = Calendar.getInstance();
         comment.setDatetime(now);
-        comment.setContent("haaaaaaaaaaas");
+        comment.setCommentaire("haaaaaaaaaaas");
         Uzer user = uzerService.getUser(6L);
         comment.setUzer(user);
         Event event = eventService.getEvent(2L);
-        comment.setEvent(event);
+        comment.setEvenement(event);
 
         // Création du client et éxécution d'une requete POST
         // Création du client et éxécution d'une requete POST
@@ -120,7 +120,7 @@ public class CommentControllerTest {
 
         Calendar now = Calendar.getInstance();
         comment.setDatetime(now);
-        comment.setContent("meeeeeee");
+        comment.setCommentaire("meeeeeee");
         Uzer user = uzerService.getUser(1L);
         comment.setUzer(user);
 
@@ -149,10 +149,10 @@ public class CommentControllerTest {
 
         final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
         final ObjectMapper mapper = new ObjectMapper();
-        List<Comment> commentaires = new ObjectMapper().readValue(rd, new TypeReference<List<Comment>>() {
+        List<Comment> comments = new ObjectMapper().readValue(rd, new TypeReference<List<Comment>>() {
         });
-        Assert.assertNotNull(commentaires);
-        System.out.println(commentaires.size());
+        Assert.assertNotNull(comments);
+        System.out.println(comments.size());
     }
 
 }

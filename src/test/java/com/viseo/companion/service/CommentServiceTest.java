@@ -38,16 +38,16 @@ public class CommentServiceTest {
         final Comment comment = new Comment();
         Calendar now = Calendar.getInstance();
         comment.setDatetime(now);
-        comment.setContent("cccccccccccccccccccccccccccccccccccccccccccccccccc");
+        comment.setCommentaire("cccccccccccccccccccccccccccccccccccccccccccccccccc");
         Uzer user = uzerService.getUser(1L);
         comment.setUzer(user);
         Event event = eventService.getEvent(2L);
-        comment.setEvent(event);
+        comment.setEvenement(event);
         //try {
            // Comment commentaire1 =  commentaireService.addComment(comment);
             //Assert.assertEquals(true, commentaire1);
             //Assert.assertNotNull(commentaire1.getId());
-            //Assert.assertEquals(comment.getContent(), commentaire1.getContent());
+            //Assert.assertEquals(comment.getComment(), commentaire1.getComment());
            // comment = commentaire1;
         //} catch (CompanionException ex) {
             //throw new RuntimeException(ex);
@@ -62,13 +62,13 @@ public class CommentServiceTest {
         final Long id = 3L;
 
         final Comment comment = commentService.getComment(id);
-        comment.setContent("haifa la meilleure");
+        comment.setCommentaire("haifa la meilleure");
         Calendar now = Calendar.getInstance();
         comment.setDatetime(now);
         Uzer user = uzerService.getUser(6L);
         comment.setUzer(user);
         Event event = eventService.getEvent(2L);
-        comment.setEvent(event);
+        comment.setEvenement(event);
 
         Comment newComment = commentService.updateComment(comment);
         Assert.assertNotNull(newComment);
@@ -90,10 +90,10 @@ public class CommentServiceTest {
     @Test
     public void getCommentsByEvent() {
         Long eventId = 2L;
-        List<Comment> commentaires = commentService.getCommentsByEvent(eventId);
+        List<Comment> comments = commentService.getCommentsByEvent(eventId);
         try {
-            Assert.assertNotNull(commentaires);
-            Assert.assertNotNull(commentaires.size());
+            Assert.assertNotNull(comments);
+            Assert.assertNotNull(comments.size());
         } catch (final CompanionException ex) {
             throw new RuntimeException(ex);
         }
@@ -101,9 +101,9 @@ public class CommentServiceTest {
     }
     @Test
     public final void getCommentairesTest() {
-        final List<Comment> commentaires = commentService.getComments();
+        final List<Comment> comments = commentService.getComents();
         try {
-            Assert.assertEquals(16, commentaires.size());
+            Assert.assertEquals(16, comments.size());
         } catch (final CompanionException ex) {
             throw new RuntimeException(ex);
         }

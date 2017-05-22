@@ -20,11 +20,12 @@ public class CommentController {
     CommentService commentService;
 
     @RequestMapping(value = "${endpoint.addComment}", method = POST)
-    public boolean addComment(@RequestBody Comment comment) {
-        if (comment.getUzer() != null || comment.getEvent() != null) {
-            return commentService.addComment(comment);
+    public boolean addCommentaire(@RequestBody Comment comment) {
+        boolean b = false;
+        if (comment.getUzer() != null || comment.getEvenement() != null) {
+            b = commentService.addComment(comment);
         }
-        return false;
+        return b;
     }
 
     @RequestMapping(value = "${endpoint.deleteComment}", method = RequestMethod.DELETE)
@@ -34,13 +35,12 @@ public class CommentController {
 
     @RequestMapping(value = "${endpoint.updateComment}", method = RequestMethod.PUT)
     public final Comment updateComment(@RequestBody Comment comment) {
-        Comment updatedComment = null;
         try {
-            updatedComment = commentService.updateComment(comment);
+            comment = commentService.updateComment(comment);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        return updatedComment;
+        return comment;
     }
 
     @RequestMapping(value = "${endpoint.getCommentsByEvent}", method = RequestMethod.GET)
@@ -50,7 +50,7 @@ public class CommentController {
 
     @RequestMapping(value = "${endpoint.getComments}", method = RequestMethod.GET)
     public List<Comment> getComments() {
-        return commentService.getComments();
+        return commentService.getComents();
     }
 
 }

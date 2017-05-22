@@ -16,6 +16,7 @@ public class CommentService {
     public boolean addComment(Comment comment) {
         try {
             return commentRepository.addComment(comment);
+
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -38,17 +39,19 @@ public class CommentService {
     }
 
     public Comment getComment(long id) {
-        Comment comment = commentRepository.getComment(id);
+       Comment comment = commentRepository.getComment(id);
         return comment;
     }
 
-    public List<Comment> getComments() {
+    public List<Comment> getComents() {
         List<Comment> comments = null;
         try {
             comments = commentRepository.getComments();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return comments;
     }
+
 }

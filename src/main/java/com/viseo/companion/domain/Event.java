@@ -24,7 +24,7 @@ public class Event extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "evenement",fetch = FetchType.LAZY)
-    private Set<Comment>  commentaires = new HashSet<>();
+    private Set<Comment> comments = new HashSet<>();
 
     @ManyToOne
     private Uzer host;
@@ -104,8 +104,8 @@ public class Event extends BaseEntity {
         this.place = lieu;
     }
 
-    public void setCommentaires(Set<Comment> commentaires) {
-        this.commentaires = commentaires;
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     public void setHost(Uzer host) {

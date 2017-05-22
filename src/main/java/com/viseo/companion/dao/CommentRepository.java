@@ -16,7 +16,7 @@ public class CommentRepository {
     @PersistenceContext
     EntityManager em;
 
-    @Transactional
+@Transactional
     public boolean addComment(Comment comment) {
         try {
             em.persist(comment);
@@ -26,7 +26,6 @@ public class CommentRepository {
         }
         return true;
     }
-
     @Transactional
     public boolean deleteComment(Comment comment) {
         try {
@@ -38,15 +37,18 @@ public class CommentRepository {
         return true;
     }
 
+
+
     @Transactional
     public Comment getComment(long id) {
-        Query query = em.createQuery("select a from Comment a left join fetch a.evenement where a.id = :id");
+        Query query = em.createQuery("select a from Commentaire a left join fetch a.evenement where a.id = :id");
         query.setParameter("id", id);
         List<Comment> result = query.getResultList();
         if (result.size() > 0)
             return result.iterator().next();
         return null;
     }
+
 
     @Transactional
     public Comment updateComment(Comment comment) {
@@ -59,15 +61,16 @@ public class CommentRepository {
     }
 
     @Transactional
+    // refactor to getEventComments
     public List<Comment> getCommentsByEvent(Long eventId) {
-        Query query = em.createQuery("select a from  Comment a left join fetch a.evenement p where p.id = :id order by a.datetime");
+        Query query = em.createQuery("select a from  Commentaire a left join fetch a.evenement p where p.id = :id order by a.datetime");
         query.setParameter("id", eventId);
         return (List<Comment>) query.getResultList();
     }
 
     @Transactional
     public List<Comment> getComments() {
-        return em.createQuery("select distinct a from Comment a left join fetch a.evenement order by a.datetime").getResultList();
+        return em.createQuery("select distinct a from Commentaire a left join fetch a.evenement order by a.datetime").getResultList();
     }
 
 }

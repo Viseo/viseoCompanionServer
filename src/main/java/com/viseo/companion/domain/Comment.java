@@ -10,19 +10,24 @@ import java.util.Set;
 public class Comment extends BaseEntity {
 
     private Calendar datetime;
-    private String content;
+    private String Commentaire;
 
+
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private Set<Comment> subComments;
+    private Set<Comment> comments;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne()
     private Uzer uzer;
 
-    @ManyToOne
-    private Event event;
 
-    public Event getEvent() {
-        return event;
+    @JsonIgnore
+    @ManyToOne()
+    private Event evenement;
+
+    public Event getEvenement() {
+        return evenement;
     }
 
     public Comment() {
@@ -30,17 +35,29 @@ public class Comment extends BaseEntity {
         super();
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setCommentaire(String commentaire) {
+        Commentaire = commentaire;
     }
 
-    public Comment(Calendar datetime, String content, Set<Comment> subComments, Uzer uzer, Event event) {
+    public Comment(Calendar datetime, String commentaire, Set<Comment> comments, Uzer uzer, Event evenement) {
         this.datetime = datetime;
-        this.content = content;
-        this.subComments = subComments;
+        Commentaire = commentaire;
+        this.comments = comments;
         this.uzer = uzer;
-        this.event = event;
+        this.evenement = evenement;
     }
+
+
+
+    /*public Comment(Calendar datetime, String commentaire, Uzer uzer, Event evenement ) {
+        this.datetime = datetime;
+        Comment = commentaire;
+        this.comments = new HashSet<Comment>();
+        this.uzer = uzer;
+        this.evenement = evenement;
+
+
+    }*/
 
     public Calendar getDatetime() {
         return datetime;
@@ -50,27 +67,28 @@ public class Comment extends BaseEntity {
         this.datetime = datetime;
     }
 
-    public Set<Comment> getSubComments() {
-        return subComments;
+    public Set<Comment> getComments() {
+        return comments;
     }
 
-    public void setSubComments(Set<Comment> subComments) {
-        this.subComments = subComments;
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
-    public String getContent() {
-        return content;
+    public String getCommentaire() {
+        return Commentaire;
     }
 
     public Uzer getUzer() {
         return uzer;
+
     }
 
     public void setUzer(Uzer uzer) {
         this.uzer = uzer;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setEvenement(Event evenement) {
+        this.evenement = evenement;
     }
 }
