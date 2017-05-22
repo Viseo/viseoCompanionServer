@@ -10,7 +10,7 @@ import java.util.Set;
 public class Comment extends BaseEntity {
 
     private Calendar datetime;
-    private String Commentaire;
+    private String content;
 
 
     @JsonIgnore
@@ -35,13 +35,13 @@ public class Comment extends BaseEntity {
         super();
     }
 
-    public void setCommentaire(String commentaire) {
-        Commentaire = commentaire;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Comment(Calendar datetime, String commentaire, Set<Comment> comments, Uzer uzer, Event evenement) {
         this.datetime = datetime;
-        Commentaire = commentaire;
+        content = commentaire;
         this.comments = comments;
         this.uzer = uzer;
         this.evenement = evenement;
@@ -75,8 +75,8 @@ public class Comment extends BaseEntity {
         this.comments = comments;
     }
 
-    public String getCommentaire() {
-        return Commentaire;
+    public String getContent() {
+        return content;
     }
 
     public Uzer getUzer() {

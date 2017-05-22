@@ -1,6 +1,8 @@
 package com.viseo.companion.controller;
 
+import com.viseo.companion.converter.CommentConverter;
 import com.viseo.companion.domain.Comment;
+import com.viseo.companion.dto.CommentDTO;
 import com.viseo.companion.service.CommentService;
 import com.viseo.companion.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +22,11 @@ public class CommentController {
     CommentService commentService;
 
     @RequestMapping(value = "${endpoint.addComment}", method = POST)
-    public boolean addCommentaire(@RequestBody Comment comment) {
-        boolean b = false;
-        if (comment.getUzer() != null || comment.getEvenement() != null) {
-            b = commentService.addComment(comment);
-        }
-        return b;
+    public boolean addComment(@RequestBody CommentDTO commentDTO) {
+        CommentConverter converter = new CommentConverter();
+        Comment comment = new Comment();
+        converter.apply(commentDTO, comment);
+        return commentService.addComment(comment);
     }
 
     @RequestMapping(value = "${endpoint.deleteComment}", method = RequestMethod.DELETE)

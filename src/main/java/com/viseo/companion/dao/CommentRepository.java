@@ -41,7 +41,7 @@ public class CommentRepository {
 
     @Transactional
     public Comment getComment(long id) {
-        Query query = em.createQuery("select a from Commentaire a left join fetch a.evenement where a.id = :id");
+        Query query = em.createQuery("select a from Comment a left join fetch a.evenement where a.id = :id");
         query.setParameter("id", id);
         List<Comment> result = query.getResultList();
         if (result.size() > 0)
@@ -63,14 +63,14 @@ public class CommentRepository {
     @Transactional
     // refactor to getEventComments
     public List<Comment> getCommentsByEvent(Long eventId) {
-        Query query = em.createQuery("select a from  Commentaire a left join fetch a.evenement p where p.id = :id order by a.datetime");
+        Query query = em.createQuery("select a from  Comment a left join fetch a.evenement p where p.id = :id order by a.datetime");
         query.setParameter("id", eventId);
         return (List<Comment>) query.getResultList();
     }
 
     @Transactional
     public List<Comment> getComments() {
-        return em.createQuery("select distinct a from Commentaire a left join fetch a.evenement order by a.datetime").getResultList();
+        return em.createQuery("select distinct a from Comment a left join fetch a.evenement order by a.datetime").getResultList();
     }
 
 }

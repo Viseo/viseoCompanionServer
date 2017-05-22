@@ -55,7 +55,7 @@ public class CommentControllerTest {
         final Comment comment = new Comment();
         Calendar now = Calendar.getInstance();
         comment.setDatetime(now);
-        comment.setCommentaire("haaaaaaaaaaas");
+        comment.setContent("haaaaaaaaaaas");
         Uzer user = uzerService.getUser(6L);
         comment.setUzer(user);
         Event event = eventService.getEvent(2L);
@@ -120,7 +120,7 @@ public class CommentControllerTest {
 
         Calendar now = Calendar.getInstance();
         comment.setDatetime(now);
-        comment.setCommentaire("meeeeeee");
+        comment.setContent("meeeeeee");
         Uzer user = uzerService.getUser(1L);
         comment.setUzer(user);
 

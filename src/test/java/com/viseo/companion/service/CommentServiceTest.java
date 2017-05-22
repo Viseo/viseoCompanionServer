@@ -38,7 +38,7 @@ public class CommentServiceTest {
         final Comment comment = new Comment();
         Calendar now = Calendar.getInstance();
         comment.setDatetime(now);
-        comment.setCommentaire("cccccccccccccccccccccccccccccccccccccccccccccccccc");
+        comment.setContent("cccccccccccccccccccccccccccccccccccccccccccccccccc");
         Uzer user = uzerService.getUser(1L);
         comment.setUzer(user);
         Event event = eventService.getEvent(2L);
@@ -62,7 +62,7 @@ public class CommentServiceTest {
         final Long id = 3L;
 
         final Comment comment = commentService.getComment(id);
-        comment.setCommentaire("haifa la meilleure");
+        comment.setContent("haifa la meilleure");
         Calendar now = Calendar.getInstance();
         comment.setDatetime(now);
         Uzer user = uzerService.getUser(6L);

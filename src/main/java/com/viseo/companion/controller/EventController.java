@@ -17,8 +17,8 @@ public class EventController {
     private UzerService userSrvice;
 
     @RequestMapping(value = "${endpoint.addEvent}", method = RequestMethod.POST)
-    public Boolean addEvent(@RequestParam(value="host", required=true) long host,@RequestBody Event event) {
-        Uzer user=userSrvice.getUser(host);
+    public Boolean addEvent(@RequestParam(value = "host", required = true) long host, @RequestBody Event event) {
+        Uzer user = userSrvice.getUser(host);
         event.setHost(user);
         eventService.addEvent(event);
         return true;
@@ -55,7 +55,7 @@ public class EventController {
     }
 
     @RequestMapping(value = "${endpoint.updateEvent}", method = RequestMethod.PUT)
-    public Event updateEvent(@PathVariable("eventId") Long userId,@RequestBody Event event) {
+    public Event updateEvent(@PathVariable("eventId") Long userId, @RequestBody Event event) {
         try {
             return eventService.updateEvent(event);
         } catch (Exception ex) {
