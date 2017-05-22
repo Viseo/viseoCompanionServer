@@ -2,7 +2,6 @@ package com.viseo.companion.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.persistence.*;
@@ -25,7 +24,7 @@ public class Event extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "evenement",fetch = FetchType.LAZY)
-    private Set<Commentaire>  commentaires = new HashSet<>();
+    private Set<Comment> comments = new HashSet<>();
 
     @ManyToOne
     private Uzer host;
@@ -105,8 +104,8 @@ public class Event extends BaseEntity {
         this.place = lieu;
     }
 
-    public void setCommentaires(Set<Commentaire> commentaires) {
-        this.commentaires = commentaires;
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     public void setHost(Uzer host) {

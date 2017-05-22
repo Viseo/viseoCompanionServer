@@ -1,9 +1,8 @@
 package com.viseo.companion.service;
 
 import com.viseo.companion.ViseocompanionserverApplication;
-import com.viseo.companion.domain.Commentaire;
+import com.viseo.companion.domain.Comment;
 import com.viseo.companion.domain.Event;
-import com.viseo.companion.domain.Role;
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.exception.CompanionException;
 import org.junit.Assert;
@@ -22,7 +21,7 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ViseocompanionserverApplication.class)
-public class CommentaireServiceTest {
+public class CommentServiceTest {
 
 
     @Autowired
@@ -32,28 +31,28 @@ public class CommentaireServiceTest {
     EventService eventService;
 
     @Autowired
-    CommentaireService commentaireService;
+    CommentService commentService;
 
     @Test
     public void addCommentaireTest() {
-        final Commentaire commentaire = new Commentaire();
+        final Comment comment = new Comment();
         Calendar now = Calendar.getInstance();
-        commentaire.setDatetime(now);
-        commentaire.setCommentaire("cccccccccccccccccccccccccccccccccccccccccccccccccc");
+        comment.setDatetime(now);
+        comment.setCommentaire("cccccccccccccccccccccccccccccccccccccccccccccccccc");
         Uzer user = uzerService.getUser(1L);
-        commentaire.setUzer(user);
+        comment.setUzer(user);
         Event event = eventService.getEvent(2L);
-        commentaire.setEvenement(event);
+        comment.setEvenement(event);
         //try {
-           // Commentaire commentaire1 =  commentaireService.addCommentaire(commentaire);
+           // Comment commentaire1 =  commentaireService.addComment(comment);
             //Assert.assertEquals(true, commentaire1);
             //Assert.assertNotNull(commentaire1.getId());
-            //Assert.assertEquals(commentaire.getCommentaire(), commentaire1.getCommentaire());
-           // commentaire = commentaire1;
+            //Assert.assertEquals(comment.getComment(), commentaire1.getComment());
+           // comment = commentaire1;
         //} catch (CompanionException ex) {
             //throw new RuntimeException(ex);
         //}
-         Boolean newComment = commentaireService.addCommentaire(commentaire);
+         Boolean newComment = commentService.addComment(comment);
         Assert.assertEquals(true, newComment);
 
     }
@@ -62,25 +61,25 @@ public class CommentaireServiceTest {
     public final void updateCommentaireTest() {
         final Long id = 3L;
 
-        final Commentaire commentaire = commentaireService.getCommentaire(id);
-        commentaire.setCommentaire("haifa la meilleure");
+        final Comment comment = commentService.getComment(id);
+        comment.setCommentaire("haifa la meilleure");
         Calendar now = Calendar.getInstance();
-        commentaire.setDatetime(now);
+        comment.setDatetime(now);
         Uzer user = uzerService.getUser(6L);
-        commentaire.setUzer(user);
+        comment.setUzer(user);
         Event event = eventService.getEvent(2L);
-        commentaire.setEvenement(event);
+        comment.setEvenement(event);
 
-        Commentaire newComment = commentaireService.updateCommentaire(commentaire);
+        Comment newComment = commentService.updateComment(comment);
         Assert.assertNotNull(newComment);
 
     }
     @Test
     public final void deleteCommentaireTest() {
         final Long id = 1L;
-        final Commentaire commentaire = commentaireService.getCommentaire(id);
+        final Comment comment = commentService.getComment(id);
         try {
-            commentaireService.deleteCommentaire(id);
+            commentService.deleteComment(id);
         } catch (final CompanionException ex) {
             Assert.assertEquals("This user cannot be deleted", ex.getMessage());
 
@@ -91,10 +90,10 @@ public class CommentaireServiceTest {
     @Test
     public void getCommentsByEvent() {
         Long eventId = 2L;
-        List<Commentaire> commentaires = commentaireService.getCommentsByEvent(eventId);
+        List<Comment> comments = commentService.getCommentsByEvent(eventId);
         try {
-            Assert.assertNotNull(commentaires);
-            Assert.assertNotNull(commentaires.size());
+            Assert.assertNotNull(comments);
+            Assert.assertNotNull(comments.size());
         } catch (final CompanionException ex) {
             throw new RuntimeException(ex);
         }
@@ -102,9 +101,9 @@ public class CommentaireServiceTest {
     }
     @Test
     public final void getCommentairesTest() {
-        final List<Commentaire> commentaires = commentaireService.getComents();
+        final List<Comment> comments = commentService.getComents();
         try {
-            Assert.assertEquals(16, commentaires.size());
+            Assert.assertEquals(16, comments.size());
         } catch (final CompanionException ex) {
             throw new RuntimeException(ex);
         }

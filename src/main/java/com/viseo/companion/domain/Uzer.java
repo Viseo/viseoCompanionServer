@@ -23,7 +23,7 @@ public class Uzer extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "uzer", fetch = FetchType.LAZY)
-    private Set<Commentaire> commentaires ;
+    private Set<Comment> comments;
 
 
     @ManyToMany(mappedBy = "participants", fetch = FetchType.LAZY)
@@ -43,7 +43,7 @@ public class Uzer extends BaseEntity {
         this.firstName = firstName;
         this.lastName = lastName;
         this.roles=new HashSet<Role>();
-        this.commentaires=new HashSet<Commentaire>();
+        this.comments =new HashSet<Comment>();
         switch (this.password = password) {
         }
     }
