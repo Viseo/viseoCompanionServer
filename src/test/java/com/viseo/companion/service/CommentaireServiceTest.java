@@ -44,8 +44,17 @@ public class CommentaireServiceTest {
         commentaire.setUzer(user);
         Event event = eventService.getEvent(2L);
         commentaire.setEvenement(event);
-        boolean newComment = commentaireService.addCommentaire(commentaire);
-        Assert.assertTrue(newComment);
+        //try {
+           // Commentaire commentaire1 =  commentaireService.addCommentaire(commentaire);
+            //Assert.assertEquals(true, commentaire1);
+            //Assert.assertNotNull(commentaire1.getId());
+            //Assert.assertEquals(commentaire.getCommentaire(), commentaire1.getCommentaire());
+           // commentaire = commentaire1;
+        //} catch (CompanionException ex) {
+            //throw new RuntimeException(ex);
+        //}
+         Boolean newComment = commentaireService.addCommentaire(commentaire);
+        Assert.assertEquals(true, newComment);
 
     }
 

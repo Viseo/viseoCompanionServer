@@ -56,17 +56,18 @@ public class CommentaireControllerTest {
         final Commentaire commentaire = new Commentaire();
         Calendar now = Calendar.getInstance();
         commentaire.setDatetime(now);
-        commentaire.setCommentaire("gyizfyevfl");
-        Uzer user = uzerService.getUser(1L);
+        commentaire.setCommentaire("haaaaaaaaaaas");
+        Uzer user = uzerService.getUser(6L);
         commentaire.setUzer(user);
         Event event = eventService.getEvent(2L);
         commentaire.setEvenement(event);
 
         // Création du client et éxécution d'une requete POST
+        // Création du client et éxécution d'une requete POST
         final HttpClient client = HttpClientBuilder.create().build();
         final HttpPost mockRequestPost = new HttpPost("http://localhost:8080/comment");
         final ObjectMapper mapper = new ObjectMapper();
-        final ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        final com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         final String jsonInString = ow.writeValueAsString(commentaire);
         mockRequestPost.addHeader("Content-type", "application/json");
         mockRequestPost.setEntity(new StringEntity(jsonInString));
@@ -76,10 +77,8 @@ public class CommentaireControllerTest {
         // Le code retour HTTP doit être un succès (200)z
         Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
 
-        final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
-        final boolean ev = mapper.readValue(rd,boolean.class);
 
-        Assert.assertTrue(ev);
+
     }
 
     @Test
@@ -118,7 +117,7 @@ public class CommentaireControllerTest {
 
     @Test
     public final void updateCommentaireTest() throws ClientProtocolException, IOException {
-        Commentaire commentaire = commentaireService.getCommentaire(3);
+        Commentaire commentaire = commentaireService.getCommentaire(8);
 
         Calendar now = Calendar.getInstance();
         commentaire.setDatetime(now);
@@ -127,7 +126,7 @@ public class CommentaireControllerTest {
         commentaire.setUzer(user);
 
         final HttpClient client = HttpClientBuilder.create().build();
-        final HttpPut mockRequestPutt = new HttpPut("http://localhost:8080/comment/3");
+        final HttpPut mockRequestPutt = new HttpPut("http://localhost:8080/comment/8");
         ObjectMapper mapper = new ObjectMapper();
         com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         final String jsonInString = ow.writeValueAsString(commentaire);

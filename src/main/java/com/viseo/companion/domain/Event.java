@@ -24,7 +24,7 @@ public class Event extends BaseEntity {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "evenement",fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "evenement",fetch = FetchType.LAZY)
     private Set<Commentaire>  commentaires = new HashSet<>();
 
     @ManyToOne

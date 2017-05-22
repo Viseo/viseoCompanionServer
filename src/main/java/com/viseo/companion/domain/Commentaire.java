@@ -15,33 +15,43 @@ public class Commentaire extends BaseEntity {
     private String Commentaire;
 
 
-
-    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Set<Commentaire> commentaires;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne()
     private Uzer uzer;
 
-    @ManyToOne
+
+    @JsonIgnore
+    @ManyToOne()
     private Event evenement;
 
     public Event getEvenement() {
         return evenement;
     }
 
-    public String getCommentaire() {
-        return Commentaire;
+    public Commentaire() {
+
+        super();
     }
 
     public void setCommentaire(String commentaire) {
         Commentaire = commentaire;
     }
 
-    public Commentaire() {
-        super();
+    public Commentaire(Calendar datetime, String commentaire, Set<com.viseo.companion.domain.Commentaire> commentaires, Uzer uzer, Event evenement) {
+        this.datetime = datetime;
+        Commentaire = commentaire;
+        this.commentaires = commentaires;
+        this.uzer = uzer;
+        this.evenement = evenement;
     }
 
-    public Commentaire(Calendar datetime, String commentaire, Uzer uzer, Event evenement ) {
+
+
+    /*public Commentaire(Calendar datetime, String commentaire, Uzer uzer, Event evenement ) {
         this.datetime = datetime;
         Commentaire = commentaire;
         this.commentaires = new HashSet<Commentaire>();
@@ -49,7 +59,7 @@ public class Commentaire extends BaseEntity {
         this.evenement = evenement;
 
 
-    }
+    }*/
 
     public Calendar getDatetime() {
         return datetime;
@@ -67,8 +77,13 @@ public class Commentaire extends BaseEntity {
         this.commentaires = commentaires;
     }
 
+    public String getCommentaire() {
+        return Commentaire;
+    }
+
     public Uzer getUzer() {
         return uzer;
+
     }
 
     public void setUzer(Uzer uzer) {

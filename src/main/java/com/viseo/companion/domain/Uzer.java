@@ -20,8 +20,11 @@ public class Uzer extends BaseEntity {
 
 
 
+
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "uzer", fetch = FetchType.LAZY)
     private Set<Commentaire> commentaires ;
+
 
     @ManyToMany(mappedBy = "participants", fetch = FetchType.LAZY)
     private Set<Event> events = new HashSet<Event>();
