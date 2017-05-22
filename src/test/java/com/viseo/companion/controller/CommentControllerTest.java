@@ -2,12 +2,11 @@ package com.viseo.companion.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.viseo.companion.ViseocompanionserverApplication;
-import com.viseo.companion.domain.Commentaire;
+import com.viseo.companion.domain.Comment;
 import com.viseo.companion.domain.Event;
 import com.viseo.companion.domain.Uzer;
-import com.viseo.companion.service.CommentaireService;
+import com.viseo.companion.service.CommentService;
 import com.viseo.companion.service.EventService;
 import com.viseo.companion.service.UzerService;
 import org.apache.http.HttpEntity;
@@ -38,10 +37,10 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ViseocompanionserverApplication.class)
-public class CommentaireControllerTest {
+public class CommentControllerTest {
 
     @Autowired
-    private CommentaireService commentaireService;
+    private CommentService commentService;
 
     @Autowired
     UzerService uzerService;
@@ -53,14 +52,14 @@ public class CommentaireControllerTest {
     @Test
     public void addCommentaireTest() throws IOException {
 
-        final Commentaire commentaire = new Commentaire();
+        final Comment comment = new Comment();
         Calendar now = Calendar.getInstance();
-        commentaire.setDatetime(now);
-        commentaire.setCommentaire("haaaaaaaaaaas");
+        comment.setDatetime(now);
+        comment.setContent("haaaaaaaaaaas");
         Uzer user = uzerService.getUser(6L);
-        commentaire.setUzer(user);
+        comment.setUzer(user);
         Event event = eventService.getEvent(2L);
-        commentaire.setEvenement(event);
+        comment.setEvent(event);
 
         // Création du client et éxécution d'une requete POST
         // Création du client et éxécution d'une requete POST
@@ -68,7 +67,7 @@ public class CommentaireControllerTest {
         final HttpPost mockRequestPost = new HttpPost("http://localhost:8080/comment");
         final ObjectMapper mapper = new ObjectMapper();
         final com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        final String jsonInString = ow.writeValueAsString(commentaire);
+        final String jsonInString = ow.writeValueAsString(comment);
         mockRequestPost.addHeader("Content-type", "application/json");
         mockRequestPost.setEntity(new StringEntity(jsonInString));
 
@@ -108,7 +107,7 @@ public class CommentaireControllerTest {
 
             try {
                 final ObjectMapper map = new ObjectMapper();
-                final Iterable<Commentaire> cm = map.readValue(rd, Iterable.class);
+                final Iterable<Comment> cm = map.readValue(rd, Iterable.class);
                 Assert.assertNotNull(cm);
             } catch (Exception ex) {
             }
@@ -117,19 +116,19 @@ public class CommentaireControllerTest {
 
     @Test
     public final void updateCommentaireTest() throws ClientProtocolException, IOException {
-        Commentaire commentaire = commentaireService.getCommentaire(8);
+        Comment comment = commentService.getComment(8);
 
         Calendar now = Calendar.getInstance();
-        commentaire.setDatetime(now);
-        commentaire.setCommentaire("meeeeeee");
+        comment.setDatetime(now);
+        comment.setContent("meeeeeee");
         Uzer user = uzerService.getUser(1L);
-        commentaire.setUzer(user);
+        comment.setUzer(user);
 
         final HttpClient client = HttpClientBuilder.create().build();
         final HttpPut mockRequestPutt = new HttpPut("http://localhost:8080/comment/8");
         ObjectMapper mapper = new ObjectMapper();
         com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        final String jsonInString = ow.writeValueAsString(commentaire);
+        final String jsonInString = ow.writeValueAsString(comment);
         // Ã©tablition de la requette (header+body)
         mockRequestPutt.addHeader("content-type", "application/json");
         mockRequestPutt.setEntity(new StringEntity(jsonInString));
@@ -150,7 +149,7 @@ public class CommentaireControllerTest {
 
         final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
         final ObjectMapper mapper = new ObjectMapper();
-        List<Commentaire> commentaires = new ObjectMapper().readValue(rd, new TypeReference<List<Commentaire>>() {
+        List<Comment> commentaires = new ObjectMapper().readValue(rd, new TypeReference<List<Comment>>() {
         });
         Assert.assertNotNull(commentaires);
         System.out.println(commentaires.size());

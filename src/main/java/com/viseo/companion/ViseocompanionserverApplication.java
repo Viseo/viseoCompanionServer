@@ -9,12 +9,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 
 @Configuration
-@EnableAutoConfiguration
-@EnableJpaRepositories
 @SpringBootApplication
-public class ViseocompanionserverApplication extends WebMvcConfigurerAdapter {
+public class ViseocompanionserverApplication {
     public static void main(String[] args) {
-
         SpringApplication.run(ViseocompanionserverApplication.class, args);
     }
 }

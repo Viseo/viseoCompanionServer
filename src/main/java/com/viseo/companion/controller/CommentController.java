@@ -1,9 +1,7 @@
 package com.viseo.companion.controller;
 
-import com.viseo.companion.domain.Commentaire;
-import com.viseo.companion.domain.Event;
-import com.viseo.companion.domain.Uzer;
-import com.viseo.companion.service.CommentaireService;
+import com.viseo.companion.domain.Comment;
+import com.viseo.companion.service.CommentService;
 import com.viseo.companion.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,47 +11,46 @@ import java.util.List;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-public class CommentaireController {
+public class CommentController {
 
     @Autowired
     private EventService eventService;
 
     @Autowired
-    CommentaireService commentaireService;
+    CommentService commentService;
 
     @RequestMapping(value = "${endpoint.addComment}", method = POST)
-    public boolean addCommentaire(@RequestBody Commentaire cm) {
-        boolean b=false;
-        if(cm.getUzer()!=null|| cm.getEvenement()!=null) {
-            b=commentaireService.addCommentaire(cm);
+    public boolean addComment(@RequestBody Comment comment) {
+        if (comment.getUzer() != null || comment.getEvent() != null) {
+            return commentService.addComment(comment);
         }
-        return b;
+        return false;
     }
 
     @RequestMapping(value = "${endpoint.deleteComment}", method = RequestMethod.DELETE)
     public Boolean removeComment(@PathVariable("commentId") long commentId) {
-        return commentaireService.deleteCommentaire(commentId);
+        return commentService.deleteComment(commentId);
     }
 
     @RequestMapping(value = "${endpoint.updateComment}", method = RequestMethod.PUT)
-    public final Commentaire updateCommentaire(@RequestBody Commentaire commentaire) {
-        Commentaire commentaire1 = null;
+    public final Comment updateComment(@RequestBody Comment comment) {
+        Comment updatedComment = null;
         try {
-            commentaire1 = commentaireService.updateCommentaire(commentaire);
+            updatedComment = commentService.updateComment(comment);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        return commentaire;
+        return updatedComment;
     }
 
     @RequestMapping(value = "${endpoint.getCommentsByEvent}", method = RequestMethod.GET)
-    public List<Commentaire> getCommentsByEvent(@PathVariable("eventId") long eventId) {
-        return commentaireService.getCommentsByEvent(eventId);
+    public List<Comment> getCommentsByEvent(@PathVariable("eventId") long eventId) {
+        return commentService.getCommentsByEvent(eventId);
     }
 
     @RequestMapping(value = "${endpoint.getComments}", method = RequestMethod.GET)
-    public List<Commentaire> getCommentaires() {
-        return commentaireService.getComents();
+    public List<Comment> getComments() {
+        return commentService.getComments();
     }
 
 }
