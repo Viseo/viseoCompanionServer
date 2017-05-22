@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class CommentService {
@@ -32,12 +31,14 @@ public class CommentService {
             CommentConverter converter = new CommentConverter();
             Comment comment = new Comment();
             Uzer uzer = uzerRepository.getUzer(commentDTO.getUserId());
-            comment.setUzer(uzer);
             Event event = eventRepository.getEvent(commentDTO.getEventId());
+            if (uzer == null || event == null) {
+                return false;
+            }
+            comment.setUzer(uzer);
             comment.setEvent(event);
             converter.apply(commentDTO, comment);
             return commentRepository.addComment(comment);
-
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -51,12 +52,15 @@ public class CommentService {
         return false;
     }
 
-    public boolean updateComment(CommentDTO commentDTO) {
+    public CommentDTO updateComment(CommentDTO commentDTO) {
         try {
             CommentConverter converter = new CommentConverter();
             Comment comment = commentRepository.getComment(commentDTO.getId());
+            if (comment == null) {
+                return null;
+            }
             converter.apply(commentDTO, comment);
-            return commentRepository.updateComment(comment);
+            return converter.getDTO(commentRepository.updateComment(comment));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -89,7 +93,7 @@ public class CommentService {
     private List<CommentDTO> toCommentDTOList(List<Comment> comments) {
         List<CommentDTO> result = new ArrayList<>();
         CommentConverter converter = new CommentConverter();
-        for(Comment comment : comments) {
+        for (Comment comment : comments) {
             result.add(converter.getDTO(comment));
         }
         return result;

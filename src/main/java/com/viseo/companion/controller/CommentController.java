@@ -31,7 +31,7 @@ public class CommentController {
     }
 
     @RequestMapping(value = "${endpoint.updateComment}", method = PUT)
-    public boolean updateComment(@RequestBody CommentDTO commentDTO) {
+    public CommentDTO updateComment(@RequestBody CommentDTO commentDTO) {
             return commentService.updateComment(commentDTO);
     }
 

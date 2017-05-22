@@ -51,10 +51,9 @@ public class CommentRepository {
 
 
     @Transactional
-    public boolean updateComment(Comment comment) {
+    public Comment updateComment(Comment comment) {
         try {
-            em.merge(comment);
-            return true;
+            return em.merge(comment);
         } catch (EntityExistsException e) {
             throw new RuntimeException(e);
         }
