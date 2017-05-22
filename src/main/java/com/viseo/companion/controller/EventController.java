@@ -6,7 +6,9 @@ import com.viseo.companion.service.EventService;
 import com.viseo.companion.service.UzerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -17,19 +19,46 @@ public class EventController {
     private UzerService userSrvice;
 
     //TODO : remove the @cross origin where we don't need it
+
     @CrossOrigin
     @RequestMapping(value = "${endpoint.addEvent}", method = RequestMethod.POST)
     public Boolean addEvent(@RequestParam(value = "host") long host, @RequestBody Event event) {
         Uzer user = userSrvice.getUser(host);
         event.setHost(user);
-        eventService.addEvent(event);
-        return true;
+        boolean b = eventService.addEvent(event) != null ? true : false;
+        return b;
+
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "${endpoint.uploadImage}", method = RequestMethod.POST)
+    public String uploadImage(@RequestParam("file") MultipartFile image) {
+        try {
+            return eventService.uploadImage(image.getOriginalFilename(), image);
+        } catch (IOException e) {
+
+            throw new RuntimeException(e.getMessage());
+        }
+
+    }
+
+    private void validateImage(MultipartFile image) {
+        if (!image.getContentType().equals("image/jpeg")) {
+            throw new RuntimeException("Only JPG images are accepted");
+        }
     }
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.getEvents}", method = RequestMethod.GET)
-    public List<Event> getEvents(@RequestParam(value = "before", required = false) String before, @RequestParam(value = "after", required = false) String after) {
+    public List<Event> getEvents(@RequestParam(value = "before", required = false) String
+                                         before, @RequestParam(value = "after", required = false) String after) {
         return eventService.getEvents(before, after);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "${endpoint.getEventsExpired}", method = RequestMethod.GET)
+    public List<Event> getEventsExpired() {
+        return eventService.getEventsExpired();
     }
 
     @CrossOrigin
@@ -75,7 +104,7 @@ public class EventController {
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.getEventsByRegisteredUser}", method = RequestMethod.GET)
-    public List<Event> getEventsByRegisteredUser(@PathVariable("uzerId") long userId) {
+    public List<Event> getEventsByRegisteredUser(@PathVariable("userId") long userId) {
         return eventService.getEventsByRegisteredUser(userId);
     }
 

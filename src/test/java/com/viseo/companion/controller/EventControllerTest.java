@@ -3,7 +3,6 @@ package com.viseo.companion.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.viseo.companion.ViseocompanionserverApplication;
 import com.viseo.companion.domain.Event;
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.service.EventService;
@@ -44,9 +43,8 @@ public class EventControllerTest {
     public void addEventTest() throws IOException {
 
         Calendar now = Calendar.getInstance();
-       // Uzer user = uzerService.getUser(1L);
-        final Event event = new Event("ibtisAMOOOOO", now, "Hello World!", "HELLLLL", "HELLLLL");
-
+        // Uzer user = uzerService.getUser(1L);
+        final Event event = new Event("ibtisAMOOOOO", now, "Hello World!", "HELLLLL", "HELLLLL","");
 
 
         // Création du client et éxécution d'une requete POST
@@ -175,4 +173,15 @@ public class EventControllerTest {
         });
         Assert.assertNotNull(ListParticipants);
     }
+
+
+    @Test
+    public void sendFile() throws IOException {
+       // String uploadFile = "/Users/mingch/Documents/test2.txt";
+        //String fileName = "test2.txt";
+
+      //  eventService.uploadFile();
+
+    }
+
 }
