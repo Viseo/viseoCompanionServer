@@ -1,15 +1,34 @@
 package com.viseo.companion.dto;
 
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommentDTO extends BaseDTO {
     String content;
     long datetime;
     long userId;
     long eventId;
+    long parentCommentId;
+    List<CommentDTO> childComments = new ArrayList<>();
 
     public CommentDTO() {
         super();
+    }
+
+    public long getParentCommentId() {
+        return parentCommentId;
+    }
+
+    public void setParentCommentId(long parentCommentId) {
+        this.parentCommentId = parentCommentId;
+    }
+
+    public List<CommentDTO> getChildComments() {
+        return childComments;
+    }
+
+    public void setChildComments(List<CommentDTO> childComments) {
+        this.childComments = childComments;
     }
 
     public String getContent() {

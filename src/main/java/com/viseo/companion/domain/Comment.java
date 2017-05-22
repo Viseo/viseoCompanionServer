@@ -1,63 +1,48 @@
 package com.viseo.companion.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Calendar;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 public class Comment extends BaseEntity {
 
     private Calendar datetime;
     private String content;
+    Comment parentComment;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> children;
 
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private Set<Comment> comments;
-
-    @JsonIgnore
-    @ManyToOne()
+    @ManyToOne
     private Uzer uzer;
 
-
-    @JsonIgnore
-    @ManyToOne()
-    private Event evenement;
-
-    public Event getEvenement() {
-        return evenement;
-    }
+    @ManyToOne
+    private Event event;
 
     public Comment() {
-
         super();
+    }
+
+    public Comment(Calendar datetime, String content, List<Comment> children, Uzer uzer, Event event) {
+        this.datetime = datetime;
+        this.content = content;
+        this.children = children;
+        this.uzer = uzer;
+        this.event = event;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event evenement) {
+        this.event = evenement;
     }
 
     public void setContent(String content) {
         this.content = content;
     }
-
-    public Comment(Calendar datetime, String commentaire, Set<Comment> comments, Uzer uzer, Event evenement) {
-        this.datetime = datetime;
-        content = commentaire;
-        this.comments = comments;
-        this.uzer = uzer;
-        this.evenement = evenement;
-    }
-
-
-
-    /*public Comment(Calendar datetime, String commentaire, Uzer uzer, Event evenement ) {
-        this.datetime = datetime;
-        Comment = commentaire;
-        this.comments = new HashSet<Comment>();
-        this.uzer = uzer;
-        this.evenement = evenement;
-
-
-    }*/
 
     public Calendar getDatetime() {
         return datetime;
@@ -67,12 +52,29 @@ public class Comment extends BaseEntity {
         this.datetime = datetime;
     }
 
-    public Set<Comment> getComments() {
-        return comments;
+    public List<Comment> getChildren() {
+        return children;
     }
 
-    public void setComments(Set<Comment> comments) {
-        this.comments = comments;
+    public void setChildren(List<Comment> children) {
+        this.children = children;
+    }
+
+    public void addChild(Comment child) {
+        if (children.indexOf(child) == -1) {
+            if (child.parentComment != null) {
+                child.parentComment.removeChild(child);
+            }
+            children.add(child);
+            child.parentComment = this;
+        }
+    }
+
+    public void removeChild(Comment comment) {
+        if (children.indexOf(comment) != -1) {
+            children.remove(comment);
+            comment.parentComment = null;
+        }
     }
 
     public String getContent() {
@@ -86,9 +88,5 @@ public class Comment extends BaseEntity {
 
     public void setUzer(Uzer uzer) {
         this.uzer = uzer;
-    }
-
-    public void setEvent(Event evenement) {
-        this.evenement = evenement;
     }
 }

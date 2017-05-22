@@ -101,7 +101,7 @@
 //    }
 //    @Test
 //    public final void getCommentairesTest() {
-//        final List<Comment> comments = commentService.getComments();
+//        final List<Comment> comments = commentService.getChildren();
 //        try {
 //            Assert.assertEquals(16, comments.size());
 //        } catch (final CompanionException ex) {

@@ -1,14 +1,11 @@
 package com.viseo.companion.converter;
 
-import com.viseo.companion.dao.EventRepository;
 import com.viseo.companion.domain.Comment;
-import com.viseo.companion.domain.Event;
-import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.dto.CommentDTO;
-import com.viseo.companion.service.UzerService;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class CommentConverter {
     static private long NULL = -1;
@@ -25,12 +22,16 @@ public class CommentConverter {
         } else {
             dto.setUserId(comment.getUzer().getId());
         }
-
-        if (comment.getEvenement() == null) {
+        if (comment.getEvent() == null) {
             dto.setEventId(NULL);
         } else {
-            dto.setEventId(comment.getEvenement().getId());
+            dto.setEventId(comment.getEvent().getId());
         }
+        List<CommentDTO> children = new ArrayList<>();
+        for(Comment child : comment.getChildren()){
+            children.add(getDTO(child));
+        }
+        dto.setChildComments(children);
         return dto;
     }
 

@@ -23,7 +23,7 @@ public class Event extends BaseEntity {
 
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "evenement",fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "event",fetch = FetchType.LAZY)
     private Set<Comment> comments = new HashSet<>();
 
     @ManyToOne

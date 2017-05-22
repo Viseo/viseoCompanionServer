@@ -1,11 +1,13 @@
 package com.viseo.companion.controller;
 
-import com.viseo.companion.domain.Comment;
 import com.viseo.companion.dto.CommentDTO;
 import com.viseo.companion.service.CommentService;
 import com.viseo.companion.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class CommentController {
 
     @RequestMapping(value = "${endpoint.updateComment}", method = PUT)
     public CommentDTO updateComment(@RequestBody CommentDTO commentDTO) {
-            return commentService.updateComment(commentDTO);
+        return commentService.updateComment(commentDTO);
     }
 
     @RequestMapping(value = "${endpoint.getComment}", method = GET)

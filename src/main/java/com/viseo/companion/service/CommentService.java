@@ -38,7 +38,15 @@ public class CommentService {
             comment.setUzer(uzer);
             comment.setEvent(event);
             converter.apply(commentDTO, comment);
-            return commentRepository.addComment(comment);
+            if (!commentRepository.addComment(comment)) {
+                return false;
+            }
+            Comment parentComment = commentRepository.getComment(commentDTO.getParentCommentId());
+            if (parentComment != null) {
+                parentComment.addChild(comment);
+                commentRepository.updateComment(parentComment);
+            }
+            return true;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -98,5 +106,4 @@ public class CommentService {
         }
         return result;
     }
-
 }
