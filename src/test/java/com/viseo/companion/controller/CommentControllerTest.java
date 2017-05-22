@@ -59,7 +59,7 @@ public class CommentControllerTest {
         Uzer user = uzerService.getUser(6L);
         comment.setUzer(user);
         Event event = eventService.getEvent(2L);
-        comment.setEvenement(event);
+        comment.setEvent(event);
 
         // Création du client et éxécution d'une requete POST
         // Création du client et éxécution d'une requete POST
@@ -114,28 +114,28 @@ public class CommentControllerTest {
         }
     }
 
-    @Test
-    public final void updateCommentaireTest() throws ClientProtocolException, IOException {
-        Comment comment = commentService.getComment(8);
-
-        Calendar now = Calendar.getInstance();
-        comment.setDatetime(now);
-        comment.setContent("meeeeeee");
-        Uzer user = uzerService.getUser(1L);
-        comment.setUzer(user);
-
-        final HttpClient client = HttpClientBuilder.create().build();
-        final HttpPut mockRequestPutt = new HttpPut("http://localhost:8080/comment/8");
-        ObjectMapper mapper = new ObjectMapper();
-        com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        final String jsonInString = ow.writeValueAsString(comment);
-        // Ã©tablition de la requette (header+body)
-        mockRequestPutt.addHeader("content-type", "application/json");
-        mockRequestPutt.setEntity(new StringEntity(jsonInString));
-        HttpResponse mockResponse = client.execute(mockRequestPutt);
-        final org.apache.http.HttpResponse mockResponses = client.execute(mockRequestPutt);
-        Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
-    }
+//    @Test
+//    public final void updateCommentaireTest() throws ClientProtocolException, IOException {
+//        Comment comment = commentService.getComment(8);
+//
+//        Calendar now = Calendar.getInstance();
+//        comment.setDatetime(now);
+//        comment.setContent("meeeeeee");
+//        Uzer user = uzerService.getUser(1L);
+//        comment.setUzer(user);
+//
+//        final HttpClient client = HttpClientBuilder.create().build();
+//        final HttpPut mockRequestPutt = new HttpPut("http://localhost:8080/comment/8");
+//        ObjectMapper mapper = new ObjectMapper();
+//        com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+//        final String jsonInString = ow.writeValueAsString(comment);
+//        // Ã©tablition de la requette (header+body)
+//        mockRequestPutt.addHeader("content-type", "application/json");
+//        mockRequestPutt.setEntity(new StringEntity(jsonInString));
+//        HttpResponse mockResponse = client.execute(mockRequestPutt);
+//        final org.apache.http.HttpResponse mockResponses = client.execute(mockRequestPutt);
+//        Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
+//    }
     @Test
     public final void listCommentairesTest() throws ClientProtocolException, IOException {
 

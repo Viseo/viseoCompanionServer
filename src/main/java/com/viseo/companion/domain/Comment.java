@@ -88,7 +88,7 @@ public class Comment extends BaseEntity {
         this.uzer = uzer;
     }
 
-    public void setEvenement(Event evenement) {
+    public void setEvent(Event evenement) {
         this.evenement = evenement;
     }
 }
