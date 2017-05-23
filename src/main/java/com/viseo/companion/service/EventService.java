@@ -1,14 +1,18 @@
 package com.viseo.companion.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.*;
 import com.viseo.companion.dao.EventRepository;
 import com.viseo.companion.domain.Event;
-import com.viseo.companion.domain.Notification;
 import com.viseo.companion.domain.Uzer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -19,6 +23,11 @@ public class EventService {
     @Autowired
     private UzerService userService;
 
+    @Autowired
+    private AmazonS3 s3client;
+
+    @Value("${amazon.s3.bucket}")
+    private String nameCardBucket;
 
     public Event addEvent(Event event) {
         try {
@@ -71,6 +80,19 @@ public class EventService {
         return events;
     }
 
+
+    public List<Event> getEventsExpired() {
+        List<Event> events = null;
+        try {
+            //events = eventRepository.getEventsExpired();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return events;
+    }
+
+
     public List<Event> getEventsByRegisteredUser(long userId) {
         return eventRepository.getEventsByRegisteredUser(userId);
     }
@@ -101,5 +123,20 @@ public class EventService {
 
     public boolean addParticipant(long eventId, long userId) {
         return eventRepository.addParticipant(eventId, userId);
+    }
+
+    public String uploadImage(String filename, MultipartFile file) throws IOException {
+        InputStream inputStream = file.getInputStream();
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(file.getSize());
+        PutObjectRequest putObjectRequest = new PutObjectRequest(nameCardBucket, filename, inputStream, metadata).withCannedAcl(CannedAccessControlList.PublicRead);
+        PutObjectResult result = s3client.putObject(putObjectRequest);
+
+        S3Object s3Object = s3client.getObject(new GetObjectRequest(nameCardBucket, filename));
+
+        return s3Object.getObjectContent().getHttpRequest().getURI().toString();
+
+        //https://viseo-companion.s3.amazonaws.com/port.PNG
+
     }
 }

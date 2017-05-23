@@ -18,6 +18,7 @@ public class Event extends BaseEntity {
     private String description;
     private String keyWords;
     private String place;
+    private  String imageUrl;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Uzer> participants = new HashSet<Uzer>();
@@ -28,13 +29,14 @@ public class Event extends BaseEntity {
     public Event() {
     }
 
-    public Event(String name, Calendar date, String description, String keyWords, String place) {
+    public Event(String name, Calendar date, String description, String keyWords, String place, String imageUrl) {
         this.name = name;
         this.datetime = date;
         this.description = description;
         this.keyWords = keyWords;
         this.place = place;
         this.category = 0;
+        this.imageUrl=imageUrl;
     }
 
     public Event(Event newEvent) {
@@ -115,6 +117,15 @@ public class Event extends BaseEntity {
     public Uzer getHost() {
         return host;
     }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
 }
 
 	

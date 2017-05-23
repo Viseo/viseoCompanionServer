@@ -3,7 +3,6 @@ package com.viseo.companion.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.viseo.companion.ViseocompanionserverApplication;
 import com.viseo.companion.domain.Event;
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.service.EventService;
@@ -175,4 +174,15 @@ public class EventControllerTest {
         });
         Assert.assertNotNull(ListParticipants);
     }
+
+
+    @Test
+    public void sendFile() throws IOException {
+       // String uploadFile = "/Users/mingch/Documents/test2.txt";
+        //String fileName = "test2.txt";
+
+      //  eventService.uploadFile();
+
+    }
+
 }

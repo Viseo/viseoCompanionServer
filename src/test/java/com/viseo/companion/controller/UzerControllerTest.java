@@ -1,7 +1,6 @@
 package com.viseo.companion.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.viseo.companion.ViseocompanionserverApplication;
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.service.UzerService;
 import org.apache.http.HttpEntity;
@@ -14,7 +13,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
