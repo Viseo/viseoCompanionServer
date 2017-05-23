@@ -2,7 +2,6 @@ package com.viseo.companion.controller;
 
 import com.viseo.companion.dto.CommentDTO;
 import com.viseo.companion.service.CommentService;
-import com.viseo.companion.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,18 +24,8 @@ public class CommentController {
     }
 
     @RequestMapping(value = "${endpoint.addChildComment}", method = POST)
-    public boolean addChildComment(@PathVariable("parentId") long parentId, @RequestBody CommentDTO comment) {
+    public CommentDTO addChildComment(@PathVariable("parentId") long parentId, @RequestBody CommentDTO comment) {
         return commentService.addChildComment(comment, parentId);
-    }
-
-    @RequestMapping(value = "${endpoint.deleteComment}", method = DELETE)
-    public Boolean removeComment(@PathVariable("commentId") long commentId) {
-        return commentService.deleteComment(commentId);
-    }
-
-    @RequestMapping(value = "${endpoint.updateComment}", method = PUT)
-    public CommentDTO updateComment(@RequestBody CommentDTO commentDTO) {
-        return commentService.updateComment(commentDTO);
     }
 
     @RequestMapping(value = "${endpoint.getComment}", method = GET)
@@ -54,13 +43,23 @@ public class CommentController {
         return commentService.getComments();
     }
 
+    @RequestMapping(value = "${endpoint.updateComment}", method = PUT)
+    public CommentDTO updateComment(@RequestBody CommentDTO commentDTO) {
+        return commentService.updateComment(commentDTO);
+    }
+
+    @RequestMapping(value = "${endpoint.deleteComment}", method = DELETE)
+    public void removeComment(@PathVariable("commentId") long commentId) {
+        commentService.deleteComment(commentId);
+    }
+
     @RequestMapping(value = "${endpoint.likeComment}", method = POST)
-    public boolean likeComment(@PathVariable("commentId") long commentId, @PathVariable("uzerId") long uzerId) {
+    public boolean likeComment(@PathVariable("commentId") long commentId, @PathVariable("userId") long uzerId) {
         return commentService.likeComment(commentId, uzerId);
     }
 
     @RequestMapping(value = "${endpoint.dislikeComment}", method = DELETE)
-    public boolean dislikeComment(@PathVariable("commentId") long commentId, @PathVariable("uzerId") long uzerId) {
+    public boolean dislikeComment(@PathVariable("commentId") long commentId, @PathVariable("userId") long uzerId) {
         return commentService.dislikeComment(commentId, uzerId);
     }
 }

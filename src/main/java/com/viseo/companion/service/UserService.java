@@ -1,9 +1,9 @@
 package com.viseo.companion.service;
 
 import com.viseo.companion.dao.PasswordTokenRepository;
-import com.viseo.companion.dao.UzerRepository;
+import com.viseo.companion.dao.UserRepository;
 import com.viseo.companion.domain.PasswordResetToken;
-import com.viseo.companion.domain.Uzer;
+import com.viseo.companion.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,92 +15,85 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class UzerService {
+public class UserService {
 
     @Autowired
     private JavaMailSender mailSender;
 
     @Autowired
-    private UzerRepository uzerRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordTokenRepository passwordTokenRepository;
 
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public Uzer addUser(Uzer uzer) {
-        uzer.setPassword(passwordEncoder.encode(uzer.getPassword()));
+    public User addUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         try {
-            uzer = uzerRepository.addUzer(uzer);
+            user = userRepository.addUser(user);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        return uzer;
+        return user;
     }
 
-    public Uzer updateUzer(Uzer uzer) {
+    public List<User> getUsers() {
+        return userRepository.getUsers();
+    }
+
+    public User getUser(long userId) {
         try {
-            uzer.setPassword(passwordEncoder.encode(uzer.getPassword()));
-            return uzerRepository.updateUzer(uzer);
+            return userRepository.getUser(userId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public boolean deleteUzer(Long id) {
+    public User getUserByEmail(String email) {
         try {
-            Uzer uzer = uzerRepository.getUzer(id);
-            return uzer != null && uzerRepository.deleteUzer(uzer);
+            return userRepository.getUserByEmail(email);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Uzer getUserByEmail(String email) {
+    public User updateUser(User user) {
         try {
-            return uzerRepository.getUserByEmail(email);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            return userRepository.updateUser(user);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Uzer checkCredentials(String email, String password) {
-        Uzer uzer = getUserByEmail(email);
-        if (uzer != null && passwordEncoder.matches(password, uzer.getPassword())) {
-            return uzer;
+    public void deleteUser(Long id) {
+        try {
+            User user = userRepository.getUser(id);
+            if (user != null) {
+                userRepository.deleteUser(user);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public User checkCredentials(String email, String password) {
+        User user = getUserByEmail(email);
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            return user;
         }
         return null;
     }
 
-    public Uzer getUser(long userId) {
-        try {
-            return uzerRepository.getUzer(userId);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public List<Uzer> getUsers() {
-        return uzerRepository.getUzers();
-    }
-
-    public boolean resetPassword(Uzer uzer, HttpServletRequest request) {
-        SimpleMailMessage email = createResetEmail(uzer, request);
+    public boolean resetPassword(User user, HttpServletRequest request) {
+        SimpleMailMessage email = createResetEmail(user, request);
         try {
             mailSender.send(email);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
         return true;
-    }
-
-    public void persistToken(Uzer uzer, String token) {
-        try {
-            PasswordResetToken myToken = new PasswordResetToken(token, uzer);
-            passwordTokenRepository.addToken(myToken);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public boolean isTokenValid(long uzerId, String tokenGuid) {
@@ -114,18 +107,26 @@ public class UzerService {
         }
     }
 
-    public void changePassword(long id, String password) {
+    private void persistToken(User user, String token) {
         try {
-            Uzer uzer = uzerRepository.getUzer(id);
-            if (uzer != null) {
-                uzer.setPassword(passwordEncoder.encode(password));
-                uzerRepository.updateUzer(uzer);
-            }
+            PasswordResetToken myToken = new PasswordResetToken(token, user);
+            passwordTokenRepository.addToken(myToken);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    public void changePassword(long id, String password) {
+        try {
+            User user = userRepository.getUser(id);
+            if (user != null) {
+                user.setPassword(passwordEncoder.encode(password));
+                userRepository.updateUser(user);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void deleteToken(String token) {
         try {
@@ -135,14 +136,14 @@ public class UzerService {
         }
     }
 
-    private SimpleMailMessage createResetEmail(Uzer uzer, HttpServletRequest request) {
+    private SimpleMailMessage createResetEmail(User user, HttpServletRequest request) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("companionviseo@gmail.com");
-        message.setTo(uzer.getEmail());
+        message.setTo(user.getEmail());
         message.setSubject("Viseo Companion: Création d'un nouveau mot de passe");
-        String token = createToken(uzer);
+        String token = createToken(user);
         String contextPath = getAppUrl(request);
-        String resetUrl = createResetURl(contextPath, uzer.getId(), token);
+        String resetUrl = createResetURl(contextPath, user.getId(), token);
         String content = "Pour créer un nouveau mot de passe, merci de cliquer sur le lien suivant : " + resetUrl;
         message.setText(content);
         return message;
@@ -155,9 +156,9 @@ public class UzerService {
 //                + id + "&token=" + token;
     }
 
-    private String createToken(Uzer uzer) {
+    private String createToken(User user) {
         String token = UUID.randomUUID().toString();
-        persistToken(uzer, token);
+        persistToken(user, token);
         return token;
     }
 

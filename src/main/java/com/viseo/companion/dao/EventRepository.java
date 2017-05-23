@@ -1,7 +1,7 @@
 package com.viseo.companion.dao;
 
 import com.viseo.companion.domain.Event;
-import com.viseo.companion.domain.Uzer;
+import com.viseo.companion.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,7 @@ import static javax.persistence.TemporalType.DATE;
 public class EventRepository {
 
     @Autowired
-    UzerRepository userDao;
+    UserRepository userDao;
 
     @PersistenceContext
     EntityManager em;
@@ -26,10 +26,6 @@ public class EventRepository {
     public Event addEvent(Event event) {
         em.persist(event);
         return event;
-    }
-
-    public Event updateEvent(Event event) {
-        return em.merge(event);
     }
 
     public Event getEvent(long id) {
@@ -77,19 +73,19 @@ public class EventRepository {
                 .getResultList();
     }
 
-    public boolean deleteEvent(Event event) {
+    public Event updateEvent(Event event) {
+        return em.merge(event);
+    }
+
+    public void deleteEvent(Event event) {
         event = em.find(Event.class, event.getId());
-        if (event != null) {
-            em.remove(event);
-            return true;
-        }
-        return false;
+        em.remove(event);
     }
 
     public boolean addParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);
         if (event != null) {
-            Uzer user = userDao.getUzer(userId);
+            User user = userDao.getUser(userId);
             if (user != null) {
                 event.addParticipant(user);
                 return true;
@@ -98,15 +94,13 @@ public class EventRepository {
         return false;
     }
 
-    public boolean removeParticipant(long eventId, long userId) {
+    public void removeParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);
         if (event != null) {
-            Uzer user = userDao.getUzer(userId);
+            User user = userDao.getUser(userId);
             if (user != null) {
                 event.removeParticipant(user);
-                return true;
             }
         }
-        return false;
     }
 }

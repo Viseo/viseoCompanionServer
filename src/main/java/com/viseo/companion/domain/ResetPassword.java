@@ -1,8 +1,5 @@
 package com.viseo.companion.domain;
 
-/**
- * Created by LMA3606 on 11/05/2017.
- */
 public class ResetPassword {
 
     private long uzerId;

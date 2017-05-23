@@ -2,8 +2,8 @@ package com.viseo.companion.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,13 +18,13 @@ public class Event extends BaseEntity {
     private String description;
     private String keyWords;
     private String place;
-    private  String imageUrl;
+    private String imageUrl;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Uzer> participants = new HashSet<Uzer>();
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<User> participants = new HashSet<User>();
 
     @ManyToOne
-    private Uzer host;
+    private User host;
 
     public Event() {
     }
@@ -36,7 +36,7 @@ public class Event extends BaseEntity {
         this.keyWords = keyWords;
         this.place = place;
         this.category = 0;
-        this.imageUrl=imageUrl;
+        this.imageUrl = imageUrl;
     }
 
     public Event(Event newEvent) {
@@ -48,11 +48,11 @@ public class Event extends BaseEntity {
         this.category = newEvent.category;
     }
 
-    public void addParticipant(Uzer participant) {
+    public void addParticipant(User participant) {
         participants.add(participant);
     }
 
-    public void removeParticipant(Uzer participant) {
+    public void removeParticipant(User participant) {
         participants.remove(participant);
     }
 
@@ -66,7 +66,6 @@ public class Event extends BaseEntity {
 
     public Calendar getDatetime() {
         return this.datetime;
-        //.getTime();
     }
 
     public String getDescription() {
@@ -77,7 +76,7 @@ public class Event extends BaseEntity {
         return this.keyWords;
     }
 
-    public Set<Uzer> getParticipants() {
+    public Set<User> getParticipants() {
         return participants;
     }
 
@@ -110,11 +109,11 @@ public class Event extends BaseEntity {
         this.place = lieu;
     }
 
-    public void setHost(Uzer host) {
+    public void setHost(User host) {
         this.host = host;
     }
 
-    public Uzer getHost() {
+    public User getHost() {
         return host;
     }
 

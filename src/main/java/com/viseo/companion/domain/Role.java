@@ -6,10 +6,6 @@ import javax.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by LMA3606 on 22/03/2017.
- */
-
 @Entity
 public class Role extends BaseEntity {
 
@@ -17,7 +13,7 @@ public class Role extends BaseEntity {
     String description;
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles")
-    private Set<Uzer> users = new HashSet<Uzer>();
+    private Set<User> users = new HashSet<User>();
 
 
     public String getName() {
@@ -36,9 +32,7 @@ public class Role extends BaseEntity {
         this.description = description;
     }
 
-    public Role() {
-
-    }
+    public Role() {}
 
     public Role(String name, String description) {
         this.name = name;

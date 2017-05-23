@@ -32,6 +32,16 @@ public class Notification {
 
     private String topic = "";
 
+    @Value("${fireBase.URL}")
+    public void setFireBaseURL(String url) {
+        fireBaseURL = url;
+    }
+
+    @Value("${fireBase.ServerKey}")
+    public void setFireBaseServerKey(String key) {
+        fireBaseServerKey = key;
+    }
+
     public Notification() {
     }
 
@@ -52,17 +62,6 @@ public class Notification {
         this.id = event.getId();
     }
 
-    @Value("${fireBase.URL}")
-    public void setFireBaseURL(String url) {
-        fireBaseURL = url;
-    }
-
-    @Value("${fireBase.ServerKey}")
-    public void setFireBaseServerKey(String key) {
-        fireBaseServerKey = key;
-    }
-
-
     public boolean sendNotification() {
         String androidNotification = buildAndroidNotification(this.topic + "Android");
         String iosNotification = buildIOSNotification(this.topic + "IOS");
@@ -73,7 +72,7 @@ public class Notification {
         return true;
     }
 
-    public String buildAndroidNotification(String topic) {
+    private String buildAndroidNotification(String topic) {
         PlainNotification customNotification = new PlainNotification(
                 this.body,
                 this.title,
@@ -92,7 +91,7 @@ public class Notification {
         return formatToJSON(notificationSchemaAndroid);
     }
 
-    public String buildIOSNotification(String topic) {
+    private String buildIOSNotification(String topic) {
         PlainNotification notification = new PlainNotification(
                 this.body,
                 this.title,
@@ -110,20 +109,7 @@ public class Notification {
         return formatToJSON(notificationSchemaIOS);
     }
 
-    private String formatToJSON(Object object) {
-        Gson gson = new GsonBuilder().create();
-        String JSONstring = gson.toJson(object);
-
-        byte[] JSONrequestUTF8 = new byte[0];
-        try {
-            JSONrequestUTF8 = JSONstring.getBytes("UTF8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return new String(JSONrequestUTF8);
-    }
-
-    public boolean pushNotification(String JSONnotification) {
+    private boolean pushNotification(String JSONnotification) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Authorization", "key=" + fireBaseServerKey);
@@ -136,9 +122,22 @@ public class Notification {
         }
     }
 
-    public String getDateTimeToString(Date datetime) {
+    private String getDateTimeToString(Date datetime) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM à HH:mm");
         return sdf.format(datetime.getTime());
+    }
+
+    private String formatToJSON(Object object) {
+        Gson gson = new GsonBuilder().create();
+        String JSONstring = gson.toJson(object);
+
+        byte[] JSONrequestUTF8 = new byte[0];
+        try {
+            JSONrequestUTF8 = JSONstring.getBytes("UTF8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return new String(JSONrequestUTF8);
     }
 
 }

@@ -3,7 +3,7 @@
 //import com.viseo.companion.ViseocompanionserverApplication;
 //import com.viseo.companion.domain.Comment;
 //import com.viseo.companion.domain.Event;
-//import com.viseo.companion.domain.Uzer;
+//import com.viseo.companion.domain.User;
 //import com.viseo.companion.exception.CompanionException;
 //import org.junit.Assert;
 //import org.junit.Test;
@@ -39,8 +39,8 @@
 ////        Calendar now = Calendar.getInstance();
 ////        comment.setDatetime(now);
 ////        comment.setContent("cccccccccccccccccccccccccccccccccccccccccccccccccc");
-////        Uzer user = uzerService.getUser(1L);
-////        comment.setUzer(user);
+////        User user = uzerService.getUser(1L);
+////        comment.setUser(user);
 ////        Event event = eventService.getEvent(2L);
 ////        comment.setEvent(event);
 ////        //try {
@@ -65,8 +65,8 @@
 ////        comment.setContent("haifa la meilleure");
 ////        Calendar now = Calendar.getInstance();
 ////        comment.setDatetime(now);
-////        Uzer user = uzerService.getUser(6L);
-////        comment.setUzer(user);
+////        User user = uzerService.getUser(6L);
+////        comment.setUser(user);
 ////        Event event = eventService.getEvent(2L);
 ////        comment.setEvent(event);
 ////

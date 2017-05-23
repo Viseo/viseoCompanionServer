@@ -35,7 +35,6 @@ public class CommentRepository {
         return null;
     }
 
-
     public List<Comment> getCommentsByEvent(Long eventId) {
         return em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id order by a.datetime", Comment.class)
                 .setParameter("id", eventId)
@@ -57,12 +56,8 @@ public class CommentRepository {
         return em.merge(comment);
     }
 
-    public boolean deleteComment(Comment comment) {
+    public void deleteComment(Comment comment) {
         comment = em.find(Comment.class, comment.getId());
-        if (comment != null) {
-            em.remove(comment);
-            return true;
-        }
-        return false;
+        em.remove(comment);
     }
 }
