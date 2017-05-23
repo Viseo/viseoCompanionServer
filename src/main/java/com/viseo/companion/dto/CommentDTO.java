@@ -11,7 +11,7 @@ public class CommentDTO extends BaseDTO {
     List<CommentDTO> childComments = new ArrayList<>();
     long nbLike;
 
-    List<Long> likers = new ArrayList<>();
+    List<Long> likerIds = new ArrayList<>();
 
     public CommentDTO() {
         super();
@@ -25,12 +25,12 @@ public class CommentDTO extends BaseDTO {
         this.nbLike = nbLike;
     }
 
-    public List<Long> getLikers() {
-        return likers;
+    public List<Long> getLikerIds() {
+        return likerIds;
     }
 
-    public void setLikers(List<Long> likers) {
-        this.likers = likers;
+    public void setLikerIds(List<Long> likerIds) {
+        this.likerIds = likerIds;
     }
 
     public List<CommentDTO> getChildComments() {

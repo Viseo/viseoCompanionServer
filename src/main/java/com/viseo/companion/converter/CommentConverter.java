@@ -45,7 +45,7 @@ public class CommentConverter {
                 likers.add(liker.getId());
             }
         }
-        dto.setLikers(likers);
+        dto.setLikerIds(likers);
         dto.setNbLike(likers.size());
         return dto;
     }
