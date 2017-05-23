@@ -55,7 +55,11 @@ public class EventService {
     }
 
     public Event updateEvent(Event event) {
-        return eventRepository.updateEvent(event);
+        try {
+            return eventRepository.updateEvent(event);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     public List<Event> getEvents(String before, String after) {

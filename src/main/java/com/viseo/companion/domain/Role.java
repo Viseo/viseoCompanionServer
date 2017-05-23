@@ -1,7 +1,7 @@
 package com.viseo.companion.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,8 +16,9 @@ public class Role extends BaseEntity {
     String name;
     String description;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles")
     private Set<Uzer> users = new HashSet<Uzer>();
+
 
     public String getName() {
         return name;

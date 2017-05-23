@@ -1,13 +1,11 @@
 package com.viseo.companion.domain;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import java.util.Calendar;
-import java.util.Date;
 
 @Entity
-public class PasswordResetToken extends BaseEntity{
+public class PasswordResetToken extends BaseEntity {
 
     private static final int EXPIRATION = 60 * 24;
 
@@ -35,7 +33,7 @@ public class PasswordResetToken extends BaseEntity{
         return guid;
     }
 
-    public boolean isUnexpired(){
+    public boolean isUnexpired() {
         return expiryDate.after(Calendar.getInstance());
     }
 

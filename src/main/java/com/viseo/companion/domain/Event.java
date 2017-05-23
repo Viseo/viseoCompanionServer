@@ -1,6 +1,9 @@
 package com.viseo.companion.domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +20,7 @@ public class Event extends BaseEntity {
     private String place;
     private  String imageUrl;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Uzer> participants = new HashSet<Uzer>();
 
     @ManyToOne
@@ -36,7 +39,7 @@ public class Event extends BaseEntity {
         this.imageUrl=imageUrl;
     }
 
-    public Event(Event newEvent){
+    public Event(Event newEvent) {
         this.name = newEvent.name;
         this.datetime = newEvent.datetime;
         this.description = newEvent.description;
