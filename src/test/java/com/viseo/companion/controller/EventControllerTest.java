@@ -44,7 +44,7 @@ public class EventControllerTest {
 
         Calendar now = Calendar.getInstance();
        // Uzer user = uzerService.getUsers(1L);
-        final Event event = new Event("AMOOOOO", now, "Hello World!", "HELLLL", "HELLLL");
+        final Event event = new Event("AMOOOOO", now, "Hello World!", "HELLLL", "HELLLL", "URL");
 
 
 
