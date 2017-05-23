@@ -1,19 +1,25 @@
 package com.viseo.companion.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name="Uzer")
 public class Uzer extends BaseEntity {
 
     String email;
     String firstName;
     String lastName;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
 
     @JsonIgnore

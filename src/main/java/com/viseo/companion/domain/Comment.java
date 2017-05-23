@@ -4,6 +4,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class Comment extends BaseEntity {
     private String content;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Comment> children;
+    private List<Comment> children = new ArrayList<>();
 
     @ManyToOne
     private Uzer uzer;
@@ -23,7 +24,7 @@ public class Comment extends BaseEntity {
     private Event event;
 
     @OneToMany
-    List<Uzer> likers;
+    List<Uzer> likers = new ArrayList<>();
 
     public Comment() {
         super();
@@ -94,7 +95,9 @@ public class Comment extends BaseEntity {
     }
 
     public void addLiker(Uzer uzer) {
-        likers.add(uzer);
+        if(uzer != null) {
+            likers.add(uzer);
+        }
     }
 
     public void removeliker(Uzer uzer) {

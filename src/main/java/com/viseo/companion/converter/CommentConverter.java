@@ -4,9 +4,7 @@ import com.viseo.companion.domain.Comment;
 import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.dto.CommentDTO;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class CommentConverter {
     static private long NULL = -1;
@@ -28,25 +26,14 @@ public class CommentConverter {
         } else {
             dto.setEventId(comment.getEvent().getId());
         }
-//        for(Comment child : comment.getChildren()) {
-//            CommentDTO commentDTO = getDTO(child);
-//            dto.getChildComments().add(commentDTO);
-//        }
-        List<CommentDTO> children = new ArrayList<>();
-        if (comment.getChildren() != null) {
-            for (Comment child : comment.getChildren()) {
-                children.add(getDTO(child));
-            }
+        for (Comment child : comment.getChildren()) {
+            CommentDTO commentChildDTO = getDTO(child);
+            dto.getChildComments().add(commentChildDTO);
         }
-        dto.setChildComments(children);
-        List<Long> likers = new ArrayList<>();
-        if (comment.getLikers() != null) {
-            for (Uzer liker : comment.getLikers()) {
-                likers.add(liker.getId());
-            }
+        for (Uzer liker : comment.getLikers()) {
+            dto.getLikerIds().add(liker.getId());
         }
-        dto.setLikerIds(likers);
-        dto.setNbLike(likers.size());
+        dto.setNbLike(dto.getLikerIds().size());
         return dto;
     }
 

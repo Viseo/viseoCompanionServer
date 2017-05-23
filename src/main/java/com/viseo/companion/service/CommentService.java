@@ -51,8 +51,7 @@ public class CommentService {
             parentComment.removeChild(childComment);
             commentRepository.updateComment(parentComment);
         }
-        commentRepository.deleteComment(childComment);
-        return true;
+        return commentRepository.deleteComment(childComment);
     }
 
     public CommentDTO updateComment(CommentDTO commentDTO) {
@@ -114,13 +113,13 @@ public class CommentService {
         Comment comment = new Comment();
         Uzer uzer = uzerRepository.getUzer(commentDTO.getUserId());
         Event event = eventRepository.getEvent(commentDTO.getEventId());
-        if (uzer == null || event == null) {
-            return null;
+        if (uzer != null || event != null) {
+            comment.setUzer(uzer);
+            comment.setEvent(event);
+            converter.apply(commentDTO, comment);
+            return comment;
         }
-        comment.setUzer(uzer);
-        comment.setEvent(event);
-        converter.apply(commentDTO, comment);
-        return comment;
+        return null;
     }
 
     private List<CommentDTO> toCommentDTOList(List<Comment> comments) {
@@ -135,29 +134,29 @@ public class CommentService {
         try {
             Comment comment = commentRepository.getComment(commentId);
             Uzer uzer = uzerRepository.getUzer(uzerId);
-            if (comment == null && uzer == null) {
-                return false;
+            if (comment != null && uzer != null) {
+                comment.addLiker(uzer);
+                commentRepository.updateComment(comment);
+                return true;
             }
-            comment.addLiker(uzer);
-            commentRepository.updateComment(comment);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        return true;
+        return false;
     }
 
     public boolean dislikeComment(long commentId, long uzerId) {
         try {
             Comment comment = commentRepository.getComment(commentId);
             Uzer uzer = uzerRepository.getUzer(uzerId);
-            if (comment == null && uzer == null) {
-                return false;
+            if (comment != null && uzer != null) {
+                comment.removeliker(uzer);
+                commentRepository.updateComment(comment);
+                return true;
             }
-            comment.removeliker(uzer);
-            commentRepository.updateComment(comment);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        return true;
+        return false;
     }
 }

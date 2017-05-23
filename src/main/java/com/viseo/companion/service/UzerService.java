@@ -39,16 +39,29 @@ public class UzerService {
     }
 
     public Uzer updateUzer(Uzer uzer) {
-        uzer.setPassword(passwordEncoder.encode(uzer.getPassword()));
-        return uzerRepository.updateUzer(uzer);
+        try {
+            uzer.setPassword(passwordEncoder.encode(uzer.getPassword()));
+            return uzerRepository.updateUzer(uzer);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean deleteUzer(Long id) {
-        return uzerRepository.getUzer(id) != null && uzerRepository.deleteUzer(uzerRepository.getUzer(id));
+        try {
+            Uzer uzer = uzerRepository.getUzer(id);
+            return uzer != null && uzerRepository.deleteUzer(uzer);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Uzer getUserByEmail(String email) {
-        return uzerRepository.getUserByEmail(email);
+        try {
+            return uzerRepository.getUserByEmail(email);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Uzer checkCredentials(String email, String password) {
@@ -60,12 +73,15 @@ public class UzerService {
     }
 
     public Uzer getUser(long userId) {
-        Uzer uzer = uzerRepository.getUzer(userId);
-        return uzer;
+        try {
+            return uzerRepository.getUzer(userId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<Uzer> getUsers() {
-        return (List<Uzer>) uzerRepository.getUzers();
+        return uzerRepository.getUzers();
     }
 
     public boolean resetPassword(Uzer uzer, HttpServletRequest request) {
@@ -79,28 +95,44 @@ public class UzerService {
     }
 
     public void persistToken(Uzer uzer, String token) {
-        PasswordResetToken myToken = new PasswordResetToken(token, uzer);
-        passwordTokenRepository.addToken(myToken);
+        try {
+            PasswordResetToken myToken = new PasswordResetToken(token, uzer);
+            passwordTokenRepository.addToken(myToken);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean isTokenValid(long uzerId, String tokenGuid) {
-        PasswordResetToken myToken = passwordTokenRepository.getTokenFromUzerId(uzerId);
-        return myToken != null
-                && myToken.getGuid().equals(tokenGuid)
-                && myToken.isUnexpired();
+        try {
+            PasswordResetToken myToken = passwordTokenRepository.getTokenFromUzerId(uzerId);
+            return myToken != null
+                    && myToken.getGuid().equals(tokenGuid)
+                    && myToken.isUnexpired();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void changePassword(long id, String password) {
-        Uzer uzer = uzerRepository.getUzer(id);
-        if (uzer != null) {
-            uzer.setPassword(passwordEncoder.encode(password));
-            uzerRepository.updateUzer(uzer);
+        try {
+            Uzer uzer = uzerRepository.getUzer(id);
+            if (uzer != null) {
+                uzer.setPassword(passwordEncoder.encode(password));
+                uzerRepository.updateUzer(uzer);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
 
     public void deleteToken(String token) {
-        passwordTokenRepository.deleteToken(token);
+        try {
+            passwordTokenRepository.deleteToken(token);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private SimpleMailMessage createResetEmail(Uzer uzer, HttpServletRequest request) {
