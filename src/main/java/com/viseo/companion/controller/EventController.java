@@ -18,6 +18,8 @@ public class EventController {
     @Autowired
     private UzerService userSrvice;
 
+    //TODO : remove the @cross origin where we don't need it
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.addEvent}", method = POST)
     public Boolean addEvent(@RequestParam(value = "host", required = true) long host, @RequestBody Event event) {
         Uzer user = userSrvice.getUser(host);
@@ -26,36 +28,38 @@ public class EventController {
         return true;
     }
 
+    @CrossOrigin
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.getEvents}", method = GET)
-    public List<Event> getEvents() {
-        return eventService.getEvents();
+    public List<Event> getEvents(@RequestParam(value = "before", required = false) String before, @RequestParam(value = "after", required = false) String after) {
+        return eventService.getEvents(before, after);
     }
 
-    @RequestMapping(value = "${endpoint.getEventsExpired}", method = GET)
-    public List<Event> getEventsExpired() {
-        return eventService.getEventsExpired();
-    }
-
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.getEvent}", method = GET)
     public Event getEvent(@PathVariable("eventId") long eventId) {
         return eventService.getEvent(eventId);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.addEventParticipant}", method = POST)
-    public Boolean addParticipant(@PathVariable("eventId") long eventId, @PathVariable("userId") long userId) {
+    public Boolean addParticipant(@PathVariable("eventId") long eventId, @PathVariable("uzerId") long userId) {
         return eventService.addParticipant(eventId, userId);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.removeEventParticipant}", method = DELETE)
-    public Boolean removeParticipant(@PathVariable("eventId") long eventId, @PathVariable("userId") long userId) {
+    public Boolean removeParticipant(@PathVariable("eventId") long eventId, @PathVariable("uzerId") long userId) {
         return eventService.removeParticipant(eventId, userId);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.deleteEvent}", method = DELETE)
     public Boolean removeEvent(@PathVariable("eventId") long eventId) {
         return eventService.deleteEvent(eventId);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.updateEvent}", method = PUT)
     public Event updateEvent(@RequestBody Event event) {
         try {
@@ -66,16 +70,19 @@ public class EventController {
         return null;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.getEventParticipants}", method = GET)
     public List<Uzer> getParticipants(@PathVariable("eventId") long eventId) {
         return eventService.getParticipants(eventId);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.getEventsByRegisteredUser}", method = GET)
-    public List<Event> getEventsByRegisteredUser(@PathVariable("userId") long userId) {
+    public List<Event> getEventsByRegisteredUser(@PathVariable("uzerId") long userId) {
         return eventService.getEventsByRegisteredUser(userId);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.getEventParticipant}", method = GET)
     public Uzer getParticipant(@PathVariable("eventId") long eventId, @PathVariable("userId") long userId) {
         return eventService.getParticipant(eventId, userId);

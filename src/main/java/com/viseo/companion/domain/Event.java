@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 
 @Entity
-
 public class Event extends BaseEntity {
 
     private long category;
@@ -24,7 +23,6 @@ public class Event extends BaseEntity {
     @ManyToOne
     private Uzer host;
 
-
     public Event() {
     }
 
@@ -35,7 +33,15 @@ public class Event extends BaseEntity {
         this.keyWords = keyWords;
         this.place = place;
         this.category = 0;
+    }
 
+    public Event(Event newEvent){
+        this.name = newEvent.name;
+        this.datetime = newEvent.datetime;
+        this.description = newEvent.description;
+        this.keyWords = newEvent.keyWords;
+        this.place = newEvent.place;
+        this.category = newEvent.category;
     }
 
     public void addParticipant(Uzer participant) {
@@ -83,6 +89,7 @@ public class Event extends BaseEntity {
         this.name = event;
     }
 
+    //TODO: Handle the 2h shift (with a localizer probably)
     public void setDatetime(Calendar date) {
         this.datetime = date;
     }
@@ -104,10 +111,8 @@ public class Event extends BaseEntity {
     }
 
     public Uzer getHost() {
-
         return host;
     }
-
 }
 
 	

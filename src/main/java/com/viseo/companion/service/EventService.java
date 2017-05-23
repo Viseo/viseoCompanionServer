@@ -32,7 +32,6 @@ public class EventService {
     }
 
 
-
     public Event getEvent(long id) {
         Event result = eventRepository.getEvent(id);
         return result;
@@ -50,29 +49,23 @@ public class EventService {
         return eventRepository.updateEvent(event);
     }
 
-    public List<Event> getEvents() {
+    public List<Event> getEvents(String before, String after) {
         List<Event> events = null;
         try {
-            events = eventRepository.getEvents();
-
+            if (before != null && after != null) {
+                events = eventRepository.getEventsBetween(before, after);
+            } else if (before == null && after != null) {
+                events = eventRepository.getEventsAfter(after);
+            } else if (before != null) {
+                events = eventRepository.getEventsBefore(before);
+            } else {
+                events = eventRepository.getEvents();
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return events;
     }
-
-
-    public List <Event> getEventsExpired(){
-        List<Event> events = null;
-        try {
-            events = eventRepository.getEventsExpired();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return events;
-    }
-
 
     public List<Event> getEventsByRegisteredUser(long userId) {
         return eventRepository.getEventsByRegisteredUser(userId);
@@ -99,7 +92,7 @@ public class EventService {
     }
 
     public boolean removeParticipant(long eventId, long userId) {
-         return eventRepository.removeParticipant(eventId,userId);
+        return eventRepository.removeParticipant(eventId, userId);
     }
 
     public boolean addParticipant(long eventId, long userId) {

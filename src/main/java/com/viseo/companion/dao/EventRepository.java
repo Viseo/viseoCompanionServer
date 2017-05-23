@@ -11,7 +11,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+
+import static javax.persistence.TemporalType.DATE;
 
 @Repository
 public class EventRepository {
@@ -56,35 +60,70 @@ public class EventRepository {
 
     @Transactional
     public Event updateEvent(Event event) {
+        Event eventToUpdate = getEvent(event.getId());
+        eventToUpdate.setName(event.getName());
+        eventToUpdate.setCategory(event.getCategory());
+        eventToUpdate.setDatetime(event.getDatetime());
+        eventToUpdate.setDescription(event.getDescription());
+        eventToUpdate.setKeyWords(event.getKeyWords());
+        eventToUpdate.setPlace(event.getPlace());
         try {
-            event = em.merge(event);
+            eventToUpdate = em.merge(eventToUpdate);
 
         } catch (EntityExistsException e) {
             throw new RuntimeException(e);
         }
-        return event;
+        return eventToUpdate;
     }
 
     @Transactional
     public Event getEvent(long id) {
-        Query query = em.createQuery("select a from Event a left join fetch a.participants p left join fetch p.roles where a.id = :id");
-        query.setParameter("id", id);
-        List<Event> result = query.getResultList();
-        if (result.size() > 0)
-            return result.iterator().next();
+        List<Event> eventList = em.createQuery(
+                "select a from Event a left join fetch a.participants p left join fetch p.roles where a.id = :id", Event.class)
+                .setParameter("id", id)
+                .getResultList();
+        if (eventList.iterator().hasNext())
+            return eventList.iterator().next();
         return null;
     }
 
     @Transactional
     public List<Event> getEvents() {
-        //
-        return em.createQuery("select distinct a from Event a left join fetch a.participants p left join fetch p.roles  where a.datetime >= CURRENT_DATE order by a.datetime", Event.class).getResultList();
+        return em.createQuery(
+                "select distinct a from Event a left join fetch a.participants p left join fetch p.roles order by a.datetime", Event.class)
+                .getResultList();
+    }
+
+    @Transactional
+    public List<Event> getEventsBetween(String before, String after) {
+        return em.createQuery(
+                "SELECT a FROM Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime >= :after AND a.datetime <= :before order by a.datetime", Event.class)
+                .setParameter("before", new Date(Long.valueOf(before)), DATE )
+                .setParameter("after", new Date(Long.valueOf(after)), DATE )
+                .getResultList();
+    }
+
+    @Transactional
+    public List<Event> getEventsAfter(String after) {
+        return em.createQuery(
+                "SELECT a from Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime >= :after order by a.datetime", Event.class)
+                .setParameter("after", new Date(Long.valueOf(after)), DATE )
+                .getResultList();
+    }
+
+    @Transactional
+    public List<Event> getEventsBefore(String before){
+        return em.createQuery(
+                "SELECT a FROM Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime <= :before ORDER BY a.datetime", Event.class)
+                .setParameter("before", new Date(Long.valueOf(before)), DATE )
+                .getResultList();
     }
 
     @Transactional
     public List<Event> getEventsByRegisteredUser(long userId) {
-        Query query = em.createQuery("select a from Event a left join fetch a.participants p left join fetch p.roles where p.id = :id order by a.datetime");
-        query.setParameter("id", userId);
+        Query query = em.createQuery(
+                "select a from Event a left join fetch a.participants p left join fetch p.roles where p.id = :id order by a.datetime")
+                .setParameter("id", userId);
         return (List<Event>) query.getResultList();
     }
 
@@ -102,7 +141,7 @@ public class EventRepository {
     }
 
     @Transactional
-    public boolean removeParticipant(long eventId, long userId){
+    public boolean removeParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);
         if (event != null) {
             Uzer user = userDao.getUzer(userId);
@@ -113,10 +152,4 @@ public class EventRepository {
         }
         return false;
     }
-    @Transactional
-    public List<Event> getEventsExpired() {
-        return em.createQuery("select distinct a from Event a left join fetch a.participants p left join fetch p.roles  where a.datetime < CURRENT_DATE order by a.datetime", Event.class).getResultList();
-
-    }
-
 }
