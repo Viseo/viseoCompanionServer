@@ -8,19 +8,10 @@ public class CommentDTO extends BaseDTO {
     long datetime;
     long userId;
     long eventId;
-    long parentCommentId;
     List<CommentDTO> childComments = new ArrayList<>();
 
     public CommentDTO() {
         super();
-    }
-
-    public long getParentCommentId() {
-        return parentCommentId;
-    }
-
-    public void setParentCommentId(long parentCommentId) {
-        this.parentCommentId = parentCommentId;
     }
 
     public List<CommentDTO> getChildComments() {

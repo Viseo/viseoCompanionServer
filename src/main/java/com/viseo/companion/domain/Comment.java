@@ -9,7 +9,6 @@ public class Comment extends BaseEntity {
 
     private Calendar datetime;
     private String content;
-    Comment parentComment;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> children;
@@ -61,20 +60,11 @@ public class Comment extends BaseEntity {
     }
 
     public void addChild(Comment child) {
-        if (children.indexOf(child) == -1) {
-            if (child.parentComment != null) {
-                child.parentComment.removeChild(child);
-            }
-            children.add(child);
-            child.parentComment = this;
-        }
+        children.add(child);
     }
 
     public void removeChild(Comment comment) {
-        if (children.indexOf(comment) != -1) {
-            children.remove(comment);
-            comment.parentComment = null;
-        }
+        children.remove(comment);
     }
 
     public String getContent() {
@@ -83,7 +73,6 @@ public class Comment extends BaseEntity {
 
     public Uzer getUzer() {
         return uzer;
-
     }
 
     public void setUzer(Uzer uzer) {

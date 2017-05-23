@@ -28,8 +28,10 @@ public class CommentConverter {
             dto.setEventId(comment.getEvent().getId());
         }
         List<CommentDTO> children = new ArrayList<>();
-        for(Comment child : comment.getChildren()){
-            children.add(getDTO(child));
+        if(comment.getChildren() != null) {
+            for (Comment child : comment.getChildren()) {
+                children.add(getDTO(child));
+            }
         }
         dto.setChildComments(children);
         return dto;

@@ -23,8 +23,13 @@ public class CommentController {
     CommentService commentService;
 
     @RequestMapping(value = "${endpoint.addComment}", method = POST)
-    public boolean addComment(@RequestBody CommentDTO comment) {
+    public CommentDTO addComment(@RequestBody CommentDTO comment) {
         return commentService.addComment(comment);
+    }
+
+    @RequestMapping(value = "${endpoint.addChildComment}", method = POST)
+    public boolean addChildComment(@PathVariable("parentId") long parentId, @RequestBody CommentDTO comment) {
+        return commentService.addChildComment(comment, parentId);
     }
 
     @RequestMapping(value = "${endpoint.deleteComment}", method = DELETE)

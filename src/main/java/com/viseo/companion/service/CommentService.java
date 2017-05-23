@@ -26,30 +26,13 @@ public class CommentService {
     @Autowired
     private UzerRepository uzerRepository;
 
-    public boolean addComment(CommentDTO commentDTO) {
-        try {
-            CommentConverter converter = new CommentConverter();
-            Comment comment = new Comment();
-            Uzer uzer = uzerRepository.getUzer(commentDTO.getUserId());
-            Event event = eventRepository.getEvent(commentDTO.getEventId());
-            if (uzer == null || event == null) {
-                return false;
-            }
-            comment.setUzer(uzer);
-            comment.setEvent(event);
-            converter.apply(commentDTO, comment);
-            if (!commentRepository.addComment(comment)) {
-                return false;
-            }
-            Comment parentComment = commentRepository.getComment(commentDTO.getParentCommentId());
-            if (parentComment != null) {
-                parentComment.addChild(comment);
-                commentRepository.updateComment(parentComment);
-            }
-            return true;
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+    public CommentDTO addComment(CommentDTO commentDTO) {
+        CommentConverter converter = new CommentConverter();
+        Comment comment = toComment(commentDTO);
+        if (comment == null || !commentRepository.addComment(comment)) {
+            return null;
         }
+        return converter.getDTO(comment);
     }
 
     public boolean deleteComment(long commentId) {
@@ -96,6 +79,35 @@ public class CommentService {
             ex.printStackTrace();
         }
         return new ArrayList<>();
+    }
+
+    public boolean addChildComment(CommentDTO commentDTO, long parentId) {
+        try {
+            Comment childComment = toComment(commentDTO);
+            if (childComment == null || !commentRepository.addComment(childComment)) {
+                return false;
+            }
+            Comment parentComment = commentRepository.getComment(parentId);
+            parentComment.addChild(childComment);
+            commentRepository.updateComment(parentComment);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return true;
+    }
+
+    private Comment toComment(CommentDTO commentDTO) {
+        Comment comment = new Comment();
+        CommentConverter converter = new CommentConverter();
+        Uzer uzer = uzerRepository.getUzer(commentDTO.getUserId());
+        Event event = eventRepository.getEvent(commentDTO.getEventId());
+        if (uzer == null || event == null) {
+            return null;
+        }
+        comment.setUzer(uzer);
+        comment.setEvent(event);
+        converter.apply(commentDTO, comment);
+        return comment;
     }
 
     private List<CommentDTO> toCommentDTOList(List<Comment> comments) {

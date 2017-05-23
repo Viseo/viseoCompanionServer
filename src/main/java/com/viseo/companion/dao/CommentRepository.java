@@ -28,19 +28,15 @@ public class CommentRepository {
     }
 
     @Transactional
-    public boolean deleteComment(Comment comment) {
-        try {
-            em.remove(em.contains(comment) ? comment : em.merge(comment));
-            em.flush();
-        } catch (EntityExistsException e) {
-            return false;
-        }
-        return true;
+    public List<Comment> getComments() {
+        return em.createQuery(
+                "select c from Comment c in elements(c.children)")
+                .getResultList();
     }
 
     @Transactional
     public Comment getComment(long id) {
-        Query query = em.createQuery("select a from Comment a left join fetch a.event where a.id = :id");
+        Query query = em.createQuery("select a from Comment a where a.id = :id");
         query.setParameter("id", id);
         List<Comment> result = query.getResultList();
         if (result.size() > 0)
@@ -48,6 +44,13 @@ public class CommentRepository {
         return null;
     }
 
+
+    @Transactional
+    public List<Comment> getCommentsByEvent(Long eventId) {
+        Query query = em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id order by a.datetime");
+        query.setParameter("id", eventId);
+        return (List<Comment>) query.getResultList();
+    }
 
     @Transactional
     public Comment updateComment(Comment comment) {
@@ -59,15 +62,13 @@ public class CommentRepository {
     }
 
     @Transactional
-    public List<Comment> getCommentsByEvent(Long eventId) {
-        Query query = em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id order by a.datetime");
-        query.setParameter("id", eventId);
-        return (List<Comment>) query.getResultList();
+    public boolean deleteComment(Comment comment) {
+        try {
+            em.remove(em.contains(comment) ? comment : em.merge(comment));
+            em.flush();
+        } catch (EntityExistsException e) {
+            return false;
+        }
+        return true;
     }
-
-    @Transactional
-    public List<Comment> getComments() {
-        return em.createQuery("select distinct a from Comment a left join fetch a.event order by a.datetime").getResultList();
-    }
-
 }
