@@ -10,7 +10,6 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -31,15 +30,14 @@ public class UzerRepository {
     }
 
     @Transactional
-    public boolean addUzer(Uzer uzer) {
+    public Uzer addUzer(Uzer uzer) {
         try {
-            uzer = em.merge(uzer);
             em.persist(uzer);
+            uzer = em.merge(uzer);
         } catch (EntityExistsException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
+        return uzer;
     }
 
     @Transactional
@@ -93,8 +91,8 @@ public class UzerRepository {
     public Uzer checkCredentials(String email, String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Uzer user = getUserByEmail(email);
-            if (encoder.matches(password, user.getPassword()))
-                return user;
+        if (encoder.matches(password, user.getPassword()))
+            return user;
         return null;
     }
 

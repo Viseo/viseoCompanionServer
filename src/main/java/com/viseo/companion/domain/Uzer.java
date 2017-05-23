@@ -2,13 +2,15 @@ package com.viseo.companion.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 public class Uzer extends BaseEntity {
-    
+
     String email;
     String firstName;
     String lastName;
@@ -22,7 +24,7 @@ public class Uzer extends BaseEntity {
     private Set<Event> events = new HashSet<Event>();
 
     @ManyToMany
-    private Set<Role> roles ;
+    private Set<Role> roles;
 
     public Uzer() {
     }
@@ -31,7 +33,7 @@ public class Uzer extends BaseEntity {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.roles=new HashSet<Role>();
+        this.roles = new HashSet<Role>();
         switch (this.password = password) {
         }
     }

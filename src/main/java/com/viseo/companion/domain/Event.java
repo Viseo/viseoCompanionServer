@@ -1,10 +1,12 @@
 package com.viseo.companion.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.*;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -35,7 +37,7 @@ public class Event extends BaseEntity {
         this.category = 0;
     }
 
-    public Event(Event newEvent){
+    public Event(Event newEvent) {
         this.name = newEvent.name;
         this.datetime = newEvent.datetime;
         this.description = newEvent.description;

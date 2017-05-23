@@ -1,4 +1,3 @@
-
 package com.viseo.companion.domain.apiextern;
 
 import com.google.gson.annotations.Expose;

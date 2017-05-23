@@ -26,13 +26,19 @@ public class CommentService {
     @Autowired
     private UzerRepository uzerRepository;
 
+    CommentConverter converter = new CommentConverter();
+
     public CommentDTO addComment(CommentDTO commentDTO) {
-        CommentConverter converter = new CommentConverter();
-        Comment comment = toComment(commentDTO);
-        if (comment == null || !commentRepository.addComment(comment)) {
-            return null;
+        try {
+            Comment comment = toComment(commentDTO);
+            if (comment == null) {
+                return null;
+            }
+            comment = commentRepository.addComment(comment);
+            return converter.getDTO(comment);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
-        return converter.getDTO(comment);
     }
 
     public boolean deleteComment(long commentId) {
@@ -41,7 +47,7 @@ public class CommentService {
             return false;
         }
         Comment parentComment = commentRepository.getParentFromChildId(commentId);
-        if(parentComment != null){
+        if (parentComment != null) {
             parentComment.removeChild(childComment);
             commentRepository.updateComment(parentComment);
         }
@@ -51,7 +57,6 @@ public class CommentService {
 
     public CommentDTO updateComment(CommentDTO commentDTO) {
         try {
-            CommentConverter converter = new CommentConverter();
             Comment comment = commentRepository.getComment(commentDTO.getId());
             if (comment == null) {
                 return null;
@@ -73,7 +78,6 @@ public class CommentService {
     }
 
     public CommentDTO getComment(long id) {
-        CommentConverter converter = new CommentConverter();
         Comment comment = commentRepository.getComment(id);
         return converter.getDTO(comment);
     }
@@ -90,7 +94,7 @@ public class CommentService {
     public boolean addChildComment(CommentDTO commentDTO, long parentId) {
         try {
             Comment childComment = toComment(commentDTO);
-            if (childComment == null || !commentRepository.addComment(childComment)) {
+            if (childComment == null || commentRepository.addComment(childComment) == null) {
                 return false;
             }
             Comment parentComment = commentRepository.getComment(parentId);
@@ -108,7 +112,6 @@ public class CommentService {
 
     private Comment toComment(CommentDTO commentDTO) {
         Comment comment = new Comment();
-        CommentConverter converter = new CommentConverter();
         Uzer uzer = uzerRepository.getUzer(commentDTO.getUserId());
         Event event = eventRepository.getEvent(commentDTO.getEventId());
         if (uzer == null || event == null) {
@@ -122,10 +125,39 @@ public class CommentService {
 
     private List<CommentDTO> toCommentDTOList(List<Comment> comments) {
         List<CommentDTO> result = new ArrayList<>();
-        CommentConverter converter = new CommentConverter();
         for (Comment comment : comments) {
             result.add(converter.getDTO(comment));
         }
         return result;
+    }
+
+    public boolean likeComment(long commentId, long uzerId) {
+        try {
+            Comment comment = commentRepository.getComment(commentId);
+            Uzer uzer = uzerRepository.getUzer(uzerId);
+            if (comment == null && uzer == null) {
+                return false;
+            }
+            comment.addLiker(uzer);
+            commentRepository.updateComment(comment);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return true;
+    }
+
+    public boolean dislikeComment(long commentId, long uzerId) {
+        try {
+            Comment comment = commentRepository.getComment(commentId);
+            Uzer uzer = uzerRepository.getUzer(uzerId);
+            if (comment == null && uzer == null) {
+                return false;
+            }
+            comment.removeliker(uzer);
+            commentRepository.updateComment(comment);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return true;
     }
 }

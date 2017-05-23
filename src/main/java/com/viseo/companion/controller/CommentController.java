@@ -17,9 +17,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class CommentController {
 
     @Autowired
-    private EventService eventService;
-
-    @Autowired
     CommentService commentService;
 
     @RequestMapping(value = "${endpoint.addComment}", method = POST)
@@ -55,5 +52,15 @@ public class CommentController {
     @RequestMapping(value = "${endpoint.getComments}", method = GET)
     public List<CommentDTO> getComments() {
         return commentService.getComments();
+    }
+
+    @RequestMapping(value = "${endpoint.likeComment}", method = POST)
+    public boolean likeComment(@PathVariable("commentId") long commentId, @PathVariable("uzerId") long uzerId) {
+        return commentService.likeComment(commentId, uzerId);
+    }
+
+    @RequestMapping(value = "${endpoint.dislikeComment}", method = DELETE)
+    public boolean dislikeComment(@PathVariable("commentId") long commentId, @PathVariable("uzerId") long uzerId) {
+        return commentService.dislikeComment(commentId, uzerId);
     }
 }

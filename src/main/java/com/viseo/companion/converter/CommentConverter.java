@@ -1,6 +1,7 @@
 package com.viseo.companion.converter;
 
 import com.viseo.companion.domain.Comment;
+import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.dto.CommentDTO;
 
 import java.util.ArrayList;
@@ -27,18 +28,30 @@ public class CommentConverter {
         } else {
             dto.setEventId(comment.getEvent().getId());
         }
+//        for(Comment child : comment.getChildren()) {
+//            CommentDTO commentDTO = getDTO(child);
+//            dto.getChildComments().add(commentDTO);
+//        }
         List<CommentDTO> children = new ArrayList<>();
-        if(comment.getChildren() != null) {
+        if (comment.getChildren() != null) {
             for (Comment child : comment.getChildren()) {
                 children.add(getDTO(child));
             }
         }
         dto.setChildComments(children);
+        List<Long> likers = new ArrayList<>();
+        if (comment.getLikers() != null) {
+            for (Uzer liker : comment.getLikers()) {
+                likers.add(liker.getId());
+            }
+        }
+        dto.setLikers(likers);
+        dto.setNbLike(likers.size());
         return dto;
     }
 
-    public void apply(CommentDTO dto, Comment comment){
-        if(dto.getId() != NEW && comment.getVersion() != dto.getVersion()){
+    public void apply(CommentDTO dto, Comment comment) {
+        if (dto.getId() != NEW && comment.getVersion() != dto.getVersion()) {
             throw new RuntimeException("Entity " + comment + " was updated since DTO was built.");
         }
         comment.setContent(dto.getContent());

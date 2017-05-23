@@ -9,9 +9,28 @@ public class CommentDTO extends BaseDTO {
     long userId;
     long eventId;
     List<CommentDTO> childComments = new ArrayList<>();
+    long nbLike;
+
+    List<Long> likers = new ArrayList<>();
 
     public CommentDTO() {
         super();
+    }
+
+    public long getNbLike() {
+        return nbLike;
+    }
+
+    public void setNbLike(long nbLike) {
+        this.nbLike = nbLike;
+    }
+
+    public List<Long> getLikers() {
+        return likers;
+    }
+
+    public void setLikers(List<Long> likers) {
+        this.likers = likers;
     }
 
     public List<CommentDTO> getChildComments() {

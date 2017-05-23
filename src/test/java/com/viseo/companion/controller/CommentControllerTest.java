@@ -6,6 +6,7 @@ import com.viseo.companion.ViseocompanionserverApplication;
 import com.viseo.companion.domain.Comment;
 import com.viseo.companion.domain.Event;
 import com.viseo.companion.domain.Uzer;
+import com.viseo.companion.dto.CommentDTO;
 import com.viseo.companion.service.CommentService;
 import com.viseo.companion.service.EventService;
 import com.viseo.companion.service.UzerService;
@@ -23,7 +24,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.BufferedReader;
@@ -32,11 +33,8 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- * Created by HEL3666 on 15/05/2017.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ViseocompanionserverApplication.class)
+@SpringBootTest
 public class CommentControllerTest {
 
     @Autowired
@@ -51,33 +49,24 @@ public class CommentControllerTest {
 
     @Test
     public void addCommentaireTest() throws IOException {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setContent("Cet évènènement était vraiment trop cool !");
+        commentDTO.setDatetime(1492116035);
+        commentDTO.setUserId(1);
+        commentDTO.setEventId(2);
 
-        final Comment comment = new Comment();
-        Calendar now = Calendar.getInstance();
-        comment.setDatetime(now);
-        comment.setContent("haaaaaaaaaaas");
-        Uzer user = uzerService.getUser(6L);
-        comment.setUzer(user);
-        Event event = eventService.getEvent(2L);
-        comment.setEvent(event);
-
-        // Création du client et éxécution d'une requete POST
         // Création du client et éxécution d'une requete POST
         final HttpClient client = HttpClientBuilder.create().build();
         final HttpPost mockRequestPost = new HttpPost("http://localhost:8080/comment");
         final ObjectMapper mapper = new ObjectMapper();
         final com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        final String jsonInString = ow.writeValueAsString(comment);
+        final String jsonInString = ow.writeValueAsString(commentDTO);
         mockRequestPost.addHeader("Content-type", "application/json");
         mockRequestPost.setEntity(new StringEntity(jsonInString));
 
-        final org.apache.http.HttpResponse mockResponse = client.execute(mockRequestPost);
+        org.apache.http.HttpResponse mockResponse = client.execute(mockRequestPost);
 
-        // Le code retour HTTP doit être un succès (200)z
         Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
-
-
-
     }
 
     @Test
@@ -114,28 +103,28 @@ public class CommentControllerTest {
         }
     }
 
-//    @Test
-//    public final void updateCommentaireTest() throws ClientProtocolException, IOException {
-//        Comment comment = commentService.getComment(8);
-//
-//        Calendar now = Calendar.getInstance();
-//        comment.setDatetime(now);
-//        comment.setContent("meeeeeee");
-//        Uzer user = uzerService.getUser(1L);
-//        comment.setUzer(user);
-//
-//        final HttpClient client = HttpClientBuilder.create().build();
-//        final HttpPut mockRequestPutt = new HttpPut("http://localhost:8080/comment/8");
-//        ObjectMapper mapper = new ObjectMapper();
-//        com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-//        final String jsonInString = ow.writeValueAsString(comment);
-//        // Ã©tablition de la requette (header+body)
-//        mockRequestPutt.addHeader("content-type", "application/json");
-//        mockRequestPutt.setEntity(new StringEntity(jsonInString));
-//        HttpResponse mockResponse = client.execute(mockRequestPutt);
-//        final org.apache.http.HttpResponse mockResponses = client.execute(mockRequestPutt);
-//        Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
-//    }
+    @Test
+    public final void updateCommentaireTest() throws ClientProtocolException, IOException {
+
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setId(3);
+        commentDTO.setVersion(0);
+        commentDTO.setContent(" [edited] Cet évènènement était vraiment trop cool !");
+        commentDTO.setDatetime(1492116035);
+
+        final HttpClient client = HttpClientBuilder.create().build();
+        final HttpPut mockRequestPutt = new HttpPut("http://localhost:8080/comment/8");
+        ObjectMapper mapper = new ObjectMapper();
+        com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        final String jsonInString = ow.writeValueAsString(commentDTO);
+        // Ã©tablition de la requette (header+body)
+        mockRequestPutt.addHeader("content-type", "application/json");
+        mockRequestPutt.setEntity(new StringEntity(jsonInString));
+        HttpResponse mockResponse = client.execute(mockRequestPutt);
+        final org.apache.http.HttpResponse mockResponses = client.execute(mockRequestPutt);
+        Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
+    }
+
     @Test
     public final void listCommentairesTest() throws ClientProtocolException, IOException {
 

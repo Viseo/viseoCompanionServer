@@ -54,10 +54,7 @@ public class UzerControllerTest {
                 .contentType("application/json").body(uzer).when()
                 .post(url).then().statusCode(200);
     }
-
-
 }*/
-
 
     @Test
     public void addUserTest() throws IOException {
@@ -84,7 +81,6 @@ public class UzerControllerTest {
         final ObjectMapper map = new ObjectMapper();
         final Uzer us = map.readValue(rd, Uzer.class);
     }
-
 
     @Test
     public final void getUserTest() throws IOException {

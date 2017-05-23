@@ -92,4 +92,12 @@ public class Comment extends BaseEntity {
     public void setUzer(Uzer uzer) {
         this.uzer = uzer;
     }
+
+    public void addLiker(Uzer uzer) {
+        likers.add(uzer);
+    }
+
+    public void removeliker(Uzer uzer) {
+        likers.remove(uzer);
+    }
 }

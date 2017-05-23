@@ -2,7 +2,10 @@ package com.viseo.companion.domain;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.viseo.companion.domain.apiextern.*;
+import com.viseo.companion.domain.apiextern.Data;
+import com.viseo.companion.domain.apiextern.NotificationSchemaAndroid;
+import com.viseo.companion.domain.apiextern.NotificationSchemaIOS;
+import com.viseo.companion.domain.apiextern.PlainNotification;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.*;
@@ -107,7 +110,7 @@ public class Notification {
         return formatToJSON(notificationSchemaIOS);
     }
 
-    private String formatToJSON(Object object){
+    private String formatToJSON(Object object) {
         Gson gson = new GsonBuilder().create();
         String JSONstring = gson.toJson(object);
 
