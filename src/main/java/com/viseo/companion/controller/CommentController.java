@@ -56,5 +56,4 @@ public class CommentController {
     public List<CommentDTO> getComments() {
         return commentService.getComments();
     }
-
 }

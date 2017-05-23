@@ -15,25 +15,14 @@ public class Uzer extends BaseEntity {
     String password;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "host",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "host")
     private Set<Event> organisedEvents = new HashSet<>();
 
-
-
-
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "uzer", fetch = FetchType.LAZY)
-    private Set<Comment> comments;
-
-
-    @ManyToMany(mappedBy = "participants", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "participants")
     private Set<Event> events = new HashSet<Event>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany
     private Set<Role> roles ;
-
-
-
 
     public Uzer() {
     }
@@ -43,7 +32,6 @@ public class Uzer extends BaseEntity {
         this.firstName = firstName;
         this.lastName = lastName;
         this.roles=new HashSet<Role>();
-        this.comments =new HashSet<Comment>();
         switch (this.password = password) {
         }
     }

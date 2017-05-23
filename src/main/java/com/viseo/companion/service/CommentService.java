@@ -36,11 +36,17 @@ public class CommentService {
     }
 
     public boolean deleteComment(long commentId) {
-        if (commentRepository.getComment(commentId) != null) {
-            commentRepository.deleteComment(commentRepository.getComment(commentId));
-            return true;
+        Comment childComment = commentRepository.getComment(commentId);
+        if (childComment == null) {
+            return false;
         }
-        return false;
+        Comment parentComment = commentRepository.getParentFromChildId(commentId);
+        if(parentComment != null){
+            parentComment.removeChild(childComment);
+            commentRepository.updateComment(parentComment);
+        }
+        commentRepository.deleteComment(childComment);
+        return true;
     }
 
     public CommentDTO updateComment(CommentDTO commentDTO) {

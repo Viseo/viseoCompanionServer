@@ -18,13 +18,8 @@ public class Event extends BaseEntity {
     private String keyWords;
     private String place;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Uzer> participants = new HashSet<Uzer>();
-
-
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "event",fetch = FetchType.LAZY)
-    private Set<Comment> comments = new HashSet<>();
 
     @ManyToOne
     private Uzer host;
@@ -102,10 +97,6 @@ public class Event extends BaseEntity {
 
     public void setPlace(String lieu) {
         this.place = lieu;
-    }
-
-    public void setComments(Set<Comment> comments) {
-        this.comments = comments;
     }
 
     public void setHost(Uzer host) {

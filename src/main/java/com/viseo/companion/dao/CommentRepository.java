@@ -57,6 +57,18 @@ public class CommentRepository {
     }
 
     @Transactional
+    public Comment getParentFromChildId(long childCommentId) {
+        List<Comment> result = em.createQuery(
+                "select a from Comment a left join fetch a.children c where c.id = :id", Comment.class)
+                .setParameter("id", childCommentId)
+                .getResultList();
+        if(result.iterator().hasNext()){
+            return  result.iterator().next();
+        }
+        return null;
+    }
+
+    @Transactional
     public Comment updateComment(Comment comment) {
         try {
             return em.merge(comment);
