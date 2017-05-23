@@ -88,6 +88,10 @@ public class CommentService {
                 return false;
             }
             Comment parentComment = commentRepository.getComment(parentId);
+            if (parentComment == null) {
+                commentRepository.deleteComment(childComment);
+                return false;
+            }
             parentComment.addChild(childComment);
             commentRepository.updateComment(parentComment);
         } catch (Exception ex) {

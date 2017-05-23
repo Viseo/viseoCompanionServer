@@ -1,6 +1,7 @@
 package com.viseo.companion.dao;
 
 import com.viseo.companion.domain.Comment;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,6 +9,9 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
@@ -30,15 +34,15 @@ public class CommentRepository {
     @Transactional
     public List<Comment> getComments() {
         return em.createQuery(
-                "select c from Comment c in elements(c.children)")
+                "select parentComment from Comment parentComment where parentComment not in (select children from Comment comment join comment.children children)", Comment.class)
                 .getResultList();
     }
 
     @Transactional
     public Comment getComment(long id) {
-        Query query = em.createQuery("select a from Comment a where a.id = :id");
-        query.setParameter("id", id);
-        List<Comment> result = query.getResultList();
+        List<Comment> result = em.createQuery("select a from Comment a where a.id = :id", Comment.class)
+                .setParameter("id", id)
+                .getResultList();
         if (result.size() > 0)
             return result.iterator().next();
         return null;
@@ -47,9 +51,9 @@ public class CommentRepository {
 
     @Transactional
     public List<Comment> getCommentsByEvent(Long eventId) {
-        Query query = em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id order by a.datetime");
-        query.setParameter("id", eventId);
-        return (List<Comment>) query.getResultList();
+        return em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id order by a.datetime", Comment.class)
+                .setParameter("id", eventId)
+                .getResultList();
     }
 
     @Transactional
