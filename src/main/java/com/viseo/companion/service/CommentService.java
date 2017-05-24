@@ -151,7 +151,7 @@ public class CommentService {
         Comment comment = new Comment();
         User user = userRepository.getUser(commentDTO.getWriter().getId());
         Event event = eventRepository.getEvent(commentDTO.getEventId());
-        if (user != null || event != null) {
+        if (user != null && event != null) {
             comment.setUser(user);
             comment.setEvent(event);
             converter.apply(commentDTO, comment);
