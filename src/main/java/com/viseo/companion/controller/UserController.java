@@ -12,7 +12,7 @@ import java.util.List;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
-public class UzerController {
+public class UserController {
 
     @Autowired
     private UserService userService;

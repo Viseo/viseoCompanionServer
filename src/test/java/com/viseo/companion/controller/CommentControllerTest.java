@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.viseo.companion.domain.Comment;
 import com.viseo.companion.dto.CommentDTO;
+import com.viseo.companion.dto.UserDTO;
 import com.viseo.companion.service.CommentService;
 import com.viseo.companion.service.EventService;
 import com.viseo.companion.service.UserService;
@@ -48,7 +49,7 @@ public class CommentControllerTest {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setContent("Cet évènènement était vraiment trop cool !");
         commentDTO.setDatetime(1492116035);
-        commentDTO.setUserId(1);
+        commentDTO.setWriter(new UserDTO());
         commentDTO.setEventId(2);
 
         // Création du client et éxécution d'une requete POST

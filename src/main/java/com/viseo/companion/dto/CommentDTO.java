@@ -6,12 +6,11 @@ import java.util.List;
 public class CommentDTO extends BaseDTO {
     String content;
     long datetime;
-    long userId;
     long eventId;
+    UserDTO writer;
     List<CommentDTO> childComments = new ArrayList<>();
+    List<UserDTO> likers = new ArrayList<>();
     long nbLike;
-
-    List<Long> likerIds = new ArrayList<>();
 
     public CommentDTO() {
         super();
@@ -25,12 +24,12 @@ public class CommentDTO extends BaseDTO {
         this.nbLike = nbLike;
     }
 
-    public List<Long> getLikerIds() {
-        return likerIds;
+    public List<UserDTO> getLikers() {
+        return likers;
     }
 
-    public void setLikerIds(List<Long> likerIds) {
-        this.likerIds = likerIds;
+    public void setLikers(List<UserDTO> likers) {
+        this.likers = likers;
     }
 
     public List<CommentDTO> getChildComments() {
@@ -57,12 +56,12 @@ public class CommentDTO extends BaseDTO {
         this.datetime = datetime;
     }
 
-    public long getUserId() {
-        return userId;
+    public UserDTO getWriter() {
+        return writer;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setWriter(UserDTO writer) {
+        this.writer = writer;
     }
 
     public long getEventId() {

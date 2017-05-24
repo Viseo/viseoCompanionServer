@@ -3,12 +3,15 @@ package com.viseo.companion.converter;
 import com.viseo.companion.domain.Comment;
 import com.viseo.companion.domain.User;
 import com.viseo.companion.dto.CommentDTO;
+import com.viseo.companion.dto.UserDTO;
 
 import java.util.Calendar;
 
 public class CommentConverter {
     static private long NULL = -1;
     static private long NEW = 0;
+
+    private UserConverter userConverter = new UserConverter();
 
     public CommentDTO getDTO(Comment comment) {
         CommentDTO dto = new CommentDTO();
@@ -17,9 +20,9 @@ public class CommentConverter {
         dto.setDatetime(comment.getDatetime().toInstant().toEpochMilli());
         dto.setVersion(comment.getVersion());
         if (comment.getUser() == null) {
-            dto.setUserId(NULL);
+            dto.setWriter(null);
         } else {
-            dto.setUserId(comment.getUser().getId());
+            dto.setWriter(userConverter.getDTO(comment.getUser()));
         }
         if (comment.getEvent() == null) {
             dto.setEventId(NULL);
@@ -31,9 +34,10 @@ public class CommentConverter {
             dto.getChildComments().add(commentChildDTO);
         }
         for (User liker : comment.getLikers()) {
-            dto.getLikerIds().add(liker.getId());
+            UserDTO likerDTO = userConverter.getDTO(liker);
+            dto.getLikers().add(likerDTO);
         }
-        dto.setNbLike(dto.getLikerIds().size());
+        dto.setNbLike(dto.getLikers().size());
         return dto;
     }
 

@@ -149,7 +149,7 @@ public class CommentService {
 
     private Comment toComment(CommentDTO commentDTO) {
         Comment comment = new Comment();
-        User user = userRepository.getUser(commentDTO.getUserId());
+        User user = userRepository.getUser(commentDTO.getWriter().getId());
         Event event = eventRepository.getEvent(commentDTO.getEventId());
         if (user != null || event != null) {
             comment.setUser(user);
