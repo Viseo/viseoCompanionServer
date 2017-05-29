@@ -1,16 +1,17 @@
 package com.viseo.companion.converter;
 
 import com.viseo.companion.domain.Comment;
-import com.viseo.companion.domain.Uzer;
+import com.viseo.companion.domain.User;
 import com.viseo.companion.dto.CommentDTO;
+import com.viseo.companion.dto.UserDTO;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class CommentConverter {
     static private long NULL = -1;
     static private long NEW = 0;
+
+    private UserConverter userConverter = new UserConverter();
 
     public CommentDTO getDTO(Comment comment) {
         CommentDTO dto = new CommentDTO();
@@ -18,35 +19,25 @@ public class CommentConverter {
         dto.setContent(comment.getContent());
         dto.setDatetime(comment.getDatetime().toInstant().toEpochMilli());
         dto.setVersion(comment.getVersion());
-        if (comment.getUzer() == null) {
-            dto.setUserId(NULL);
+        if (comment.getUser() == null) {
+            dto.setWriter(null);
         } else {
-            dto.setUserId(comment.getUzer().getId());
+            dto.setWriter(userConverter.getDTO(comment.getUser()));
         }
         if (comment.getEvent() == null) {
             dto.setEventId(NULL);
         } else {
             dto.setEventId(comment.getEvent().getId());
         }
-//        for(Comment child : comment.getChildren()) {
-//            CommentDTO commentDTO = getDTO(child);
-//            dto.getChildComments().add(commentDTO);
-//        }
-        List<CommentDTO> children = new ArrayList<>();
-        if (comment.getChildren() != null) {
-            for (Comment child : comment.getChildren()) {
-                children.add(getDTO(child));
-            }
+        for (Comment child : comment.getChildren()) {
+            CommentDTO commentChildDTO = getDTO(child);
+            dto.getChildComments().add(commentChildDTO);
         }
-        dto.setChildComments(children);
-        List<Long> likers = new ArrayList<>();
-        if (comment.getLikers() != null) {
-            for (Uzer liker : comment.getLikers()) {
-                likers.add(liker.getId());
-            }
+        for (User liker : comment.getLikers()) {
+            UserDTO likerDTO = userConverter.getDTO(liker);
+            dto.getLikers().add(likerDTO);
         }
-        dto.setLikers(likers);
-        dto.setNbLike(likers.size());
+        dto.setNbLike(dto.getLikers().size());
         return dto;
     }
 

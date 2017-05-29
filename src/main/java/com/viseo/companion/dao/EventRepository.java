@@ -1,63 +1,33 @@
 package com.viseo.companion.dao;
 
 import com.viseo.companion.domain.Event;
-import com.viseo.companion.domain.Uzer;
+import com.viseo.companion.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.TemporalType.DATE;
 
 @Repository
+@Transactional
 public class EventRepository {
 
     @Autowired
-    UzerRepository userDao;
+    UserRepository userDao;
 
     @PersistenceContext
     EntityManager em;
 
-    @Transactional
     public Event addEvent(Event event) {
-        try {
-            em.persist(event);
-            event = em.merge(event);
-        } catch (EntityExistsException e) {
-            e.printStackTrace();
-            return null;
-        }
+        em.persist(event);
         return event;
     }
 
-    @Transactional
-    public boolean deleteEvent(Event event) {
-        try {
-            em.remove(em.contains(event) ? event : em.merge(event));
-            em.flush();
-        } catch (EntityExistsException e) {
-            return false;
-        }
-        return true;
-    }
-
-    @Transactional
-    public Event updateEvent(Event event) {
-        try {
-            return em.merge(event);
-        } catch (EntityExistsException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Transactional
     public Event getEvent(long id) {
         List<Event> eventList = em.createQuery(
                 "select a from Event a left join fetch a.participants p left join fetch p.roles where a.id = :id", Event.class)
@@ -68,14 +38,12 @@ public class EventRepository {
         return null;
     }
 
-    @Transactional
     public List<Event> getEvents() {
         return em.createQuery(
                 "select distinct a from Event a left join fetch a.participants p left join fetch p.roles order by a.datetime", Event.class)
                 .getResultList();
     }
 
-    @Transactional
     public List<Event> getEventsBetween(String before, String after) {
         return em.createQuery(
                 "SELECT a FROM Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime >= :after AND a.datetime <= :before order by a.datetime", Event.class)
@@ -84,7 +52,6 @@ public class EventRepository {
                 .getResultList();
     }
 
-    @Transactional
     public List<Event> getEventsAfter(String after) {
         return em.createQuery(
                 "SELECT a from Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime >= :after order by a.datetime", Event.class)
@@ -92,7 +59,6 @@ public class EventRepository {
                 .getResultList();
     }
 
-    @Transactional
     public List<Event> getEventsBefore(String before) {
         return em.createQuery(
                 "SELECT a FROM Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime <= :before ORDER BY a.datetime", Event.class)
@@ -100,7 +66,6 @@ public class EventRepository {
                 .getResultList();
     }
 
-    @Transactional
     public List<Event> getEventsByRegisteredUser(long userId) {
         return em.createQuery(
                 "select a from Event a left join fetch a.participants p left join fetch p.roles where p.id = :id order by a.datetime", Event.class)
@@ -108,11 +73,19 @@ public class EventRepository {
                 .getResultList();
     }
 
-    @Transactional
+    public Event updateEvent(Event event) {
+        return em.merge(event);
+    }
+
+    public void deleteEvent(Event event) {
+        event = em.find(Event.class, event.getId());
+        em.remove(event);
+    }
+
     public boolean addParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);
         if (event != null) {
-            Uzer user = userDao.getUzer(userId);
+            User user = userDao.getUser(userId);
             if (user != null) {
                 event.addParticipant(user);
                 return true;
@@ -121,16 +94,13 @@ public class EventRepository {
         return false;
     }
 
-    @Transactional
-    public boolean removeParticipant(long eventId, long userId) {
+    public void removeParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);
         if (event != null) {
-            Uzer user = userDao.getUzer(userId);
+            User user = userDao.getUser(userId);
             if (user != null) {
                 event.removeParticipant(user);
-                return true;
             }
         }
-        return false;
     }
 }

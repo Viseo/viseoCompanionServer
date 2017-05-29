@@ -5,13 +5,12 @@ package com.viseo.companion.service;
  */
 
 
-import com.viseo.companion.ViseocompanionserverApplication;
 import com.viseo.companion.domain.Event;
 
 import java.util.Calendar;
 import java.util.List;
 
-import com.viseo.companion.domain.Uzer;
+import com.viseo.companion.domain.User;
 import com.viseo.companion.exception.CompanionException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,7 +26,7 @@ public class EventServiceTest {
     @Autowired
     EventService eventService;
     @Autowired
-    UzerService uzerService;
+    UserService userService;
 
     static Event event;
 
@@ -104,10 +103,10 @@ public class EventServiceTest {
     @Test
     public void addParticipant() {
         event = eventService.getEvent(65L);
-        final Uzer uzer = uzerService.getUser(43L);
-        event.addParticipant(uzer);
+        final User user = userService.getUser(43L);
+        event.addParticipant(user);
         try {
-            Assert.assertNotNull(uzer);
+            Assert.assertNotNull(user);
         } catch (final CompanionException ex) {
             throw new RuntimeException(ex);
         }
@@ -129,7 +128,7 @@ public class EventServiceTest {
         event = eventService.getEvent(65L);
         Long userId = 43L;
         try {
-            Assert.assertTrue(eventService.removeParticipant(event.getId(), userId));
+            eventService.removeParticipant(event.getId(), userId);
         } catch (final CompanionException ex) {
             throw new RuntimeException(ex);
         }

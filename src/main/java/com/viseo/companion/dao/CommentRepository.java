@@ -4,7 +4,6 @@ import com.viseo.companion.domain.Comment;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -17,12 +16,8 @@ public class CommentRepository {
     EntityManager em;
 
     public Comment addComment(Comment comment) {
-        try{
-            em.persist(comment);
-            return  comment;
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        em.persist(comment);
+        return comment;
     }
 
     public List<Comment> getComments() {
@@ -35,11 +30,10 @@ public class CommentRepository {
         List<Comment> result = em.createQuery("select a from Comment a where a.id = :id", Comment.class)
                 .setParameter("id", id)
                 .getResultList();
-        if (result.size() > 0)
+        if (result.iterator().hasNext())
             return result.iterator().next();
         return null;
     }
-
 
     public List<Comment> getCommentsByEvent(Long eventId) {
         return em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id order by a.datetime", Comment.class)
@@ -59,20 +53,11 @@ public class CommentRepository {
     }
 
     public Comment updateComment(Comment comment) {
-        try {
-            return em.merge(comment);
-        } catch (EntityExistsException e) {
-            throw new RuntimeException(e);
-        }
+        return em.merge(comment);
     }
 
-    public boolean deleteComment(Comment comment) {
-        try {
-            em.remove(em.contains(comment) ? comment : em.merge(comment));
-            em.flush();
-        } catch (EntityExistsException e) {
-            return false;
-        }
-        return true;
+    public void deleteComment(Comment comment) {
+        comment = em.find(Comment.class, comment.getId());
+        em.remove(comment);
     }
 }

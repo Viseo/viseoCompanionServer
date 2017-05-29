@@ -12,17 +12,17 @@ public class PasswordResetToken extends BaseEntity {
     private String guid;
 
     @OneToOne
-    private Uzer uzer;
+    private User user;
 
     private Calendar expiryDate;
 
-    public Uzer getUzer() {
-        return uzer;
+    public User getUser() {
+        return user;
     }
 
-    public PasswordResetToken(String guid, Uzer uzer) {
+    public PasswordResetToken(String guid, User user) {
         this.guid = guid;
-        this.uzer = uzer;
+        this.user = user;
         setExpiryDate(2);
     }
 

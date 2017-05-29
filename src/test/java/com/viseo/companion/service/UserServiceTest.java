@@ -1,8 +1,7 @@
 package com.viseo.companion.service;
 
-import com.viseo.companion.ViseocompanionserverApplication;
 import com.viseo.companion.domain.Role;
-import com.viseo.companion.domain.Uzer;
+import com.viseo.companion.domain.User;
 import com.viseo.companion.exception.CompanionException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,10 +15,10 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class UzerServiceTest {
+public class UserServiceTest {
 
     @Autowired
-    private UzerService uzerService;
+    private UserService userService;
 
 
 
@@ -27,17 +26,17 @@ public class UzerServiceTest {
 
     @Test
     public void addUserTest() {
-        final Uzer uzer = new Uzer();
-        uzer.setEmail("me@gmail.com");
-        uzer.setPassword("me");
-        uzer.setFirstName("meee");
-        uzer.setLastName("meee");
+        final User user = new User();
+        user.setEmail("me@gmail.com");
+        user.setPassword("me");
+        user.setFirstName("meee");
+        user.setLastName("meee");
         try {
-            final Uzer newUzer = uzerService.addUser(uzer);
-            Assert.assertNotNull(newUzer.getId());
-            Assert.assertEquals(uzer.getEmail(), newUzer.getEmail());
+            final User newUser = userService.addUser(user);
+            Assert.assertNotNull(newUser.getId());
+            Assert.assertEquals(user.getEmail(), newUser.getEmail());
         } catch (final CompanionException ex) {
-            Assert.assertEquals("the Uzer that you want to add already exist ", ex.getMessage());
+            Assert.assertEquals("the User that you want to add already exist ", ex.getMessage());
         }
     }
 
@@ -45,28 +44,28 @@ public class UzerServiceTest {
     public final void updateUzerTest() {
         final Long id = 34L;
 
-        final Uzer uzer = uzerService.getUser(id);
-        uzer.setEmail("woooo@gmail.com");
-        uzer.setPassword("haifa");
-        uzer.setFirstName("haifaaa");
-        uzer.setLastName("ontt");
+        final User user = userService.getUser(id);
+        user.setEmail("woooo@gmail.com");
+        user.setPassword("haifa");
+        user.setFirstName("haifaaa");
+        user.setLastName("ontt");
 
         Role role = new Role("admin", "admin");
-        uzer.getRoles().add(role);
-        Uzer newUzer = uzerService.updateUzer(uzer);
+        user.getRoles().add(role);
+        User newUser = userService.updateUser(user);
         try {
-            Assert.assertEquals(uzer.getId(), newUzer.getId());
+            Assert.assertEquals(user.getId(), newUser.getId());
         } catch (final CompanionException ex) {
-            Assert.assertEquals("l'uzer que vous souhaitez modifier n'exsite pas", ex.getMessage());
+            Assert.assertEquals("l'user que vous souhaitez modifier n'exsite pas", ex.getMessage());
         }
     }
 
     @Test
     public void checkCredentialsTest() {
-        final Uzer uzer = new Uzer();
+        final User uzer = new User();
         uzer.setEmail("woooo@gmail.com");
         uzer.setPassword("leo");
-        Uzer user = uzerService.checkCredentials(uzer.getEmail(), uzer.getPassword());
+        User user = userService.checkCredentials(uzer.getEmail(), uzer.getPassword());
         try {
             Assert.assertNotNull(user);
         } catch (final CompanionException ex) {
@@ -77,9 +76,9 @@ public class UzerServiceTest {
     @Test
     public final void deleteUzerTest() {
         final Long id = 35L;
-        final Uzer uzer = uzerService.getUser(id);
+        final User user = userService.getUser(id);
         try {
-            uzerService.deleteUzer(id);
+            userService.deleteUser(id);
         } catch (final CompanionException ex) {
             Assert.assertEquals("This user cannot be deleted", ex.getMessage());
         }
@@ -88,7 +87,7 @@ public class UzerServiceTest {
     @Test
     public void getUserTest() {
         try {
-            Assert.assertNotNull(uzerService.getUser(19L));
+            Assert.assertNotNull(userService.getUser(19L));
         } catch (final CompanionException ex) {
             Assert.assertEquals("l'utilisateur n'existe pas ", ex.getMessage());
         }
@@ -96,14 +95,14 @@ public class UzerServiceTest {
 
     @Test
     public void getUsersTest() {
-        final List<Uzer> listUsers = uzerService.getUsers();
+        final List<User> listUsers = userService.getUsers();
         Assert.assertNotNull(listUsers);
         Assert.assertEquals(6, listUsers.size());
     }
 
     @Test
     public void getUserByEmailTest() {
-        final Uzer User = uzerService.getUserByEmail("woooo@gmail.com");
+        final User User = userService.getUserByEmail("woooo@gmail.com");
         Assert.assertNotNull(User);
     }
 }

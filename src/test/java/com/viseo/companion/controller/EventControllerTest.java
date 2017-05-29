@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.viseo.companion.domain.Event;
-import com.viseo.companion.domain.Uzer;
+import com.viseo.companion.domain.User;
 import com.viseo.companion.service.EventService;
-import com.viseo.companion.service.UzerService;
+import com.viseo.companion.service.UserService;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -37,13 +37,13 @@ public class EventControllerTest {
     private EventService eventService;
 
     @Autowired
-    private UzerService uzerService;
+    private UserService userService;
 
     @Test
     public void addEventTest() throws IOException {
 
         Calendar now = Calendar.getInstance();
-       // Uzer user = uzerService.getUsers(1L);
+       // User user = uzerService.getUsers(1L);
         final Event event = new Event("AMOOOOO", now, "Hello World!", "HELLLL", "HELLLL", "URL");
 
 
@@ -139,7 +139,7 @@ public class EventControllerTest {
 
         event.setDescription("HELLO SPEEDYYYY");
 
-        Uzer user = uzerService.getUser(51L);
+        User user = userService.getUser(51L);
 
         event.getParticipants().add(user);
 //        event.getParticipants().remove(user);
@@ -170,7 +170,7 @@ public class EventControllerTest {
         final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
         final ObjectMapper mapper = new ObjectMapper();
 
-        List<Uzer> ListParticipants = new ObjectMapper().readValue(rd, new TypeReference<List<Uzer>>() {
+        List<User> ListParticipants = new ObjectMapper().readValue(rd, new TypeReference<List<User>>() {
         });
         Assert.assertNotNull(ListParticipants);
     }

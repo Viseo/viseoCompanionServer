@@ -2,14 +2,12 @@ package com.viseo.companion.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.viseo.companion.ViseocompanionserverApplication;
 import com.viseo.companion.domain.Comment;
-import com.viseo.companion.domain.Event;
-import com.viseo.companion.domain.Uzer;
 import com.viseo.companion.dto.CommentDTO;
+import com.viseo.companion.dto.UserDTO;
 import com.viseo.companion.service.CommentService;
 import com.viseo.companion.service.EventService;
-import com.viseo.companion.service.UzerService;
+import com.viseo.companion.service.UserService;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -30,7 +28,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Calendar;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -41,7 +38,7 @@ public class CommentControllerTest {
     private CommentService commentService;
 
     @Autowired
-    UzerService uzerService;
+    UserService userService;
 
     @Autowired
     EventService eventService;
@@ -52,7 +49,7 @@ public class CommentControllerTest {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setContent("Cet évènènement était vraiment trop cool !");
         commentDTO.setDatetime(1492116035);
-        commentDTO.setUserId(1);
+        commentDTO.setWriter(new UserDTO());
         commentDTO.setEventId(2);
 
         // Création du client et éxécution d'une requete POST

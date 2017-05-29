@@ -1,8 +1,8 @@
 package com.viseo.companion.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.viseo.companion.domain.Uzer;
-import com.viseo.companion.service.UzerService;
+import com.viseo.companion.domain.User;
+import com.viseo.companion.service.UserService;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -27,9 +27,9 @@ import java.io.InputStreamReader;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class UzerControllerTest {
+public class UserControllerTest {
     @Autowired
-    UzerService uzerService;
+    UserService userService;
     /*
     @InjectMocks
     UzerController uzerController;
@@ -42,7 +42,7 @@ public class UzerControllerTest {
 
     @Test
     public void addUserTest() throws IOException {
-        final Uzer uzer = new Uzer();
+        final User uzer = new User();
         uzer.setEmail("haifaaa@gmail.com");
         uzer.setPassword("nonnn");
         uzer.setFirstName("elhh");
@@ -56,18 +56,18 @@ public class UzerControllerTest {
 
     @Test
     public void addUserTest() throws IOException {
-        final Uzer uzer = new Uzer();
-        uzer.setEmail("haifaa@gmail.com");
-        uzer.setPassword("non");
-        uzer.setFirstName("elh");
-        uzer.setLastName("ha");
+        final User user = new User();
+        user.setEmail("haifaa@gmail.com");
+        user.setPassword("non");
+        user.setFirstName("elh");
+        user.setLastName("ha");
 
         // Création du client et éxécution d'une requete POST
         final HttpClient client = HttpClientBuilder.create().build();
         final HttpPost mockRequestPost = new HttpPost("http://localhost:8080/users");
         final ObjectMapper mapper = new ObjectMapper();
         final com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        final String jsonInString = ow.writeValueAsString(uzer);
+        final String jsonInString = ow.writeValueAsString(user);
         mockRequestPost.addHeader("Content-type", "application/json");
         mockRequestPost.setEntity(new StringEntity(jsonInString));
 
@@ -77,7 +77,7 @@ public class UzerControllerTest {
         Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
         final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
         final ObjectMapper map = new ObjectMapper();
-        final Uzer us = map.readValue(rd, Uzer.class);
+        final User us = map.readValue(rd, User.class);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class UzerControllerTest {
             final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
             try {
                 final ObjectMapper map = new ObjectMapper();
-                final Uzer us = map.readValue(rd, Uzer.class);
+                final User us = map.readValue(rd, User.class);
                 Assert.assertNotNull(us);
             } catch (Exception ex) {
             }
@@ -115,7 +115,7 @@ public class UzerControllerTest {
 
         final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
         final ObjectMapper mapper = new ObjectMapper();
-        final Iterable<Uzer> uz = mapper.readValue(rd, Iterable.class);
+        final Iterable<User> uz = mapper.readValue(rd, Iterable.class);
 
         Assert.assertNotNull(uz);
     }
@@ -136,7 +136,7 @@ public class UzerControllerTest {
 
             try {
                 final ObjectMapper map = new ObjectMapper();
-                final Iterable<Uzer> uz = map.readValue(rd, Iterable.class);
+                final Iterable<User> uz = map.readValue(rd, Iterable.class);
                 Assert.assertNotNull(uz);
             } catch (Exception ex) {
             }
@@ -145,16 +145,16 @@ public class UzerControllerTest {
 
     @Test
     public void AuthentificationTest() throws IOException {
-        final Uzer uzer = new Uzer();
-        uzer.setEmail("haifaa@gmail.com");
-        uzer.setPassword("non");
+        final User user = new User();
+        user.setEmail("haifaa@gmail.com");
+        user.setPassword("non");
 
         // Création du client et éxécution d'une requete POST
         final HttpClient client = HttpClientBuilder.create().build();
         final HttpPost mockRequestPost = new HttpPost("http://localhost:8080/authenticate");
         final ObjectMapper mapper = new ObjectMapper();
         final com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        final String jsonInString = ow.writeValueAsString(uzer);
+        final String jsonInString = ow.writeValueAsString(user);
         mockRequestPost.addHeader("Content-type", "application/json");
         mockRequestPost.setEntity(new StringEntity(jsonInString));
 
@@ -164,22 +164,22 @@ public class UzerControllerTest {
         Assert.assertEquals(200, mockResponse.getStatusLine().getStatusCode());
         final BufferedReader rd = new BufferedReader(new InputStreamReader(mockResponse.getEntity().getContent()));
         final ObjectMapper map = new ObjectMapper();
-        final Uzer us = map.readValue(rd, Uzer.class);
+        final User us = map.readValue(rd, User.class);
     }
 
     @Test
     public final void updateUserTest() throws ClientProtocolException, IOException {
-        final Uzer uzer = uzerService.getUser(23L);
-        uzer.setEmail("ihate@gmail.com");
-        uzer.setPassword("me");
-        uzer.setLastName("haifa");
+        final User user = userService.getUser(23L);
+        user.setEmail("ihate@gmail.com");
+        user.setPassword("me");
+        user.setLastName("haifa");
 
         // Création du client et éxécution d'une requete POST
         final HttpClient client = HttpClientBuilder.create().build();
         final HttpPut mockRequestPut = new HttpPut("http://localhost:8080/users/23");
         final ObjectMapper mapper = new ObjectMapper();
         final com.fasterxml.jackson.databind.ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        final String jsonInString = ow.writeValueAsString(uzer);
+        final String jsonInString = ow.writeValueAsString(user);
         mockRequestPut.addHeader("Content-type", "application/json");
         mockRequestPut.setEntity(new StringEntity(jsonInString));
 

@@ -4,6 +4,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -14,34 +15,34 @@ public class Comment extends BaseEntity {
     private String content;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Comment> children;
+    private List<Comment> children = new ArrayList<>();
 
     @ManyToOne
-    private Uzer uzer;
+    private User user;
 
     @ManyToOne
     private Event event;
 
     @OneToMany
-    List<Uzer> likers;
+    List<User> likers = new ArrayList<>();
 
     public Comment() {
         super();
     }
 
-    public Comment(Calendar datetime, String content, List<Comment> children, Uzer uzer, Event event) {
+    public Comment(Calendar datetime, String content, List<Comment> children, User user, Event event) {
         this.datetime = datetime;
         this.content = content;
         this.children = children;
-        this.uzer = uzer;
+        this.user = user;
         this.event = event;
     }
 
-    public List<Uzer> getLikers() {
+    public List<User> getLikers() {
         return likers;
     }
 
-    public void setLikers(List<Uzer> likers) {
+    public void setLikers(List<User> likers) {
         this.likers = likers;
     }
 
@@ -85,19 +86,19 @@ public class Comment extends BaseEntity {
         return content;
     }
 
-    public Uzer getUzer() {
-        return uzer;
+    public User getUser() {
+        return user;
     }
 
-    public void setUzer(Uzer uzer) {
-        this.uzer = uzer;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void addLiker(Uzer uzer) {
-        likers.add(uzer);
+    public void addLiker(User user) {
+        likers.add(user);
     }
 
-    public void removeliker(Uzer uzer) {
-        likers.remove(uzer);
+    public void removeliker(User user) {
+        likers.remove(user);
     }
 }

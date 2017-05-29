@@ -3,10 +3,10 @@ package com.viseo.companion.service;
 import com.viseo.companion.converter.CommentConverter;
 import com.viseo.companion.dao.CommentRepository;
 import com.viseo.companion.dao.EventRepository;
-import com.viseo.companion.dao.UzerRepository;
+import com.viseo.companion.dao.UserRepository;
 import com.viseo.companion.domain.Comment;
 import com.viseo.companion.domain.Event;
-import com.viseo.companion.domain.Uzer;
+import com.viseo.companion.domain.User;
 import com.viseo.companion.dto.CommentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,62 +24,30 @@ public class CommentService {
     private EventRepository eventRepository;
 
     @Autowired
-    private UzerRepository uzerRepository;
+    private UserRepository userRepository;
 
-    CommentConverter converter = new CommentConverter();
+    private CommentConverter converter = new CommentConverter();
 
     public CommentDTO addComment(CommentDTO commentDTO) {
         try {
             Comment comment = toComment(commentDTO);
-            if (comment == null) {
-                return null;
+            if (comment != null) {
+                comment = commentRepository.addComment(comment);
+                return converter.getDTO(comment);
             }
-            comment = commentRepository.addComment(comment);
-            return converter.getDTO(comment);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-    }
-
-    public boolean deleteComment(long commentId) {
-        Comment childComment = commentRepository.getComment(commentId);
-        if (childComment == null) {
-            return false;
-        }
-        Comment parentComment = commentRepository.getParentFromChildId(commentId);
-        if (parentComment != null) {
-            parentComment.removeChild(childComment);
-            commentRepository.updateComment(parentComment);
-        }
-        commentRepository.deleteComment(childComment);
-        return true;
-    }
-
-    public CommentDTO updateComment(CommentDTO commentDTO) {
-        try {
-            Comment comment = commentRepository.getComment(commentDTO.getId());
-            if (comment == null) {
-                return null;
-            }
-            converter.apply(commentDTO, comment);
-            return converter.getDTO(commentRepository.updateComment(comment));
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    public List<CommentDTO> getCommentsByEvent(long eventId) {
-        try {
-            return toCommentDTOList(commentRepository.getCommentsByEvent(eventId));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return new ArrayList<>();
+        return null;
     }
 
     public CommentDTO getComment(long id) {
-        Comment comment = commentRepository.getComment(id);
-        return converter.getDTO(comment);
+        try {
+            Comment comment = commentRepository.getComment(id);
+            return converter.getDTO(comment);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<CommentDTO> getComments() {
@@ -91,36 +59,84 @@ public class CommentService {
         return new ArrayList<>();
     }
 
-    public boolean addChildComment(CommentDTO commentDTO, long parentId) {
+    public List<CommentDTO> getCommentsByEvent(long eventId) {
         try {
-            Comment childComment = toComment(commentDTO);
-            if (childComment == null || commentRepository.addComment(childComment) == null) {
-                return false;
+            return toCommentDTOList(commentRepository.getCommentsByEvent(eventId));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public CommentDTO updateComment(CommentDTO commentDTO) {
+        try {
+            Comment comment = commentRepository.getComment(commentDTO.getId());
+            if (comment != null) {
+                converter.apply(commentDTO, comment);
+                return converter.getDTO(commentRepository.updateComment(comment));
             }
-            Comment parentComment = commentRepository.getComment(parentId);
-            if (parentComment == null) {
-                commentRepository.deleteComment(childComment);
-                return false;
-            }
-            parentComment.addChild(childComment);
-            commentRepository.updateComment(parentComment);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        return true;
+        return null;
     }
 
-    private Comment toComment(CommentDTO commentDTO) {
-        Comment comment = new Comment();
-        Uzer uzer = uzerRepository.getUzer(commentDTO.getUserId());
-        Event event = eventRepository.getEvent(commentDTO.getEventId());
-        if (uzer == null || event == null) {
-            return null;
+    public void deleteComment(long commentId) {
+        Comment childComment = commentRepository.getComment(commentId);
+        if (childComment != null) {
+            Comment parentComment = commentRepository.getParentFromChildId(commentId);
+            if (parentComment != null) {
+                parentComment.removeChild(childComment);
+                commentRepository.updateComment(parentComment);
+            }
+            commentRepository.deleteComment(childComment);
         }
-        comment.setUzer(uzer);
-        comment.setEvent(event);
-        converter.apply(commentDTO, comment);
-        return comment;
+    }
+
+    public CommentDTO addChildComment(CommentDTO commentDTO, long parentId) {
+        try {
+            Comment childComment = toComment(commentDTO);
+            Comment parentComment = commentRepository.getComment(parentId);
+            if (childComment != null && parentComment != null) {
+                commentRepository.addComment(childComment);
+                parentComment.addChild(childComment);
+                commentRepository.updateComment(parentComment);
+                return converter.getDTO(childComment);
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return null;
+    }
+
+    public boolean likeComment(long commentId, long uzerId) {
+        try {
+            Comment comment = commentRepository.getComment(commentId);
+            User user = userRepository.getUser(uzerId);
+            if (comment != null && user != null) {
+                comment.addLiker(user);
+                commentRepository.updateComment(comment);
+                return true;
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return false;
+    }
+
+    public boolean dislikeComment(long commentId, long uzerId) {
+        try {
+            Comment comment = commentRepository.getComment(commentId);
+            User user = userRepository.getUser(uzerId);
+            if (comment != null && user != null) {
+                comment.removeliker(user);
+                commentRepository.updateComment(comment);
+                return true;
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return false;
     }
 
     private List<CommentDTO> toCommentDTOList(List<Comment> comments) {
@@ -131,33 +147,16 @@ public class CommentService {
         return result;
     }
 
-    public boolean likeComment(long commentId, long uzerId) {
-        try {
-            Comment comment = commentRepository.getComment(commentId);
-            Uzer uzer = uzerRepository.getUzer(uzerId);
-            if (comment == null && uzer == null) {
-                return false;
-            }
-            comment.addLiker(uzer);
-            commentRepository.updateComment(comment);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+    private Comment toComment(CommentDTO commentDTO) {
+        Comment comment = new Comment();
+        User user = userRepository.getUser(commentDTO.getWriter().getId());
+        Event event = eventRepository.getEvent(commentDTO.getEventId());
+        if (user != null && event != null) {
+            comment.setUser(user);
+            comment.setEvent(event);
+            converter.apply(commentDTO, comment);
+            return comment;
         }
-        return true;
-    }
-
-    public boolean dislikeComment(long commentId, long uzerId) {
-        try {
-            Comment comment = commentRepository.getComment(commentId);
-            Uzer uzer = uzerRepository.getUzer(uzerId);
-            if (comment == null && uzer == null) {
-                return false;
-            }
-            comment.removeliker(uzer);
-            commentRepository.updateComment(comment);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-        return true;
+        return null;
     }
 }

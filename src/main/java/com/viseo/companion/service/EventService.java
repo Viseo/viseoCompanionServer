@@ -4,7 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.viseo.companion.dao.EventRepository;
 import com.viseo.companion.domain.Event;
-import com.viseo.companion.domain.Uzer;
+import com.viseo.companion.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
     @Autowired
-    private UzerService userService;
+    private UserService userService;
 
     @Autowired
     private AmazonS3 s3client;
@@ -31,7 +31,7 @@ public class EventService {
 
     public Event addEvent(Event event) {
         try {
-            eventRepository.addEvent(event);
+            event = eventRepository.addEvent(event);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -40,30 +40,8 @@ public class EventService {
         return event;
     }
 
-
-    public Event getEvent(long id) {
-        Event result = eventRepository.getEvent(id);
-        return result;
-    }
-
-    public boolean deleteEvent(Long eventId) {
-        if (eventRepository.getEvent(eventId) != null) {
-            eventRepository.deleteEvent(eventRepository.getEvent(eventId));
-            return true;
-        }
-        return false;
-    }
-
-    public Event updateEvent(Event event) {
-        try {
-            return eventRepository.updateEvent(event);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
     public List<Event> getEvents(String before, String after) {
-        List<Event> events = null;
+        List<Event> events;
         try {
             if (before != null && after != null) {
                 events = eventRepository.getEventsBetween(before, after);
@@ -74,33 +52,59 @@ public class EventService {
             } else {
                 events = eventRepository.getEvents();
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return events;
     }
-
-
-    public List<Event> getEventsExpired() {
-        List<Event> events = null;
-        try {
-            //events = eventRepository.getEventsExpired();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return events;
-    }
-
 
     public List<Event> getEventsByRegisteredUser(long userId) {
-        return eventRepository.getEventsByRegisteredUser(userId);
+        try {
+            return eventRepository.getEventsByRegisteredUser(userId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public Uzer getParticipant(long eventId, long userId) {
+    public Event getEvent(long id) {
+        try {
+            return eventRepository.getEvent(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Event updateEvent(Event event) {
+        try {
+            return eventRepository.updateEvent(event);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public void deleteEvent(Long eventId) {
+        try {
+            Event event = eventRepository.getEvent(eventId);
+            if (event != null) {
+                eventRepository.deleteEvent(event);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean addParticipant(long eventId, long userId) {
+        try {
+            return eventRepository.addParticipant(eventId, userId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public User getParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);
         if (event != null) {
-            for (Uzer user : event.getParticipants()) {
+            for (User user : event.getParticipants()) {
                 if (user.getId() == userId)
                     return user;
             }
@@ -108,8 +112,8 @@ public class EventService {
         return null;
     }
 
-    public List<Uzer> getParticipants(long eventId) {
-        List<Uzer> participants = new ArrayList<Uzer>();
+    public List<User> getParticipants(long eventId) {
+        List<User> participants = new ArrayList<>();
         Event event = getEvent(eventId);
         if (event != null) {
             participants.addAll(event.getParticipants());
@@ -117,12 +121,12 @@ public class EventService {
         return participants;
     }
 
-    public boolean removeParticipant(long eventId, long userId) {
-        return eventRepository.removeParticipant(eventId, userId);
-    }
-
-    public boolean addParticipant(long eventId, long userId) {
-        return eventRepository.addParticipant(eventId, userId);
+    public void removeParticipant(long eventId, long userId) {
+        try {
+            eventRepository.removeParticipant(eventId, userId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String uploadImage(String filename, MultipartFile file) throws IOException {
@@ -131,12 +135,7 @@ public class EventService {
         metadata.setContentLength(file.getSize());
         PutObjectRequest putObjectRequest = new PutObjectRequest(nameCardBucket, filename, inputStream, metadata).withCannedAcl(CannedAccessControlList.PublicRead);
         PutObjectResult result = s3client.putObject(putObjectRequest);
-
         S3Object s3Object = s3client.getObject(new GetObjectRequest(nameCardBucket, filename));
-
         return s3Object.getObjectContent().getHttpRequest().getURI().toString();
-
-        //https://viseo-companion.s3.amazonaws.com/port.PNG
-
     }
 }
