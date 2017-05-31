@@ -96,9 +96,9 @@ public class UserService {
         return true;
     }
 
-    public boolean isTokenValid(long uzerId, String tokenGuid) {
+    public boolean isTokenValid(long userId, String tokenGuid) {
         try {
-            PasswordResetToken myToken = passwordTokenRepository.getTokenFromUzerId(uzerId);
+            PasswordResetToken myToken = passwordTokenRepository.getTokenFromUserId(userId);
             return myToken != null
                     && myToken.getGuid().equals(tokenGuid)
                     && myToken.isUnexpired();
