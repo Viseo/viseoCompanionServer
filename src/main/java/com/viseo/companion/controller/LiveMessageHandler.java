@@ -25,7 +25,14 @@ public class LiveMessageHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) throws Exception {
-
         System.out.println("Message received: " + textMessage.getPayload());
+        session.sendMessage(new TextMessage(textMessage.getPayload()));
     }
+
+    @Override
+    public void handleTransportError(WebSocketSession session, Throwable exception)
+            throws Exception {
+        session.close(CloseStatus.SERVER_ERROR);
+    }
+
 }
