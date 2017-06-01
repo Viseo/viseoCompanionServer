@@ -68,6 +68,15 @@ public class CommentService {
         return new ArrayList<>();
     }
 
+    public List<CommentDTO> getCommentsByEventAfterDate(long eventId, String after) {
+        try {
+            return toCommentDTOList(commentRepository.getCommentsByEventAfterDate(eventId, after));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
     public CommentDTO updateComment(CommentDTO commentDTO) {
         try {
             Comment comment = commentRepository.getComment(commentDTO.getId());

@@ -1,7 +1,6 @@
 package com.viseo.companion.controller;
 
 import com.google.gson.Gson;
-import com.viseo.companion.domain.Comment;
 import com.viseo.companion.dto.CommentDTO;
 import com.viseo.companion.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,6 @@ public class LiveMessageHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         System.out.println("Session Open !");
         activeSeesions.add(session);
-        session.sendMessage(new TextMessage("Message envoyé depuis le serveur !"));
     }
 
     @Override
@@ -49,15 +47,15 @@ public class LiveMessageHandler extends TextWebSocketHandler {
     private String saveMessage(String receivedMessage) {
         CommentDTO commentDTO = gson.fromJson(receivedMessage, CommentDTO.class);
         CommentDTO savedComment = commentService.addComment(commentDTO);
-        return gson.toJson(savedComment);
+        List<CommentDTO> listAllComments = commentService.getCommentsByEvent(5);
+        return gson.toJson(listAllComments);
     }
 
     private void broadcastMessage(String message) throws Exception {
-        if(message != null) {
+        if (message != null) {
             for (WebSocketSession activeSession : activeSeesions) {
                 activeSession.sendMessage(new TextMessage(message));
             }
         }
     }
-
 }
