@@ -109,10 +109,10 @@ public class CommentService {
         return null;
     }
 
-    public boolean likeComment(long commentId, long uzerId) {
+    public boolean likeComment(long commentId, long userId) {
         try {
             Comment comment = commentRepository.getComment(commentId);
-            User user = userRepository.getUser(uzerId);
+            User user = userRepository.getUser(userId);
             if (comment != null && user != null) {
                 comment.addLiker(user);
                 commentRepository.updateComment(comment);
@@ -124,10 +124,10 @@ public class CommentService {
         return false;
     }
 
-    public boolean dislikeComment(long commentId, long uzerId) {
+    public boolean dislikeComment(long commentId, long userId) {
         try {
             Comment comment = commentRepository.getComment(commentId);
-            User user = userRepository.getUser(uzerId);
+            User user = userRepository.getUser(userId);
             if (comment != null && user != null) {
                 comment.removeliker(user);
                 commentRepository.updateComment(comment);

@@ -25,8 +25,8 @@ public class UserController {
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.getUser}", method = GET)
-    public User getUser(@PathVariable("userId") long uzerId) {
-        return userService.getUser(uzerId);
+    public User getUser(@PathVariable("userId") long userId) {
+        return userService.getUser(userId);
     }
 
     @CrossOrigin
@@ -72,8 +72,8 @@ public class UserController {
     @CrossOrigin
     @RequestMapping(value = "${endpoint.changePassword}", method = POST)
     public boolean showChangePasswordPage(@RequestBody ResetPassword resetPassword) {
-        if (userService.isTokenValid(resetPassword.getUzerId(), resetPassword.getTokenGuid())) {
-            userService.changePassword(resetPassword.getUzerId(), resetPassword.getPassword());
+        if (userService.isTokenValid(resetPassword.getUserId(), resetPassword.getTokenGuid())) {
+            userService.changePassword(resetPassword.getUserId(), resetPassword.getPassword());
             userService.deleteToken(resetPassword.getTokenGuid());
             return true;
         }

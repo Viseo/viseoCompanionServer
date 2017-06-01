@@ -2,25 +2,25 @@ package com.viseo.companion.domain;
 
 public class ResetPassword {
 
-    private long uzerId;
+    private long userId;
     private String tokenGuid;
     private String password;
 
     public ResetPassword() {
     }
 
-    public ResetPassword(long uzerId, String tokenGuid, String password) {
-        this.uzerId = uzerId;
+    public ResetPassword(long userId, String tokenGuid, String password) {
+        this.userId = userId;
         this.tokenGuid = tokenGuid;
         this.password = password;
     }
 
-    public long getUzerId() {
-        return uzerId;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUzerId(long uzerId) {
-        this.uzerId = uzerId;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getTokenGuid() {

@@ -19,8 +19,8 @@ public class PasswordTokenRepository {
         em.persist(token);
     }
 
-    public PasswordResetToken getTokenFromUzerId(long id) {
-        List<PasswordResetToken> result = em.createQuery("select a from PasswordResetToken a left join fetch a.uzer u where u.id = :id", PasswordResetToken.class)
+    public PasswordResetToken getTokenFromUserId(long id) {
+        List<PasswordResetToken> result = em.createQuery("select a from PasswordResetToken a left join fetch a.user u where u.id = :id", PasswordResetToken.class)
                 .setParameter("id", id)
                 .getResultList();
         return result.iterator().hasNext() ?

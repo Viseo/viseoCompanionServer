@@ -54,12 +54,12 @@ public class CommentController {
     }
 
     @RequestMapping(value = "${endpoint.likeComment}", method = POST)
-    public boolean likeComment(@PathVariable("commentId") long commentId, @PathVariable("userId") long uzerId) {
-        return commentService.likeComment(commentId, uzerId);
+    public boolean likeComment(@PathVariable("commentId") long commentId, @PathVariable("userId") long userId) {
+        return commentService.likeComment(commentId, userId);
     }
 
     @RequestMapping(value = "${endpoint.dislikeComment}", method = DELETE)
-    public boolean dislikeComment(@PathVariable("commentId") long commentId, @PathVariable("userId") long uzerId) {
-        return commentService.dislikeComment(commentId, uzerId);
+    public boolean dislikeComment(@PathVariable("commentId") long commentId, @PathVariable("userId") long userId) {
+        return commentService.dislikeComment(commentId, userId);
     }
 }
