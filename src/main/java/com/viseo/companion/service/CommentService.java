@@ -54,27 +54,24 @@ public class CommentService {
         try {
             return toCommentDTOList(commentRepository.getComments());
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException(ex);
         }
-        return new ArrayList<>();
     }
 
     public List<CommentDTO> getCommentsByEvent(long eventId) {
         try {
             return toCommentDTOList(commentRepository.getCommentsByEvent(eventId));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException(ex);
         }
-        return new ArrayList<>();
     }
 
     public List<CommentDTO> getCommentsByEventAfterDate(long eventId, String after) {
         try {
             return toCommentDTOList(commentRepository.getCommentsByEventAfterDate(eventId, after));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException(ex);
         }
-        return new ArrayList<>();
     }
 
     public CommentDTO updateComment(CommentDTO commentDTO) {
