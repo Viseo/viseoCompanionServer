@@ -84,7 +84,11 @@ public class LiveMessageHandler extends TextWebSocketHandler {
         if (message != null) {
             List<WebSocketSession> chatRoom = chatRooms.get(chatRoomId);
             for (WebSocketSession session : chatRoom) {
-                session.sendMessage(new TextMessage(messageJson));
+                if(session.isOpen()) {
+                    session.sendMessage(new TextMessage(messageJson));
+                } else {
+                    chatRoom.remove(session);
+                }
             }
         }
     }
@@ -113,7 +117,7 @@ public class LiveMessageHandler extends TextWebSocketHandler {
     }
 
     private void sendGreetingMessage(WebSocketSession session) {
-        CommentDTO message = new CommentDTO();
+        ChatMessageDTO message = new ChatMessageDTO();
         message.setContent("Bienvenue sur le live! Vous pouvez poser toutes vos questions ici :)");
         String messageString = gson.toJson(message);
         try {
