@@ -66,9 +66,9 @@ public class LiveMessageHandler extends TextWebSocketHandler {
         session.close(CloseStatus.SERVER_ERROR);
     }
 
-    private void handleReceivedMessage(WebSocketSession session, String message) {
+    private void handleReceivedMessage(WebSocketSession session, Object message) {
         try {
-            ChatMessageDTO chatMessage = gson.fromJson(message, ChatMessageDTO.class);
+            ChatMessageDTO chatMessage = gson.fromJson(message.toString(), ChatMessageDTO.class);
             if (sessionJoined(session, chatMessage.getEventId())) {
                 ChatMessageDTO savedMessage = saveChatMessage(chatMessage);
                 broadcastMessageToChatRoom(savedMessage, savedMessage.getEventId());
@@ -95,7 +95,7 @@ public class LiveMessageHandler extends TextWebSocketHandler {
 
     private void joinRoom(WebSocketSession session, LiveActionDTO action) {
         try {
-            JoinRoomDTO joinRoom = gson.fromJson(action.getPayload(), JoinRoomDTO.class);
+            JoinRoomDTO joinRoom = gson.fromJson(action.getPayload().toString(), JoinRoomDTO.class);
             List<WebSocketSession> chatRoom = getChatRoom(joinRoom.getEventId());
             chatRoom.add(session);
             sendMessagesSinceLastConnection(session, joinRoom);
