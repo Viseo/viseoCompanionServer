@@ -51,16 +51,4 @@ public class CommentConverter {
         calendar.setTimeInMillis(dto.getDatetime());
         comment.setDatetime(calendar);
     }
-
-    public CommentDTO getDTO(ChatMessageDTO chatMessage) {
-        CommentDTO dto = new CommentDTO();
-        dto.setContent(chatMessage.getContent());
-        dto.setDatetime(chatMessage.getDateTime());
-        UserDTO writer = new UserDTO();
-        writer.setId(chatMessage.getWriterId());
-        dto.setWriter(writer);
-        dto.setEventId(chatMessage.getEventId());
-        return dto;
-    }
-
 }
