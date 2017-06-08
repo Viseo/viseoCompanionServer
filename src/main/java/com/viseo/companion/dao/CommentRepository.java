@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class CommentRepository {
                 "and a.datetime >= :after " +
                 "and a not in (select c from Comment comment join comment.children c) order by a.datetime", Comment.class)
                 .setParameter("id", eventId)
-                .setParameter("after", new Date(Long.valueOf(after)), DATE)
+                .setParameter("after", new Date(Long.valueOf(after)), TemporalType.DATE)
                 .getResultList();
     }
 
