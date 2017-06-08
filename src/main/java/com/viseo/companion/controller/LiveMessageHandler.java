@@ -1,14 +1,13 @@
 package com.viseo.companion.controller;
 
 import com.google.gson.Gson;
-import com.viseo.companion.converter.CommentConverter;
+import com.viseo.companion.converter.ChatMessageConverter;
 import com.viseo.companion.dto.ChatMessageDTO;
 import com.viseo.companion.dto.CommentDTO;
 import com.viseo.companion.dto.JoinRoomDTO;
 import com.viseo.companion.dto.LiveActionDTO;
 import com.viseo.companion.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -20,16 +19,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
 public class LiveMessageHandler extends TextWebSocketHandler {
 
     @Autowired
     CommentService commentService;
 
     Map<Long, List<WebSocketSession>> chatRooms = new HashMap<>();
-    List<WebSocketSession> activeSeesions = new ArrayList<>();
     Gson gson = new Gson();
-    CommentConverter converter = new CommentConverter();
+    ChatMessageConverter chatMessageConverter = new ChatMessageConverter();
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
@@ -43,63 +40,84 @@ public class LiveMessageHandler extends TextWebSocketHandler {
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) throws Exception {
+    protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) {
         LiveActionDTO action = gson.fromJson(textMessage.getPayload(), LiveActionDTO.class);
         switch (action.getType()) {
             case 1:
                 joinRoom(session, action);
                 break;
             case 2:
-                ChatMessageDTO chatMessage = gson.fromJson(action.getPayload(), ChatMessageDTO.class);
-                CommentDTO savedMessage = saveChatMessage(chatMessage);
-                broadcastMessageToChatRoom(savedMessage, savedMessage.getEventId());
-                //todo handle if session is not register in a chatRoom
+                handleReceivedMessage(session, action.getPayload());
                 break;
             default:
                 break;
         }
     }
 
+    private boolean sessionJoined(WebSocketSession session, long eventId) {
+        List<WebSocketSession> chatRoom = chatRooms.get(eventId);
+        return chatRoom != null && chatRoom.contains(session);
+    }
+
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception)
             throws Exception {
+        exception.printStackTrace();
         session.close(CloseStatus.SERVER_ERROR);
     }
 
-    private void broadcastMessageToChatRoom(CommentDTO message, long chatRoomId) throws Exception {
-        String messageJson = gson.toJson(message, CommentDTO.class);
+    private void handleReceivedMessage(WebSocketSession session, Object message) {
+        try {
+            ChatMessageDTO chatMessage = gson.fromJson(message.toString(), ChatMessageDTO.class);
+            if (sessionJoined(session, chatMessage.getEventId())) {
+                ChatMessageDTO savedMessage = saveChatMessage(chatMessage);
+                broadcastMessageToChatRoom(savedMessage, savedMessage.getEventId());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private void broadcastMessageToChatRoom(ChatMessageDTO message, long chatRoomId) throws Exception {
+        String messageJson = gson.toJson(message, ChatMessageDTO.class);
         if (message != null) {
             List<WebSocketSession> chatRoom = chatRooms.get(chatRoomId);
             for (WebSocketSession session : chatRoom) {
-                session.sendMessage(new TextMessage(messageJson));
+                if(session.isOpen()) {
+                    session.sendMessage(new TextMessage(messageJson));
+                } else {
+                    chatRoom.remove(session);
+                }
             }
         }
     }
 
     private List<WebSocketSession> getChatRoom(long eventId) {
-        List<WebSocketSession> chatRoom = chatRooms.get(eventId);
-        if (chatRoom == null) {
-            chatRoom = new ArrayList<>();
-            chatRooms.put(eventId, chatRoom);
-        }
-        return chatRoom;
+        return chatRooms.computeIfAbsent(eventId, k -> new ArrayList<>());
     }
 
     private void joinRoom(WebSocketSession session, LiveActionDTO action) {
-        JoinRoomDTO joinRoom = gson.fromJson(action.getPayload(), JoinRoomDTO.class);
-        List<WebSocketSession> chatRoom = getChatRoom(joinRoom.getEventId());
-        chatRoom.add(session);
-        sendMessagesSinceLastConnection(session, joinRoom);
+        try {
+            JoinRoomDTO joinRoom = gson.fromJson(action.getPayload().toString(), JoinRoomDTO.class);
+            List<WebSocketSession> chatRoom = getChatRoom(joinRoom.getEventId());
+            chatRoom.add(session);
+            sendMessagesSinceLastConnection(session, joinRoom);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        }
     }
 
-    private CommentDTO saveChatMessage(ChatMessageDTO receivedMessage) {
-        CommentDTO commentDTO = converter.getDTO(receivedMessage);
-        CommentDTO savedComment = commentService.addComment(commentDTO);
-        return savedComment;
+    private ChatMessageDTO saveChatMessage(ChatMessageDTO receivedMessage) {
+        CommentDTO comment = new CommentDTO();
+        chatMessageConverter.apply(receivedMessage, comment);
+        CommentDTO savedComment = commentService.addComment(comment);
+        return chatMessageConverter.getDTO(savedComment);
     }
 
     private void sendGreetingMessage(WebSocketSession session) {
-        CommentDTO message = new CommentDTO();
+        ChatMessageDTO message = new ChatMessageDTO();
         message.setContent("Bienvenue sur le live! Vous pouvez poser toutes vos questions ici :)");
         String messageString = gson.toJson(message);
         try {
@@ -114,7 +132,8 @@ public class LiveMessageHandler extends TextWebSocketHandler {
             String lastUpdated = String.valueOf(joinRoom.getLastUpdated());
             List<CommentDTO> chatHistory = commentService.getCommentsByEventAfterDate(joinRoom.getEventId(), lastUpdated);
             for (CommentDTO comment : chatHistory) {
-                String commentJson = gson.toJson(comment, CommentDTO.class);
+                ChatMessageDTO chatMessageDTO = chatMessageConverter.getDTO(comment);
+                String commentJson = gson.toJson(chatMessageDTO, ChatMessageDTO.class);
                 session.sendMessage(new TextMessage(commentJson));
             }
         } catch (Exception ex) {

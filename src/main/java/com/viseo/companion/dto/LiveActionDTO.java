@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class LiveActionDTO implements Serializable {
 
     int type;
-    String payload;
+    Object payload;
 
     public int getType() {
         return type;
@@ -15,7 +15,7 @@ public class LiveActionDTO implements Serializable {
         this.type = type;
     }
 
-    public String getPayload() {
+    public Object getPayload() {
         return payload;
     }
 
