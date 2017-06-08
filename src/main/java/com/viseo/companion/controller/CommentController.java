@@ -20,6 +20,7 @@ public class CommentController {
         return commentService.addComment(comment);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.addChildComment}", method = POST)
     public CommentDTO addChildComment(@PathVariable("parentId") long parentId, @RequestBody CommentDTO comment) {
         return commentService.addChildComment(comment, parentId);
