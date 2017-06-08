@@ -42,7 +42,7 @@ public class EventServiceTest {
         event.setCategory(0);
         Calendar now = Calendar.getInstance();
         event.setDatetime(now);
-        event.setDescription("NADAl");
+        event.setDescription("NADAL");
         event.setName("ibtisam");
         event.setKeyWords("Haifa");
         event.setPlace("Haifa");

@@ -30,7 +30,7 @@ public class Comment extends BaseEntity {
 
     private Event event;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     List<User> likers = new ArrayList<>();
 
     public Comment() {

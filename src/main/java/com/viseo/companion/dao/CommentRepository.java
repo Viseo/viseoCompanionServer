@@ -38,8 +38,8 @@ public class CommentRepository {
     }
 
     public List<Comment> getCommentsByEvent(long eventId) {
-        return em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id " +
-                "and a not in (select c from Comment comment join comment.children c) and a.publish = true order by a.datetime", Comment.class)
+        return em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id  and a.publish = true " +
+                "and a not in (select c from Comment comment join comment.children c) order by a.datetime", Comment.class)
                 .setParameter("id", eventId)
                 .getResultList();
     }

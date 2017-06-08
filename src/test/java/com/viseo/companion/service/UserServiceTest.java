@@ -28,7 +28,7 @@ public class UserServiceTest {
     public void addUserTest() {
         final User user = new User();
         user.setEmail("me@gmail.com");
-        user.setPassword("me");
+        user.setPassword("123456");
         user.setFirstName("meee");
         user.setLastName("meee");
         try {
