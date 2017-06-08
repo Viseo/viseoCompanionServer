@@ -3,10 +3,7 @@ package com.viseo.companion.controller;
 import com.viseo.companion.dto.CommentDTO;
 import com.viseo.companion.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,7 +29,13 @@ public class CommentController {
     public CommentDTO getComment(@PathVariable("commentId") long commentId) {
         return commentService.getComment(commentId);
     }
+    @CrossOrigin
+    @RequestMapping(value = "${endpoint.getAllCommentsByEvent}", method = GET)
+    public List<CommentDTO> getAllCommentsByEvent(@PathVariable("eventId") long eventId) {
+        return commentService.getAllCommentsByEvent(eventId);
+    }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.getCommentsByEvent}", method = GET)
     public List<CommentDTO> getCommentsByEvent(@PathVariable("eventId") long eventId) {
         return commentService.getCommentsByEvent(eventId);
@@ -43,6 +46,7 @@ public class CommentController {
         return commentService.getComments();
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.updateComment}", method = PUT)
     public CommentDTO updateComment(@RequestBody CommentDTO commentDTO) {
         return commentService.updateComment(commentDTO);
@@ -62,4 +66,7 @@ public class CommentController {
     public boolean dislikeComment(@PathVariable("commentId") long commentId, @PathVariable("userId") long userId) {
         return commentService.dislikeComment(commentId, userId);
     }
+
+
+
 }

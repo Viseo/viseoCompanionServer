@@ -10,6 +10,7 @@ public class Comment extends BaseEntity {
 
     private Calendar datetime;
     private String content;
+    private boolean publish;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comment> children = new ArrayList<>();
@@ -17,7 +18,16 @@ public class Comment extends BaseEntity {
     @ManyToOne
     private User user;
 
+    public boolean isPublish() {
+        return publish;
+    }
+
+    public void setPublish(boolean publish) {
+        this.publish = publish;
+    }
+
     @ManyToOne
+
     private Event event;
 
     @OneToMany(fetch = FetchType.EAGER)
@@ -27,14 +37,15 @@ public class Comment extends BaseEntity {
         super();
     }
 
-    public Comment(Calendar datetime, String content, List<Comment> children, User user, Event event) {
+    public Comment(Calendar datetime, String content, boolean publish, List<Comment> children, User user, Event event, List<User> likers) {
         this.datetime = datetime;
         this.content = content;
+        this.publish = publish;
         this.children = children;
         this.user = user;
         this.event = event;
+        this.likers = likers;
     }
-
     public List<User> getLikers() {
         return likers;
     }

@@ -11,9 +11,18 @@ public class CommentDTO extends BaseDTO {
     List<CommentDTO> childComments = new ArrayList<>();
     List<UserDTO> likers = new ArrayList<>();
     long nbLike;
+    boolean publish;
 
     public CommentDTO() {
         super();
+    }
+
+    public boolean isPublish() {
+        return publish;
+    }
+
+    public void setPublish(boolean publish) {
+        this.publish = publish;
     }
 
     public long getNbLike() {

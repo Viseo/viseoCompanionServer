@@ -6,10 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.List;
-
-import static javax.persistence.TemporalType.DATE;
 
 @Repository
 @Transactional
@@ -40,10 +39,17 @@ public class CommentRepository {
 
     public List<Comment> getCommentsByEvent(long eventId) {
         return em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id " +
-                "and a not in (select c from Comment comment join comment.children c) order by a.datetime", Comment.class)
+                "and a not in (select c from Comment comment join comment.children c) and a.publish = true order by a.datetime", Comment.class)
                 .setParameter("id", eventId)
                 .getResultList();
     }
+
+    public List<Comment> getAllCommentsByEvent(Long eventId) {
+        return em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id and a not in (select c from Comment comment join comment.children c)  order by a.datetime", Comment.class)
+                .setParameter("id", eventId)
+                .getResultList();
+    }
+
 
     public List<Comment> getCommentsByEventAfterDate(long eventId, String after) {
         return em.createQuery("" +
@@ -51,7 +57,7 @@ public class CommentRepository {
                 "and a.datetime >= :after " +
                 "and a not in (select c from Comment comment join comment.children c) order by a.datetime", Comment.class)
                 .setParameter("id", eventId)
-                .setParameter("after", new Date(Long.valueOf(after)), DATE)
+                .setParameter("after", new Date(Long.valueOf(after)), TemporalType.DATE)
                 .getResultList();
     }
 
