@@ -1,9 +1,6 @@
 package com.viseo.companion.domain;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -15,7 +12,7 @@ public class Comment extends BaseEntity {
     private String content;
     private boolean publish;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comment> children = new ArrayList<>();
 
     @ManyToOne
@@ -33,7 +30,7 @@ public class Comment extends BaseEntity {
 
     private Event event;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     List<User> likers = new ArrayList<>();
 
     public Comment() {

@@ -1,12 +1,12 @@
 package com.viseo.companion.dao;
 
 import com.viseo.companion.domain.Comment;
-import com.viseo.companion.domain.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -36,14 +36,27 @@ public class CommentRepository {
         return null;
     }
 
-    public List<Comment> getCommentsByEvent(Long eventId) {
-        return em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id and a not in (select c from Comment comment join comment.children c) and a.publish = true order by a.datetime", Comment.class)
+    public List<Comment> getCommentsByEvent(long eventId) {
+        return em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id " +
+                "and a not in (select c from Comment comment join comment.children c) and a.publish = true order by a.datetime", Comment.class)
                 .setParameter("id", eventId)
                 .getResultList();
     }
+
     public List<Comment> getAllCommentsByEvent(Long eventId) {
         return em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id and a not in (select c from Comment comment join comment.children c)  order by a.datetime", Comment.class)
                 .setParameter("id", eventId)
+                .getResultList();
+    }
+
+
+    public List<Comment> getCommentsByEventAfterDate(long eventId, String after) {
+        return em.createQuery("" +
+                "select a from  Comment a left join fetch a.event p where p.id = :id " +
+                "and a.datetime >= :after " +
+                "and a not in (select c from Comment comment join comment.children c) order by a.datetime", Comment.class)
+                .setParameter("id", eventId)
+                .setParameter("after", new Date(Long.valueOf(after)), DATE)
                 .getResultList();
     }
 
@@ -62,10 +75,8 @@ public class CommentRepository {
         return em.merge(comment);
     }
 
-
     public void deleteComment(Comment comment) {
         comment = em.find(Comment.class, comment.getId());
         em.remove(comment);
     }
-
 }
