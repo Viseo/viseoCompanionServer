@@ -53,6 +53,7 @@ public class CommentController {
         return commentService.updateComment(commentDTO);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.deleteComment}", method = DELETE)
     public void removeComment(@PathVariable("commentId") long commentId) {
         commentService.deleteComment(commentId);
