@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.TemporalType.DATE;
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Repository
 @Transactional
@@ -47,7 +48,7 @@ public class EventRepository {
     public List<Event> getEventsBetween(String before, String after) {
         return em.createQuery(
                 "SELECT a FROM Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime >= :after AND a.datetime <= :before order by a.datetime", Event.class)
-                .setParameter("before", new Date(Long.valueOf(before)), DATE)
+                .setParameter("before", new Date(Long.valueOf(before)), TIMESTAMP)
                 .setParameter("after", new Date(Long.valueOf(after)), DATE)
                 .getResultList();
     }
@@ -62,7 +63,7 @@ public class EventRepository {
     public List<Event> getEventsBefore(String before) {
         return em.createQuery(
                 "SELECT a FROM Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime <= :before ORDER BY a.datetime", Event.class)
-                .setParameter("before", new Date(Long.valueOf(before)), DATE)
+                .setParameter("before", new Date(Long.valueOf(before)), TIMESTAMP)
                 .getResultList();
     }
 

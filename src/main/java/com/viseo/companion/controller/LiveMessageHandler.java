@@ -117,7 +117,7 @@ public class LiveMessageHandler extends TextWebSocketHandler {
 
     private void sendGreetingMessage(WebSocketSession session) {
         ChatMessageDTO message = new ChatMessageDTO();
-        message.setContent("Bienvenue sur le live! Vous pouvez poser toutes vos questions ici :)");
+        message.setContent("Vous avez rejoint le live.");
         String messageString = gson.toJson(message);
         try {
             session.sendMessage(new TextMessage(messageString));

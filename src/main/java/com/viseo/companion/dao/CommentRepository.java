@@ -6,9 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.List;
+
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Repository
 @Transactional
@@ -55,10 +56,10 @@ public class CommentRepository {
         //todo 1/ remove exclusion of the child, and handle them with a Hashset 2/ Charge users with list to prevent N+1
         return em.createQuery("" +
                 "select a from  Comment a left join fetch a.event p left outer join fetch a.children where p.id = :id " +
-                "and a.datetime >= :after " +
+                "and a.datetime > :after " +
                 "and a not in (select c from Comment comment join comment.children c) order by a.datetime", Comment.class)
                 .setParameter("id", eventId)
-                .setParameter("after", new Date(Long.valueOf(after)), TemporalType.DATE)
+                .setParameter("after", new Date(Long.valueOf(after)), TIMESTAMP)
                 .getResultList();
     }
 
