@@ -14,10 +14,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LiveMessageHandler extends TextWebSocketHandler {
 
@@ -83,11 +80,13 @@ public class LiveMessageHandler extends TextWebSocketHandler {
         String messageJson = gson.toJson(message, ChatMessageDTO.class);
         if (message != null) {
             List<WebSocketSession> chatRoom = chatRooms.get(chatRoomId);
-            for (WebSocketSession session : chatRoom) {
-                if(session.isOpen()) {
+            Iterator<WebSocketSession> sessionIterator = chatRoom.iterator();
+            while (sessionIterator.hasNext()) {
+                WebSocketSession session = sessionIterator.next();
+                if (session.isOpen()) {
                     session.sendMessage(new TextMessage(messageJson));
                 } else {
-                    chatRoom.remove(session);
+                    sessionIterator.remove();
                 }
             }
         }

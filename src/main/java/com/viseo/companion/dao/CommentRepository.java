@@ -46,8 +46,9 @@ public class CommentRepository {
     }
 
     public List<Comment> getCommentsByEventAfterDate(long eventId, String after) {
+        //todo 1/ remove exclusion of the child, and handle them with a Hashset 2/ Charge users with list to prevent N+1
         return em.createQuery("" +
-                "select a from  Comment a left join fetch a.event p where p.id = :id " +
+                "select a from  Comment a left join fetch a.event p left outer join fetch a.children where p.id = :id " +
                 "and a.datetime >= :after " +
                 "and a not in (select c from Comment comment join comment.children c) order by a.datetime", Comment.class)
                 .setParameter("id", eventId)
