@@ -6,6 +6,7 @@ import com.viseo.companion.dto.ChatMessageDTO;
 import com.viseo.companion.dto.CommentDTO;
 import com.viseo.companion.dto.UserDTO;
 
+import javax.validation.constraints.Null;
 import java.util.Calendar;
 
 public class CommentConverter {
@@ -20,11 +21,14 @@ public class CommentConverter {
         dto.setContent(comment.getContent());
         dto.setDatetime(comment.getDatetime().toInstant().toEpochMilli());
         dto.setVersion(comment.getVersion());
+        dto.setPublish(comment.isPublish());
+
         if (comment.getUser() == null) {
             dto.setWriter(null);
         } else {
             dto.setWriter(userConverter.getDTO(comment.getUser()));
         }
+
         if (comment.getEvent() == null) {
             dto.setEventId(NULL);
         } else {
@@ -34,6 +38,7 @@ public class CommentConverter {
             CommentDTO commentChildDTO = getDTO(child);
             dto.getChildComments().add(commentChildDTO);
         }
+
         for (User liker : comment.getLikers()) {
             UserDTO likerDTO = userConverter.getDTO(liker);
             dto.getLikers().add(likerDTO);
@@ -46,6 +51,7 @@ public class CommentConverter {
         if (dto.getId() != NEW && comment.getVersion() != dto.getVersion()) {
             throw new RuntimeException("Entity " + comment + " was updated since DTO was built.");
         }
+        comment.setPublish(dto.isPublish());
         comment.setContent(dto.getContent());
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(dto.getDatetime());

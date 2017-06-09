@@ -58,6 +58,15 @@ public class CommentService {
         }
     }
 
+    public List<CommentDTO> getAllCommentsByEvent(long eventId) {
+        try {
+            return toCommentDTOList(commentRepository.getAllCommentsByEvent(eventId));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
     public List<CommentDTO> getCommentsByEvent(long eventId) {
         try {
             return toCommentDTOList(commentRepository.getCommentsByEvent(eventId));
@@ -165,4 +174,6 @@ public class CommentService {
         }
         return null;
     }
+
+
 }
