@@ -12,7 +12,7 @@ public class Comment extends BaseEntity {
     private String content;
     private boolean publish;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comment> children = new ArrayList<>();
 
     @ManyToOne
