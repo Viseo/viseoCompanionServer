@@ -104,7 +104,6 @@ public class CommentService {
                 parentComment.removeChild(childComment);
                 commentRepository.updateComment(parentComment);
             }
-            commentRepository.deleteComment(childComment);
         }
     }
 

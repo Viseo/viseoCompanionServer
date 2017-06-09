@@ -1,6 +1,5 @@
 package com.viseo.companion.converter;
 
-import com.viseo.companion.domain.Comment;
 import com.viseo.companion.dto.ChatMessageDTO;
 import com.viseo.companion.dto.CommentDTO;
 import com.viseo.companion.dto.UserDTO;
