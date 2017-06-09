@@ -63,7 +63,7 @@ public class CommentRepository {
 
     public Comment getParentFromChildId(long childCommentId) {
         List<Comment> result = em.createQuery(
-                "select a from Comment a left join fetch a.children c where c.id = :id", Comment.class)
+                "select a from Comment a left join fetch a.children c join a.children x where x.id = :id", Comment.class)
                 .setParameter("id", childCommentId)
                 .getResultList();
         if (result.iterator().hasNext()) {
