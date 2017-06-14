@@ -20,7 +20,6 @@ public class EventController {
     @Autowired
     private UserService userService;
 
-    //TODO : remove the @cross origin where we don't need it
     @CrossOrigin
     @RequestMapping(value = "${endpoint.addEvent}", method = POST)
     public Event addEvent(@RequestParam(value = "host") long host, @RequestBody Event event) {
@@ -79,7 +78,7 @@ public class EventController {
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.addEventParticipant}", method = POST)
-    public Boolean addParticipant(@PathVariable("eventId") long eventId, @PathVariable("userId") long userId) {
+    public Event addParticipant(@PathVariable("eventId") long eventId, @PathVariable("userId") long userId) {
         return eventService.addParticipant(eventId, userId);
     }
 

@@ -83,16 +83,15 @@ public class EventRepository {
         em.remove(event);
     }
 
-    public boolean addParticipant(long eventId, long userId) {
+    public Event addParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);
         if (event != null) {
             User user = userDao.getUser(userId);
             if (user != null) {
                 event.addParticipant(user);
-                return true;
             }
         }
-        return false;
+        return event;
     }
 
     public void removeParticipant(long eventId, long userId) {

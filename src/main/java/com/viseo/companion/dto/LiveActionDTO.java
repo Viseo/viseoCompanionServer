@@ -7,6 +7,11 @@ public class LiveActionDTO implements Serializable {
     int type;
     Object payload;
 
+    public LiveActionDTO(int type, Object payload) {
+        this.type = type;
+        this.payload = payload;
+    }
+
     public int getType() {
         return type;
     }
