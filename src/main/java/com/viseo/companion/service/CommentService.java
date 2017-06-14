@@ -95,7 +95,8 @@ public class CommentService {
     public void deleteComment(long commentId) {
         Comment childComment = commentRepository.getComment(commentId);
         if (childComment != null) {
-            Comment parentComment = commentRepository.getParentFromChildId(commentId);
+            Comment parentOneChild = commentRepository.getParentFromChildId(commentId);
+            Comment parentComment=commentRepository.getComment(parentOneChild.getId());
             if (parentComment != null) {
                 parentComment.removeChild(childComment);
                 commentRepository.updateComment(parentComment);

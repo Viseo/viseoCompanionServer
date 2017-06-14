@@ -15,6 +15,7 @@ public class CommentController {
     @Autowired
     CommentService commentService;
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.addComment}", method = POST)
     public CommentDTO addComment(@RequestBody CommentDTO comment) {
         return commentService.addComment(comment);
@@ -26,6 +27,7 @@ public class CommentController {
         return commentService.addChildComment(comment, parentId);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "${endpoint.getComment}", method = GET)
     public CommentDTO getComment(@PathVariable("commentId") long commentId) {
         return commentService.getComment(commentId);
@@ -47,7 +49,6 @@ public class CommentController {
     public CommentDTO updateComment(@RequestBody CommentDTO commentDTO) {
         return commentService.updateComment(commentDTO);
     }
-
     @CrossOrigin
     @RequestMapping(value = "${endpoint.deleteComment}", method = DELETE)
     public void removeComment(@PathVariable("commentId") long commentId) {
