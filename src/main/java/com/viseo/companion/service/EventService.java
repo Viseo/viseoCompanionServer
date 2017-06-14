@@ -93,7 +93,7 @@ public class EventService {
         }
     }
 
-    public boolean addParticipant(long eventId, long userId) {
+    public Event addParticipant(long eventId, long userId) {
         try {
             return eventRepository.addParticipant(eventId, userId);
         } catch (Exception e) {

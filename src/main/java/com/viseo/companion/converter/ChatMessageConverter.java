@@ -11,7 +11,7 @@ public class ChatMessageConverter {
     public ChatMessageDTO getDTO(CommentDTO comment) {
         ChatMessageDTO dto = new ChatMessageDTO();
         dto.setContent(comment.getContent());
-        dto.setDateTime(comment.getDatetime());
+        dto.setDatetime(comment.getDatetime());
         if (comment.getWriter() == null) {
             dto.setWriterId(NULL);
         } else {
@@ -27,7 +27,7 @@ public class ChatMessageConverter {
 
     public void apply(ChatMessageDTO dto, CommentDTO comment) {
         comment.setContent(dto.getContent());
-        comment.setDatetime(dto.getDateTime());
+        comment.setDatetime(dto.getDatetime());
         UserDTO writer = new UserDTO();
         writer.setId(dto.getWriterId());
         comment.setWriter(writer);
