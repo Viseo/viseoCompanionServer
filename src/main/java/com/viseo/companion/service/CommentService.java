@@ -58,18 +58,14 @@ public class CommentService {
         }
     }
 
-    public List<CommentDTO> getAllCommentsByEvent(long eventId) {
+    public List<CommentDTO> getCommentsByEvent(long eventId, String filter) {
         try {
-            return toCommentDTOList(commentRepository.getAllCommentsByEvent(eventId));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return new ArrayList<>();
-    }
-
-    public List<CommentDTO> getCommentsByEvent(long eventId) {
-        try {
-            return toCommentDTOList(commentRepository.getCommentsByEvent(eventId));
+            if (filter == null || filter.equals("published"))
+                return toCommentDTOList(commentRepository.getPublishedCommentsByEvent(eventId));
+            else if (filter.equals("all"))
+                return toCommentDTOList(commentRepository.getAllCommentsByEvent(eventId));
+            else
+                return new ArrayList<>();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

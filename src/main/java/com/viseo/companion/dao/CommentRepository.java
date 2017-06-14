@@ -38,19 +38,19 @@ public class CommentRepository {
         return null;
     }
 
-    public List<Comment> getCommentsByEvent(long eventId) {
+    public List<Comment> getPublishedCommentsByEvent(long eventId) {
         return em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id  and a.publish = true " +
-                "and a not in (select c from Comment comment join comment.children c where c.publish = true) order by a.datetime", Comment.class)
+                " and a not in (select c from Comment comment join comment.children c where c.publish = true) order by a.datetime", Comment.class)
                 .setParameter("id", eventId)
                 .getResultList();
     }
 
-    public List<Comment> getAllCommentsByEvent(Long eventId) {
-        return em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id and a not in (select c from Comment comment join comment.children c)  order by a.datetime", Comment.class)
+    public List<Comment> getAllCommentsByEvent(long eventId) {
+        return em.createQuery("select a from  Comment a left join fetch a.event p where p.id = :id  " +
+                " and a not in (select c from Comment comment join comment.children c ) order by a.datetime", Comment.class)
                 .setParameter("id", eventId)
                 .getResultList();
     }
-
 
     public List<Comment> getCommentsByEventAfterDate(long eventId, String after) {
         //todo 1/ remove exclusion of the child, and handle them with a Hashset 2/ Charge users with list to prevent N+1

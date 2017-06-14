@@ -30,16 +30,11 @@ public class CommentController {
     public CommentDTO getComment(@PathVariable("commentId") long commentId) {
         return commentService.getComment(commentId);
     }
-    @CrossOrigin
-    @RequestMapping(value = "${endpoint.getAllCommentsByEvent}", method = GET)
-    public List<CommentDTO> getAllCommentsByEvent(@PathVariable("eventId") long eventId) {
-        return commentService.getAllCommentsByEvent(eventId);
-    }
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.getCommentsByEvent}", method = GET)
-    public List<CommentDTO> getCommentsByEvent(@PathVariable("eventId") long eventId) {
-        return commentService.getCommentsByEvent(eventId);
+    public List<CommentDTO> getCommentsByEvent(@PathVariable("eventId") long eventId, @RequestParam(value = "filter" , required = false) String filter) {
+        return commentService.getCommentsByEvent(eventId , filter);
     }
 
     @RequestMapping(value = "${endpoint.getComments}", method = GET)
