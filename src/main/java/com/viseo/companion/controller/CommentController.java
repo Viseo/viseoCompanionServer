@@ -33,8 +33,8 @@ public class CommentController {
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.getCommentsByEvent}", method = GET)
-    public List<CommentDTO> getCommentsByEvent(@PathVariable("eventId") long eventId, @RequestParam(value = "filter" , required = false) String filter) {
-        return commentService.getCommentsByEvent(eventId , filter);
+    public List<CommentDTO> getCommentsByEvent(@PathVariable("eventId") long eventId, @RequestParam(value = "filter", required = false) String filter) {
+        return commentService.getCommentsByEvent(eventId, filter);
     }
 
     @RequestMapping(value = "${endpoint.getComments}", method = GET)
@@ -63,7 +63,5 @@ public class CommentController {
     public boolean dislikeComment(@PathVariable("commentId") long commentId, @PathVariable("userId") long userId) {
         return commentService.dislikeComment(commentId, userId);
     }
-
-
 
 }

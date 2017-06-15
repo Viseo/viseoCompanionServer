@@ -2,11 +2,9 @@ package com.viseo.companion.converter;
 
 import com.viseo.companion.domain.Comment;
 import com.viseo.companion.domain.User;
-import com.viseo.companion.dto.ChatMessageDTO;
 import com.viseo.companion.dto.CommentDTO;
 import com.viseo.companion.dto.UserDTO;
 
-import javax.validation.constraints.Null;
 import java.util.Calendar;
 
 public class CommentConverter {
@@ -21,7 +19,7 @@ public class CommentConverter {
         dto.setContent(comment.getContent());
         dto.setDatetime(comment.getDatetime().toInstant().toEpochMilli());
         dto.setVersion(comment.getVersion());
-        dto.setPublish(comment.isPublish());
+        dto.setPublish(comment.getPublish());
 
         if (comment.getUser() == null) {
             dto.setWriter(null);

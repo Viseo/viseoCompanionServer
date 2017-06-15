@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @Entity
 public class Event extends BaseEntity {
 

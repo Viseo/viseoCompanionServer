@@ -34,8 +34,9 @@ public class EventRepository {
                 "select a from Event a left join fetch a.participants p left join fetch p.roles where a.id = :id", Event.class)
                 .setParameter("id", id)
                 .getResultList();
-        if (eventList.iterator().hasNext())
+        if (eventList.iterator().hasNext()) {
             return eventList.iterator().next();
+        }
         return null;
     }
 

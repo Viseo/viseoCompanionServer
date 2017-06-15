@@ -15,7 +15,6 @@ public class Role extends BaseEntity {
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles")
     private Set<User> users = new HashSet<User>();
 
-
     public String getName() {
         return name;
     }
@@ -32,7 +31,8 @@ public class Role extends BaseEntity {
         this.description = description;
     }
 
-    public Role() {}
+    public Role() {
+    }
 
     public Role(String name, String description) {
         this.name = name;

@@ -105,8 +105,9 @@ public class EventService {
         Event event = getEvent(eventId);
         if (event != null) {
             for (User user : event.getParticipants()) {
-                if (user.getId() == userId)
+                if (user.getId() == userId) {
                     return user;
+                }
             }
         }
         return null;

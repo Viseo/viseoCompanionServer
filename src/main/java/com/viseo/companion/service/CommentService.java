@@ -60,12 +60,13 @@ public class CommentService {
 
     public List<CommentDTO> getCommentsByEvent(long eventId, String filter) {
         try {
-            if (filter == null || filter.equals("published"))
+            if (filter == null || filter.equals("published")) {
                 return toCommentDTOList(commentRepository.getPublishedCommentsByEvent(eventId));
-            else if (filter.equals("all"))
+            } else if (filter.equals("all")) {
                 return toCommentDTOList(commentRepository.getAllCommentsByEvent(eventId));
-            else
+            } else {
                 return new ArrayList<>();
+            }
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -170,6 +171,5 @@ public class CommentService {
         }
         return null;
     }
-
 
 }
