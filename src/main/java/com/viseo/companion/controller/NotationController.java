@@ -1,6 +1,7 @@
 package com.viseo.companion.controller;
 
 import com.viseo.companion.domain.Notation;
+import com.viseo.companion.dto.NotationDTO;
 import com.viseo.companion.service.NotationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,20 +19,17 @@ public class NotationController {
     private NotationService notationService;
 
     @RequestMapping(value = "${endpoint.addNotation}", method = POST)
-    public Notation addNotation(@RequestBody Notation notation) {
-
+    public NotationDTO addNotation(@RequestBody NotationDTO notation) {
         return notationService.addNotation(notation);
     }
 
     @RequestMapping(value = "${endpoint.getNotation}", method = GET)
     public String getNotation(@PathVariable("eventId") long eventId) {
-
         return notationService.getNotation(eventId);
     }
 
     @RequestMapping(value = "${endpoint.updateNotation}", method = PUT)
-    public Notation getNotation(@RequestBody Notation notation) {
-
+    public Notation updateNotation(@RequestBody Notation notation) {
         return notationService.updateNotation(notation);
     }
 }

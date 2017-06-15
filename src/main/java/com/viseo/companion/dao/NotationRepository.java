@@ -19,8 +19,9 @@ public class NotationRepository {
     }
 
     public String getNotation(long eventId) {
+
         return em.createQuery(
-                "select avg(n.notation) from Notation n where n.event=:id", Notation.class)
+                "select avg(n.notation) from Notation n left join n.event e where e.id=:id", Double.class)
                 .setParameter("id", eventId)
                 .getSingleResult().toString();
     }
