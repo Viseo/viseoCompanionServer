@@ -15,9 +15,9 @@ public class Event extends BaseEntity {
     private String name;
     private Calendar datetime;
     private String description;
-    private String keyWords;
+    private String keyWords = "";
     private String place;
-    private String imageUrl;
+    private String imageUrl = "";
 
     @OneToMany(fetch = FetchType.EAGER)
     private Set<User> participants = new HashSet<User>();
