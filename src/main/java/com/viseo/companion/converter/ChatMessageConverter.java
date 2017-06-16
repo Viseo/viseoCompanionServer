@@ -10,17 +10,18 @@ public class ChatMessageConverter {
 
     public ChatMessageDTO getDTO(CommentDTO comment) {
         ChatMessageDTO dto = new ChatMessageDTO();
-        dto.setContent(comment.getContent());
+        if (comment.getEventId() == NULL) {
+            dto.setEventId(NULL);
+            return dto;
+        } else {
+            dto.setEventId(comment.getEventId());
+        }
         dto.setDatetime(comment.getDatetime());
+        dto.setContent(comment.getContent());
         if (comment.getWriter() == null) {
             dto.setWriterId(NULL);
         } else {
             dto.setWriterId(comment.getWriter().getId());
-        }
-        if (comment.getEventId() == NULL) {
-            dto.setEventId(NULL);
-        } else {
-            dto.setEventId(comment.getEventId());
         }
         return dto;
     }
