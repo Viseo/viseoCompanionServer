@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -18,7 +19,7 @@ public class NotationRepository {
         return notation;
     }
 
-    public String getNotation(long eventId) {
+    public String getNotationByEvent(long eventId) {
 
         return em.createQuery(
                 "select avg(n.notation) from Notation n left join n.event e where e.id=:id", Double.class)
@@ -30,5 +31,12 @@ public class NotationRepository {
         return em.merge(notation);
     }
 
-
+    public Notation getNotation(long id) {
+        List<Notation> result = em.createQuery("select n from Notation n where n.id = :id", Notation.class)
+                .setParameter("id", id)
+                .getResultList();
+        if (result.iterator().hasNext())
+            return result.iterator().next();
+        return null;
+    }
 }

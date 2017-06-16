@@ -35,6 +35,7 @@ public class NotationService {
         return null;
 
     }
+
     private Notation toNotation(NotationDTO notationDto) {
         Notation notation = new Notation();
         User user = userRepository.getUser(notationDto.getUserId());
@@ -47,11 +48,25 @@ public class NotationService {
         }
         return null;
     }
-    public String getNotation(long eventId) {
-        return notationRepository.getNotation(eventId);
+
+    public String getNotationByEvent(long eventId) {
+        return notationRepository.getNotationByEvent(eventId);
     }
 
-    public Notation updateNotation(Notation notation) {
-        return notationRepository.updateNotation(notation);
+    public Notation getNotation(long id) {
+        return notationRepository.getNotation(id);
+    }
+
+    public NotationDTO updateNotation(NotationDTO notationDto) {
+        try {
+            Notation notation = notationRepository.getNotation(notationDto.getId());
+            if (notation != null) {
+                converter.apply(notationDto, notation);
+                return converter.getDTO(notationRepository.updateNotation(notation));
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return null;
     }
 }

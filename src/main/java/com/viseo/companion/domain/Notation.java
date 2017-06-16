@@ -57,7 +57,7 @@ public class Notation extends BaseEntity {
     }
 
     public void setAvis(String avis) {
-        avis = avis;
+        this.avis = avis;
     }
 
 
