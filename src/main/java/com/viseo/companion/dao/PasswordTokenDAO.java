@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class PasswordTokenDao {
+public class PasswordTokenDAO {
 
     @PersistenceContext
     EntityManager em;

@@ -16,10 +16,10 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Repository
 @Transactional
-public class EventDao {
+public class EventDAO {
 
     @Autowired
-    UserDao userDao;
+    UserDAO userDAO;
 
     @PersistenceContext
     EntityManager em;
@@ -87,7 +87,7 @@ public class EventDao {
     public Event addParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);
         if (event != null) {
-            User user = userDao.getUser(userId);
+            User user = userDAO.getUser(userId);
             if (user != null) {
                 event.addParticipant(user);
             }
@@ -98,7 +98,7 @@ public class EventDao {
     public Event removeParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);
         if (event != null) {
-            User user = userDao.getUser(userId);
+            User user = userDAO.getUser(userId);
             if (user != null) {
                 event.removeParticipant(user);
             }

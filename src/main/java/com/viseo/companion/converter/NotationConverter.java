@@ -1,40 +1,40 @@
 package com.viseo.companion.converter;
-import com.viseo.companion.domain.Notation;
-import com.viseo.companion.dto.NotationDTO;
 
+import com.viseo.companion.domain.Review;
+import com.viseo.companion.dto.ReviewDTO;
 
 public class NotationConverter {
 
     static private long NULL = -1;
     static private long NEW = 0;
 
-    public NotationDTO getDTO(Notation notation) {
-        NotationDTO dto = new NotationDTO();
-        dto.setId(notation.getId());
-        dto.setAvis(notation.getAvis());
-        dto.setNotation(notation.getNotation());
-        dto.setVersion(notation.getVersion());
+    public ReviewDTO getDTO(Review review) {
+        ReviewDTO dto = new ReviewDTO();
+        dto.setId(review.getId());
+        dto.setComment(review.getComment());
+        dto.setRating(review.getRating());
+        dto.setVersion(review.getVersion());
 
-        if (notation.getUser() == null) {
+        if (review.getUser() == null) {
             dto.setUserId(NULL);
         } else {
-            dto.setUserId(notation.getUser().getId());
+            dto.setUserId(review.getUser().getId());
         }
 
-        if (notation.getEvent() == null) {
+        if (review.getEvent() == null) {
             dto.setEventId(NULL);
         } else {
-            dto.setEventId(notation.getEvent().getId());
+            dto.setEventId(review.getEvent().getId());
         }
         return dto;
     }
 
-    public void apply(NotationDTO dto, Notation notation) {
-        if (dto.getId() != NEW && notation.getVersion() != dto.getVersion()) {
-            throw new RuntimeException("Entity " + notation + " was updated since DTO was built.");
+    public void apply(ReviewDTO dto, Review review) {
+        if (dto.getId() != NEW && review.getVersion() != dto.getVersion()) {
+            throw new RuntimeException("Entity " + review + " was updated since DTO was built.");
         }
-        notation.setAvis(dto.getAvis());
-        notation.setNotation(dto.getNotation());
+        review.setComment(dto.getComment());
+        review.setRating(dto.getRating());
 
     }
 }

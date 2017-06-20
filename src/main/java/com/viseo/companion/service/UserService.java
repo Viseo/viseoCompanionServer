@@ -1,7 +1,7 @@
 package com.viseo.companion.service;
 
-import com.viseo.companion.dao.PasswordTokenDao;
-import com.viseo.companion.dao.UserDao;
+import com.viseo.companion.dao.PasswordTokenDAO;
+import com.viseo.companion.dao.UserDAO;
 import com.viseo.companion.domain.PasswordResetToken;
 import com.viseo.companion.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +21,17 @@ public class UserService {
     private JavaMailSender mailSender;
 
     @Autowired
-    private UserDao userDao;
+    private UserDAO userDAO;
 
     @Autowired
-    private PasswordTokenDao passwordTokenDao;
+    private PasswordTokenDAO passwordTokenDAO;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         try {
-            user = userDao.addUser(user);
+            user = userDAO.addUser(user);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -39,12 +39,12 @@ public class UserService {
     }
 
     public List<User> getUsers() {
-        return userDao.getUsers();
+        return userDAO.getUsers();
     }
 
     public User getUser(long userId) {
         try {
-            return userDao.getUser(userId);
+            return userDAO.getUser(userId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -52,7 +52,7 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         try {
-            return userDao.getUserByEmail(email);
+            return userDAO.getUserByEmail(email);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -61,7 +61,7 @@ public class UserService {
     public User updateUser(User user) {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            return userDao.updateUser(user);
+            return userDAO.updateUser(user);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -69,9 +69,9 @@ public class UserService {
 
     public void deleteUser(Long id) {
         try {
-            User user = userDao.getUser(id);
+            User user = userDAO.getUser(id);
             if (user != null) {
-                userDao.deleteUser(user);
+                userDAO.deleteUser(user);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -98,7 +98,7 @@ public class UserService {
 
     public boolean isTokenValid(long userId, String tokenGuid) {
         try {
-            PasswordResetToken myToken = passwordTokenDao.getTokenFromUserId(userId);
+            PasswordResetToken myToken = passwordTokenDAO.getTokenFromUserId(userId);
             return myToken != null
                     && myToken.getGuid().equals(tokenGuid)
                     && myToken.isUnexpired();
@@ -110,7 +110,7 @@ public class UserService {
     private void persistToken(User user, String token) {
         try {
             PasswordResetToken myToken = new PasswordResetToken(token, user);
-            passwordTokenDao.addToken(myToken);
+            passwordTokenDAO.addToken(myToken);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -118,10 +118,10 @@ public class UserService {
 
     public void changePassword(long id, String password) {
         try {
-            User user = userDao.getUser(id);
+            User user = userDAO.getUser(id);
             if (user != null) {
                 user.setPassword(passwordEncoder.encode(password));
-                userDao.updateUser(user);
+                userDAO.updateUser(user);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -130,7 +130,7 @@ public class UserService {
 
     public void deleteToken(String token) {
         try {
-            passwordTokenDao.deleteToken(token);
+            passwordTokenDAO.deleteToken(token);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
