@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class UserRepository {
+public class UserDao {
 
     @PersistenceContext
     EntityManager em;

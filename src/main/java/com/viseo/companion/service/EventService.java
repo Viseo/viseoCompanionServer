@@ -2,7 +2,7 @@ package com.viseo.companion.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
-import com.viseo.companion.dao.EventRepository;
+import com.viseo.companion.dao.EventDao;
 import com.viseo.companion.domain.Event;
 import com.viseo.companion.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.List;
 public class EventService {
 
     @Autowired
-    private EventRepository eventRepository;
+    private EventDao eventDao;
     @Autowired
     private UserService userService;
 
@@ -31,7 +31,7 @@ public class EventService {
 
     public Event addEvent(Event event) {
         try {
-            event = eventRepository.addEvent(event);
+            event = eventDao.addEvent(event);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -44,13 +44,13 @@ public class EventService {
         List<Event> events;
         try {
             if (before != null && after != null) {
-                events = eventRepository.getEventsBetween(before, after);
+                events = eventDao.getEventsBetween(before, after);
             } else if (before == null && after != null) {
-                events = eventRepository.getEventsAfter(after);
+                events = eventDao.getEventsAfter(after);
             } else if (before != null) {
-                events = eventRepository.getEventsBefore(before);
+                events = eventDao.getEventsBefore(before);
             } else {
-                events = eventRepository.getEvents();
+                events = eventDao.getEvents();
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -60,7 +60,7 @@ public class EventService {
 
     public List<Event> getEventsByRegisteredUser(long userId) {
         try {
-            return eventRepository.getEventsByRegisteredUser(userId);
+            return eventDao.getEventsByRegisteredUser(userId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -68,7 +68,7 @@ public class EventService {
 
     public Event getEvent(long id) {
         try {
-            return eventRepository.getEvent(id);
+            return eventDao.getEvent(id);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -76,7 +76,7 @@ public class EventService {
 
     public Event updateEvent(Event event) {
         try {
-            return eventRepository.updateEvent(event);
+            return eventDao.updateEvent(event);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -84,9 +84,9 @@ public class EventService {
 
     public void deleteEvent(Long eventId) {
         try {
-            Event event = eventRepository.getEvent(eventId);
+            Event event = eventDao.getEvent(eventId);
             if (event != null) {
-                eventRepository.deleteEvent(event);
+                eventDao.deleteEvent(event);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -95,7 +95,7 @@ public class EventService {
 
     public Event addParticipant(long eventId, long userId) {
         try {
-            return eventRepository.addParticipant(eventId, userId);
+            return eventDao.addParticipant(eventId, userId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -122,9 +122,9 @@ public class EventService {
         return participants;
     }
 
-    public void removeParticipant(long eventId, long userId) {
+    public Event removeParticipant(long eventId, long userId) {
         try {
-            eventRepository.removeParticipant(eventId, userId);
+            return eventDao.removeParticipant(eventId, userId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

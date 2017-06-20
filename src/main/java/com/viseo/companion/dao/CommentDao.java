@@ -13,7 +13,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Repository
 @Transactional
-public class CommentRepository {
+public class CommentDao {
 
     @PersistenceContext
     EntityManager em;

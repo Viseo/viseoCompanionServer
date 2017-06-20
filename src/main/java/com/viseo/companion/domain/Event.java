@@ -16,7 +16,7 @@ public class Event extends BaseEntity {
     private Calendar datetime;
     private String description;
     private String keyWords = "";
-    private String place;
+    private String location;
     private String imageUrl = "";
 
     @OneToMany(fetch = FetchType.EAGER)
@@ -28,12 +28,12 @@ public class Event extends BaseEntity {
     public Event() {
     }
 
-    public Event(String name, Calendar date, String description, String keyWords, String place, String imageUrl) {
+    public Event(String name, Calendar date, String description, String keyWords, String location, String imageUrl) {
         this.name = name;
         this.datetime = date;
         this.description = description;
         this.keyWords = keyWords;
-        this.place = place;
+        this.location = location;
         this.category = 0;
         this.imageUrl = imageUrl;
     }
@@ -43,7 +43,7 @@ public class Event extends BaseEntity {
         this.datetime = newEvent.datetime;
         this.description = newEvent.description;
         this.keyWords = newEvent.keyWords;
-        this.place = newEvent.place;
+        this.location = newEvent.location;
         this.category = newEvent.category;
     }
 
@@ -79,8 +79,8 @@ public class Event extends BaseEntity {
         return participants;
     }
 
-    public String getPlace() {
-        return this.place;
+    public String getLocation() {
+        return this.location;
     }
 
     public void setCategory(long category) {
@@ -104,8 +104,8 @@ public class Event extends BaseEntity {
         this.keyWords = motclefs;
     }
 
-    public void setPlace(String lieu) {
-        this.place = lieu;
+    public void setLocation(String lieu) {
+        this.location = lieu;
     }
 
     public void setHost(User host) {

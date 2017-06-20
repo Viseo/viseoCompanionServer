@@ -84,8 +84,8 @@ public class EventController {
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.removeEventParticipant}", method = DELETE)
-    public void removeParticipant(@PathVariable("eventId") long eventId, @PathVariable("userId") long userId) {
-        eventService.removeParticipant(eventId, userId);
+    public Event removeParticipant(@PathVariable("eventId") long eventId, @PathVariable("userId") long userId) {
+        return eventService.removeParticipant(eventId, userId);
     }
 
     @CrossOrigin
