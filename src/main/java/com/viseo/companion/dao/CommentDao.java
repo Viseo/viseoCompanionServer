@@ -13,7 +13,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Repository
 @Transactional
-public class CommentRepository {
+public class CommentDao {
 
     @PersistenceContext
     EntityManager em;
@@ -33,8 +33,9 @@ public class CommentRepository {
         List<Comment> result = em.createQuery("select a from Comment a where a.id = :id", Comment.class)
                 .setParameter("id", id)
                 .getResultList();
-        if (result.iterator().hasNext())
+        if (result.iterator().hasNext()) {
             return result.iterator().next();
+        }
         return null;
     }
 

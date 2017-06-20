@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class UserRepository {
+public class UserDao {
 
     @PersistenceContext
     EntityManager em;
@@ -28,8 +28,9 @@ public class UserRepository {
         List<User> result = em.createQuery("select a from User a left join fetch a.roles where a.id = :id", User.class)
                 .setParameter("id", id)
                 .getResultList();
-        if (result.iterator().hasNext())
+        if (result.iterator().hasNext()) {
             return result.iterator().next();
+        }
         return null;
     }
 
@@ -37,8 +38,9 @@ public class UserRepository {
         List<User> result = em.createQuery("select c from User c where c.email like :email", User.class)
                 .setParameter("email", "%" + email + "%")
                 .getResultList();
-        if (result.iterator().hasNext())
+        if (result.iterator().hasNext()) {
             return result.iterator().next();
+        }
         return null;
     }
 

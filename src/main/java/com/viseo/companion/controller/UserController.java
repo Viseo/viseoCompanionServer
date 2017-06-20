@@ -63,10 +63,7 @@ public class UserController {
     @RequestMapping(value = "${endpoint.resetPassword}", method = POST)
     public boolean resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) {
         User user = userService.getUserByEmail(userEmail);
-        if (user == null) {
-            return false;
-        }
-        return userService.resetPassword(user, request);
+        return user != null && userService.resetPassword(user, request);
     }
 
     @CrossOrigin

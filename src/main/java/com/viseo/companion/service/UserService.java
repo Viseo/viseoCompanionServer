@@ -1,7 +1,7 @@
 package com.viseo.companion.service;
 
-import com.viseo.companion.dao.PasswordTokenRepository;
-import com.viseo.companion.dao.UserRepository;
+import com.viseo.companion.dao.PasswordTokenDao;
+import com.viseo.companion.dao.UserDao;
 import com.viseo.companion.domain.PasswordResetToken;
 import com.viseo.companion.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +21,17 @@ public class UserService {
     private JavaMailSender mailSender;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserDao userDao;
 
     @Autowired
-    private PasswordTokenRepository passwordTokenRepository;
+    private PasswordTokenDao passwordTokenDao;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         try {
-            user = userRepository.addUser(user);
+            user = userDao.addUser(user);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -39,12 +39,12 @@ public class UserService {
     }
 
     public List<User> getUsers() {
-        return userRepository.getUsers();
+        return userDao.getUsers();
     }
 
     public User getUser(long userId) {
         try {
-            return userRepository.getUser(userId);
+            return userDao.getUser(userId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -52,7 +52,7 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         try {
-            return userRepository.getUserByEmail(email);
+            return userDao.getUserByEmail(email);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -61,7 +61,7 @@ public class UserService {
     public User updateUser(User user) {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            return userRepository.updateUser(user);
+            return userDao.updateUser(user);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -69,9 +69,9 @@ public class UserService {
 
     public void deleteUser(Long id) {
         try {
-            User user = userRepository.getUser(id);
+            User user = userDao.getUser(id);
             if (user != null) {
-                userRepository.deleteUser(user);
+                userDao.deleteUser(user);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -98,7 +98,7 @@ public class UserService {
 
     public boolean isTokenValid(long userId, String tokenGuid) {
         try {
-            PasswordResetToken myToken = passwordTokenRepository.getTokenFromUserId(userId);
+            PasswordResetToken myToken = passwordTokenDao.getTokenFromUserId(userId);
             return myToken != null
                     && myToken.getGuid().equals(tokenGuid)
                     && myToken.isUnexpired();
@@ -110,7 +110,7 @@ public class UserService {
     private void persistToken(User user, String token) {
         try {
             PasswordResetToken myToken = new PasswordResetToken(token, user);
-            passwordTokenRepository.addToken(myToken);
+            passwordTokenDao.addToken(myToken);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -118,10 +118,10 @@ public class UserService {
 
     public void changePassword(long id, String password) {
         try {
-            User user = userRepository.getUser(id);
+            User user = userDao.getUser(id);
             if (user != null) {
                 user.setPassword(passwordEncoder.encode(password));
-                userRepository.updateUser(user);
+                userDao.updateUser(user);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -130,7 +130,7 @@ public class UserService {
 
     public void deleteToken(String token) {
         try {
-            passwordTokenRepository.deleteToken(token);
+            passwordTokenDao.deleteToken(token);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -18,14 +18,6 @@ public class Comment extends BaseEntity {
     @ManyToOne
     private User user;
 
-    public boolean isPublish() {
-        return publish;
-    }
-
-    public void setPublish(boolean publish) {
-        this.publish = publish;
-    }
-
     @ManyToOne
 
     private Event event;
@@ -46,6 +38,15 @@ public class Comment extends BaseEntity {
         this.event = event;
         this.likers = likers;
     }
+
+    public boolean getPublish() {
+        return publish;
+    }
+
+    public void setPublish(boolean publish) {
+        this.publish = publish;
+    }
+
     public List<User> getLikers() {
         return likers;
     }

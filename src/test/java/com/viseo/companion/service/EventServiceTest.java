@@ -45,7 +45,7 @@ public class EventServiceTest {
         event.setDescription("NADAL");
         event.setName("ibtisam");
         event.setKeyWords("Haifa");
-        event.setPlace("Haifa");
+        event.setLocation("Haifa");
         try {
             Event newEvent = eventService.addEvent(event);
             Assert.assertNotNull(newEvent.getId());
@@ -66,7 +66,7 @@ public class EventServiceTest {
         event.setDescription("HOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         event.setName("ibtissadddddddddddddddm");
         event.setKeyWords("HELLLLLLLLL");
-        event.setPlace("HELLrrrrrrrrrrr");
+        event.setLocation("HELLrrrrrrrrrrr");
         Event newEvent = eventService.updateEvent(event);
         try {
             Assert.assertEquals(newEvent.getName(), event.getName());

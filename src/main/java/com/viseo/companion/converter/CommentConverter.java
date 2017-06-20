@@ -19,7 +19,7 @@ public class CommentConverter {
         dto.setContent(comment.getContent());
         dto.setDatetime(comment.getDatetime().toInstant().toEpochMilli());
         dto.setVersion(comment.getVersion());
-        dto.setPublish(comment.isPublish());
+        dto.setPublish(comment.getPublish());
 
         if (comment.getUser() == null) {
             dto.setWriter(null);
