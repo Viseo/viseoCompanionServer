@@ -3,7 +3,7 @@ package com.viseo.companion.dto;
 public class ChatMessageDTO {
 
     String content;
-    long dateTime;
+    long datetime;
     long eventId;
     long writerId;
 
@@ -15,12 +15,12 @@ public class ChatMessageDTO {
         this.content = content;
     }
 
-    public long getDateTime() {
-        return dateTime;
+    public long getDatetime() {
+        return datetime;
     }
 
-    public void setDateTime(long dateTime) {
-        this.dateTime = dateTime;
+    public void setDatetime(long datetime) {
+        this.datetime = datetime;
     }
 
     public long getEventId() {

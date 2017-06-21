@@ -16,10 +16,10 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Repository
 @Transactional
-public class EventRepository {
+public class EventDao {
 
     @Autowired
-    UserRepository userDao;
+    UserDao userDao;
 
     @PersistenceContext
     EntityManager em;
@@ -34,8 +34,9 @@ public class EventRepository {
                 "select a from Event a left join fetch a.participants p left join fetch p.roles where a.id = :id", Event.class)
                 .setParameter("id", id)
                 .getResultList();
-        if (eventList.iterator().hasNext())
+        if (eventList.iterator().hasNext()) {
             return eventList.iterator().next();
+        }
         return null;
     }
 
@@ -83,19 +84,18 @@ public class EventRepository {
         em.remove(event);
     }
 
-    public boolean addParticipant(long eventId, long userId) {
+    public Event addParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);
         if (event != null) {
             User user = userDao.getUser(userId);
             if (user != null) {
                 event.addParticipant(user);
-                return true;
             }
         }
-        return false;
+        return event;
     }
 
-    public void removeParticipant(long eventId, long userId) {
+    public Event removeParticipant(long eventId, long userId) {
         Event event = getEvent(eventId);
         if (event != null) {
             User user = userDao.getUser(userId);
@@ -103,5 +103,6 @@ public class EventRepository {
                 event.removeParticipant(user);
             }
         }
+        return event;
     }
 }

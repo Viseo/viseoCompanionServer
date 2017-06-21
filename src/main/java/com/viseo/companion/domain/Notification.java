@@ -58,7 +58,7 @@ public class Notification {
     public Notification(Event event, String topic) {
         this.topic = topic;
         this.title = "Nouvel évènement : " + event.getName();
-        this.body = getDateTimeToString(event.getDatetime().getTime()) + " - " + event.getPlace();
+        this.body = getDateTimeToString(event.getDatetime().getTime()) + " - " + event.getLocation();
         this.id = event.getId();
     }
 
