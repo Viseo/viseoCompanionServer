@@ -25,6 +25,7 @@ public class Event extends BaseEntity {
     public Event() {
     }
 
+
     public Event(String name, Calendar date, String description, String keyWords, String location, String imageUrl) {
         this.name = name;
         this.datetime = date;
