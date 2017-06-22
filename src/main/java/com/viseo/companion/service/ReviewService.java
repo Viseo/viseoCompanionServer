@@ -11,6 +11,8 @@ import com.viseo.companion.dto.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ReviewService {
 
@@ -65,5 +67,9 @@ public class ReviewService {
             throw new RuntimeException(ex);
         }
         return null;
+    }
+
+    public List<Event> getEventsReviewed(long userId) {
+        return reviewDAO.getEventsReviewed(userId);
     }
 }
