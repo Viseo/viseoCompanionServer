@@ -1,12 +1,12 @@
 package com.viseo.companion.controller;
 
+import com.viseo.companion.domain.Event;
 import com.viseo.companion.dto.ReviewDTO;
 import com.viseo.companion.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -29,4 +29,11 @@ public class ReviewController {
     public ReviewDTO updateReview(@RequestBody ReviewDTO reviewDTO) {
         return reviewService.updateReview(reviewDTO);
     }
+
+   @RequestMapping(value = "${endpoint.getReviewedEvents}", method = GET)
+    public List<Event> getEventsReviewed(@PathVariable("userId") long userId) {
+        return reviewService.getEventsReviewed(userId);
+    }
+
+
 }

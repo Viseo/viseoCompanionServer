@@ -1,5 +1,6 @@
 package com.viseo.companion.dao;
 
+import com.viseo.companion.domain.Event;
 import com.viseo.companion.domain.Review;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,5 +39,13 @@ public class ReviewDAO {
             return result.iterator().next();
         }
         return null;
+    }
+
+
+    public List<Event> getEventsReviewed(long id) {
+        List<Event> result = em.createQuery("select r.event from Review r where r.user.id = :id", Event.class)
+                .setParameter("id", id)
+                .getResultList();
+        return result;
     }
 }
