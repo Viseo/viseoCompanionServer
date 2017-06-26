@@ -1,6 +1,7 @@
 package com.viseo.companion.dto;
 
 public class UserDTO extends BaseDTO {
+
     String firstName;
     String lastName;
     String email;
