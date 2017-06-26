@@ -48,7 +48,7 @@ public class EventDAO {
 
     public List<Event> getEventsBetween(String before, String after) {
         return em.createQuery(
-                "SELECT a FROM Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime >= :after AND a.datetime <= :before order by a.datetime", Event.class)
+                "SELECT DISTINCT a FROM Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime >= :after AND a.datetime <= :before order by a.datetime", Event.class)
                 .setParameter("before", new Date(Long.valueOf(before)), TIMESTAMP)
                 .setParameter("after", new Date(Long.valueOf(after)), DATE)
                 .getResultList();
@@ -56,14 +56,14 @@ public class EventDAO {
 
     public List<Event> getEventsAfter(String after) {
         return em.createQuery(
-                "SELECT a from Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime >= :after order by a.datetime", Event.class)
+                "SELECT DISTINCT a from Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime >= :after order by a.datetime", Event.class)
                 .setParameter("after", new Date(Long.valueOf(after)), DATE)
                 .getResultList();
     }
 
     public List<Event> getEventsBefore(String before) {
         return em.createQuery(
-                "SELECT a FROM Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime <= :before ORDER BY a.datetime", Event.class)
+                "SELECT DISTINCT a FROM Event a LEFT JOIN FETCH a.participants p LEFT JOIN FETCH p.roles WHERE a.datetime <= :before ORDER BY a.datetime", Event.class)
                 .setParameter("before", new Date(Long.valueOf(before)), TIMESTAMP)
                 .getResultList();
     }
