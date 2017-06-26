@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
-@PropertySource("classpath:keys.properties")
+@PropertySource("classpath:application.properties")
 public class Notification {
 
     private static String fireBaseURL;
@@ -31,16 +31,6 @@ public class Notification {
     private long id = 1;
 
     private String topic = "";
-
-    @Value("${fireBase.URL}")
-    public void setFireBaseURL(String url) {
-        fireBaseURL = url;
-    }
-
-    @Value("${fireBase.ServerKey}")
-    public void setFireBaseServerKey(String key) {
-        fireBaseServerKey = key;
-    }
 
     public Notification() {
     }
@@ -60,6 +50,16 @@ public class Notification {
         this.title = "Nouvel évènement : " + event.getName();
         this.body = getDateTimeToString(event.getDatetime().getTime()) + " - " + event.getLocation();
         this.id = event.getId();
+    }
+
+    @Value("${fireBase.URL}")
+    public void setFireBaseURL(String url) {
+        fireBaseURL = url;
+    }
+
+    @Value("${fireBase.ServerKey}")
+    public void setFireBaseServerKey(String key) {
+        fireBaseServerKey = key;
     }
 
     public boolean sendNotification() {
@@ -115,11 +115,7 @@ public class Notification {
         headers.add("Authorization", "key=" + fireBaseServerKey);
         HttpEntity<String> entity = new HttpEntity<String>(new String(JSONnotification), headers);
         ResponseEntity<String> response = new RestTemplate().postForEntity(fireBaseURL, entity, String.class);
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return true;
-        } else {
-            return false;
-        }
+        return response.getStatusCode() == HttpStatus.OK;
     }
 
     private String getDateTimeToString(Date datetime) {
