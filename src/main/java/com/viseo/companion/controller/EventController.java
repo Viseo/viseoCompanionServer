@@ -38,12 +38,6 @@ public class EventController {
         }
     }
 
-    private void validateImage(MultipartFile image) {
-        if (!image.getContentType().equals("image/jpeg")) {
-            throw new RuntimeException("Only JPG images are accepted");
-        }
-    }
-
     @CrossOrigin
     @RequestMapping(value = "${endpoint.getEvents}", method = GET)
     public List<Event> getEvents(

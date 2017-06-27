@@ -6,6 +6,7 @@ import com.viseo.companion.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.OneToMany;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -16,6 +17,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.addUser}", method = POST)
@@ -76,4 +79,6 @@ public class UserController {
         }
         return false;
     }
+
+
 }

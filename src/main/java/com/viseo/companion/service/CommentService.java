@@ -1,9 +1,9 @@
 package com.viseo.companion.service;
 
 import com.viseo.companion.converter.CommentConverter;
-import com.viseo.companion.dao.CommentDao;
-import com.viseo.companion.dao.EventDao;
-import com.viseo.companion.dao.UserDao;
+import com.viseo.companion.dao.CommentDAO;
+import com.viseo.companion.dao.EventDAO;
+import com.viseo.companion.dao.UserDAO;
 import com.viseo.companion.domain.Comment;
 import com.viseo.companion.domain.Event;
 import com.viseo.companion.domain.User;
@@ -18,13 +18,13 @@ import java.util.List;
 public class CommentService {
 
     @Autowired
-    private CommentDao commentDao;
+    private CommentDAO commentDAO;
 
     @Autowired
-    private EventDao eventDao;
+    private EventDAO eventDAO;
 
     @Autowired
-    private UserDao userDao;
+    private UserDAO userDAO;
 
     private CommentConverter converter = new CommentConverter();
 
@@ -32,7 +32,7 @@ public class CommentService {
         try {
             Comment comment = toComment(commentDTO);
             if (comment != null) {
-                comment = commentDao.addComment(comment);
+                comment = commentDAO.addComment(comment);
                 return converter.getDTO(comment);
             }
         } catch (Exception ex) {
@@ -43,7 +43,7 @@ public class CommentService {
 
     public CommentDTO getComment(long id) {
         try {
-            Comment comment = commentDao.getComment(id);
+            Comment comment = commentDAO.getComment(id);
             return converter.getDTO(comment);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -52,7 +52,7 @@ public class CommentService {
 
     public List<CommentDTO> getComments() {
         try {
-            return toCommentDTOList(commentDao.getComments());
+            return toCommentDTOList(commentDAO.getComments());
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -61,9 +61,9 @@ public class CommentService {
     public List<CommentDTO> getCommentsByEvent(long eventId, String filter) {
         try {
             if (filter == null || filter.equals("published")) {
-                return toCommentDTOList(commentDao.getPublishedCommentsByEvent(eventId));
+                return toCommentDTOList(commentDAO.getPublishedCommentsByEvent(eventId));
             } else if (filter.equals("all")) {
-                return toCommentDTOList(commentDao.getAllCommentsByEvent(eventId));
+                return toCommentDTOList(commentDAO.getAllCommentsByEvent(eventId));
             } else {
                 return new ArrayList<>();
             }
@@ -74,7 +74,7 @@ public class CommentService {
 
     public List<CommentDTO> getCommentsByEventAfterDate(long eventId, String after) {
         try {
-            return toCommentDTOList(commentDao.getCommentsByEventAfterDate(eventId, after));
+            return toCommentDTOList(commentDAO.getCommentsByEventAfterDate(eventId, after));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -82,10 +82,10 @@ public class CommentService {
 
     public CommentDTO updateComment(CommentDTO commentDTO) {
         try {
-            Comment comment = commentDao.getComment(commentDTO.getId());
+            Comment comment = commentDAO.getComment(commentDTO.getId());
             if (comment != null) {
                 converter.apply(commentDTO, comment);
-                return converter.getDTO(commentDao.updateComment(comment));
+                return converter.getDTO(commentDAO.updateComment(comment));
             }
         } catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -94,25 +94,25 @@ public class CommentService {
     }
 
     public void deleteComment(long commentId) {
-        Comment childComment = commentDao.getComment(commentId);
+        Comment childComment = commentDAO.getComment(commentId);
         if (childComment != null) {
-            Comment parentComment = commentDao.getParentFromChildId(commentId);
+            Comment parentComment = commentDAO.getParentFromChildId(commentId);
             if (parentComment != null) {
                 parentComment.removeChild(childComment);
-                commentDao.updateComment(parentComment);
+                commentDAO.updateComment(parentComment);
             }
-            commentDao.deleteComment(childComment);
+            commentDAO.deleteComment(childComment);
         }
     }
 
     public CommentDTO addChildComment(CommentDTO commentDTO, long parentId) {
         try {
             Comment childComment = toComment(commentDTO);
-            Comment parentComment = commentDao.getComment(parentId);
+            Comment parentComment = commentDAO.getComment(parentId);
             if (childComment != null && parentComment != null) {
-                commentDao.addComment(childComment);
+                commentDAO.addComment(childComment);
                 parentComment.addChild(childComment);
-                commentDao.updateComment(parentComment);
+                commentDAO.updateComment(parentComment);
                 return converter.getDTO(childComment);
             }
         } catch (Exception ex) {
@@ -123,11 +123,11 @@ public class CommentService {
 
     public boolean likeComment(long commentId, long userId) {
         try {
-            Comment comment = commentDao.getComment(commentId);
-            User user = userDao.getUser(userId);
+            Comment comment = commentDAO.getComment(commentId);
+            User user = userDAO.getUser(userId);
             if (comment != null && user != null) {
                 comment.addLiker(user);
-                commentDao.updateComment(comment);
+                commentDAO.updateComment(comment);
                 return true;
             }
         } catch (Exception ex) {
@@ -138,11 +138,11 @@ public class CommentService {
 
     public boolean dislikeComment(long commentId, long userId) {
         try {
-            Comment comment = commentDao.getComment(commentId);
-            User user = userDao.getUser(userId);
+            Comment comment = commentDAO.getComment(commentId);
+            User user = userDAO.getUser(userId);
             if (comment != null && user != null) {
                 comment.removeliker(user);
-                commentDao.updateComment(comment);
+                commentDAO.updateComment(comment);
                 return true;
             }
         } catch (Exception ex) {
@@ -161,8 +161,8 @@ public class CommentService {
 
     private Comment toComment(CommentDTO commentDTO) {
         Comment comment = new Comment();
-        User user = userDao.getUser(commentDTO.getWriter().getId());
-        Event event = eventDao.getEvent(commentDTO.getEventId());
+        User user = userDAO.getUser(commentDTO.getWriter().getId());
+        Event event = eventDAO.getEvent(commentDTO.getEventId());
         if (user != null && event != null) {
             comment.setUser(user);
             comment.setEvent(event);
