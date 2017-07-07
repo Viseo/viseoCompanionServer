@@ -21,7 +21,7 @@ public class ReviewController {
     }
 
     @RequestMapping(value = "${endpoint.getEventRating}", method = GET)
-    public String getEventRating(@PathVariable("eventId") long eventId) {
+    public String[] getEventRating(@PathVariable("eventId") long eventId) {
         return reviewService.getEventRating(eventId);
     }
 

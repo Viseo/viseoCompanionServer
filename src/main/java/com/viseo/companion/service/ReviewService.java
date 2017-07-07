@@ -52,7 +52,7 @@ public class ReviewService {
         return null;
     }
 
-    public String getEventRating(long eventId) {
+    public String[] getEventRating(long eventId) {
         return reviewDAO.getEventRating(eventId);
     }
 

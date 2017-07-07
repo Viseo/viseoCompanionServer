@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -20,11 +21,18 @@ public class ReviewDAO {
         return review;
     }
 
-    public String getEventRating(long eventId) {
-        return em.createQuery(
-                "select avg(n.rating) from Review n left join n.event e where e.id=:id", Double.class)
+    public String[] getEventRating(long eventId) {
+        String[] rating=new String[2];
+        String count=em.createQuery(
+                "select count(n) from Review n join n.event e where e.id=:id", Long.class)
                 .setParameter("id", eventId)
                 .getSingleResult().toString();
+        String average= em.createQuery(
+                "select COALESCE(avg(rv.rating),0) from Review rv left join rv.event ev where ev.id=:id ", Double.class)
+                .setParameter("id", eventId).getSingleResult().toString();
+        rating[0]=count;
+        rating[1]=average;
+        return rating;
     }
 
     public Review updateReview(Review review) {
