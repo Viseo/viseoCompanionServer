@@ -31,6 +31,7 @@ public class EventService {
 
     public Event addEvent(Event event) {
         try {
+            event.addParticipant(event.getHost());
             event = eventDAO.addEvent(event);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
