@@ -173,5 +173,4 @@ public class UserService {
         return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
 
-
 }
