@@ -5,6 +5,7 @@ public class UserDTO extends BaseDTO {
     String firstName;
     String lastName;
     String email;
+   private  String imageUrl = "";
 
     public UserDTO() {
         super();
@@ -33,4 +34,13 @@ public class UserDTO extends BaseDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
 }

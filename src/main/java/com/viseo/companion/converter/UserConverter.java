@@ -14,6 +14,7 @@ public class UserConverter {
         dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
+        dto.setImageUrl(user.getImageUrl());
         return dto;
     }
 }

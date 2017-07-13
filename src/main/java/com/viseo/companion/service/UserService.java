@@ -1,16 +1,22 @@
 package com.viseo.companion.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.*;
 import com.viseo.companion.dao.PasswordTokenDAO;
 import com.viseo.companion.dao.UserDAO;
 import com.viseo.companion.domain.PasswordResetToken;
 import com.viseo.companion.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +31,7 @@ public class UserService {
 
     @Autowired
     private PasswordTokenDAO passwordTokenDAO;
+
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -165,4 +172,6 @@ public class UserService {
     private String getAppUrl(HttpServletRequest request) {
         return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
+
+
 }

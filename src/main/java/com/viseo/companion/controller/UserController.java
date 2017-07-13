@@ -5,9 +5,11 @@ import com.viseo.companion.domain.User;
 import com.viseo.companion.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.OneToMany;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -17,7 +19,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
 
 
     @CrossOrigin

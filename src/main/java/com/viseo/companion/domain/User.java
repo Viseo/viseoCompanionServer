@@ -15,6 +15,7 @@ public class User extends BaseEntity {
     String email;
     String firstName;
     String lastName;
+    private String imageUrl = "";
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
@@ -25,13 +26,15 @@ public class User extends BaseEntity {
     public User() {
     }
 
-    public User(String email, String firstName, String lastName, String password) {
+    public User(String email, String firstName, String lastName, String password, String imageUrl) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.roles = new HashSet<Role>();
+        this.imageUrl = imageUrl;
         switch (this.password = password) {
         }
+
     }
 
     public String getEmail() {
@@ -72,5 +75,13 @@ public class User extends BaseEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
