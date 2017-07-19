@@ -11,7 +11,6 @@ import java.util.Set;
 @Entity
 @Table(name = "Uzer")
 public class User extends BaseEntity {
-
     String email;
     String firstName;
     String lastName;
