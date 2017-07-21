@@ -22,6 +22,7 @@ public class ChatMessageConverter {
             dto.setWriterId(NULL);
         } else {
             dto.setWriterId(comment.getWriter().getId());
+            dto.setWriter(comment.getWriter());
         }
         return dto;
     }

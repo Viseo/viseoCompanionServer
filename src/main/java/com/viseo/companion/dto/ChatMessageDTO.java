@@ -6,6 +6,7 @@ public class ChatMessageDTO {
     long datetime;
     long eventId;
     long writerId;
+    UserDTO writer;
 
     public String getContent() {
         return content;
@@ -38,4 +39,13 @@ public class ChatMessageDTO {
     public void setWriterId(long writerId) {
         this.writerId = writerId;
     }
+
+    public void setWriter(UserDTO writer) {
+        this.writer = writer;
+    }
+
+    public UserDTO getWriter() {
+        return writer;
+    }
+
 }
