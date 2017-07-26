@@ -12,6 +12,13 @@ public class ActivityService {
 
     @Autowired
     private ActivityDAO activityDAO;
+    @Autowired
+    private ActionService actionService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private MeanService meanService;
+
 
     private ActivityConverter converter = new ActivityConverter();
 
@@ -20,7 +27,10 @@ public class ActivityService {
             Activity activity = toActivity(activityDTO);
             if (activity != null) {
                 activity = activityDAO.addActivity(activity);
-                return converter.getDTO(activity);
+
+                activity.getMeans().stream().forEach(m -> activityDTO.addMean(m.getId()));
+
+                return activityDTO;
             }
         } catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -30,6 +40,9 @@ public class ActivityService {
 
     private Activity toActivity(ActivityDTO activityDTO) {
         Activity activity = new Activity();
+        activity.setAction(actionService.getActionById(activityDTO.getActionId()));
+        activity.setUser(userService.getUser(activityDTO.getUserId()));
+        activityDTO.getMeans().stream().forEach(m -> activity.addMean(meanService.getMeanById(m)));
         if (activityDTO != null) {
             converter.apply(activityDTO, activity);
             return activity;

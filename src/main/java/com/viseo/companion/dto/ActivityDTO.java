@@ -1,5 +1,6 @@
 package com.viseo.companion.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,12 +11,12 @@ public class ActivityDTO extends BaseDTO{
     private String title;
     private String description;
     private String etat;
-    private List<Long> means;
-    private Date dateStart;
-    private Date dateRelease;
-    private Date dateValidation;
-    private Date dateEnd;
-    private Date dateCreation;
+    private List<Long> means=new ArrayList<Long>();
+    private Date dateStart=new Date();
+    private Date dateRelease=new Date();
+    private Date dateValidation=new Date();
+    private Date dateEnd=new Date();
+    private Date dateCreation=new Date();
     private String address;
     private int vizzWon;
     private Boolean practice;

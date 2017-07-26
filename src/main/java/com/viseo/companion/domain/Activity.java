@@ -1,9 +1,9 @@
 package com.viseo.companion.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,28 +20,22 @@ public class Activity extends BaseEntity {
     private User user;
 
     @OneToMany
-    private List<Mean> means;
+    private List<Mean> means=new ArrayList<Mean>();
 
     private String title;
     private String description;
 
     private String etat; // init by default with the value Etat.WAITING.toString();
-
-    @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd HH:mm")
-    private Date dateStart;
-
-
-    @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd HH:mm")
-    private Date dateRelease;
-
-    @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd HH:mm")
-    private Date dateValidation;
-
-    @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd HH:mm")
-    private Date dateEnd;
-
-    @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd HH:mm")
-    private Date dateCreation; // init by default with the current date
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateStart = new Date();
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateRelease = new Date();
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateValidation = new Date();
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateEnd = new Date();
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreation = new Date(); // init by default with the current date
 
     private String address;
     private int vizzWon = 0;
@@ -49,7 +43,6 @@ public class Activity extends BaseEntity {
     private String readingTime;
     private String recurrence;
     private String publicationType;
-
 
 
     public String getRecurrence() {
@@ -142,6 +135,8 @@ public class Activity extends BaseEntity {
         this.etat = etat;
     }
 
+
+    @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd HH:mm")
     public Date getDateStart() {
         return dateStart;
     }
@@ -150,6 +145,7 @@ public class Activity extends BaseEntity {
         this.dateStart = dateStart;
     }
 
+    @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd HH:mm")
     public Date getDateEnd() {
         return dateEnd;
     }
@@ -158,6 +154,7 @@ public class Activity extends BaseEntity {
         this.dateEnd = dateEnd;
     }
 
+    @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd HH:mm")
     public Date getDateCreation() {
         return dateCreation;
     }
@@ -166,6 +163,7 @@ public class Activity extends BaseEntity {
         this.dateCreation = dateCreation;
     }
 
+    @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd HH:mm")
     public Date getDateRelease() {
         return dateRelease;
     }
@@ -174,6 +172,7 @@ public class Activity extends BaseEntity {
         this.dateRelease = dateRelease;
     }
 
+    @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd HH:mm")
     public Date getDateValidation() {
         return dateValidation;
     }
@@ -214,7 +213,7 @@ public class Activity extends BaseEntity {
         this.readingTime = readingTime;
     }
 
-
+    public void addMean(Mean mean) { means.add(mean); }
 
     public int numberOfVizzs() {
         int numberOfVizzs = 0;
