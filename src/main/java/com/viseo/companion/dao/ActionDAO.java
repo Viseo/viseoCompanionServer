@@ -27,4 +27,8 @@ public class ActionDAO {
                 "select distinct a from Action a", Action.class)
                 .getResultList();
     }
+
+    public Action getActionsById(long actionId) {
+        return em.find(Action.class, actionId);
+    }
 }

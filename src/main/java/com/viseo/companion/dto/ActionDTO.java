@@ -1,12 +1,11 @@
-package com.viseo.companion.domain;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import java.util.HashSet;
-import java.util.Set;
+package com.viseo.companion.dto;
 
-@Entity
-public class Action extends BaseEntity {
+import com.viseo.companion.domain.Mean;
 
+import java.util.ArrayList;
+import java.util.List;
+
+public class ActionDTO extends BaseDTO {
     private String name;
     private String detail;
     private double minGain;
@@ -14,20 +13,10 @@ public class Action extends BaseEntity {
     private boolean status;
     private String theme;
 
-    @ManyToMany
-    private Set<Mean> means = new HashSet<Mean>();
+    private List<Long> means = new ArrayList<Long>();
 
-    public Action() {
-    }
-
-    public Action(String name, String detail, double minGain, double maxGain, boolean status, Set<Mean> meanIds, String theme) {
-        this.name = name;
-        this.detail = detail;
-        this.minGain = minGain;
-        this.maxGain = maxGain;
-        this.status = status;
-        this.means = means;
-        this.theme = theme;
+    public ActionDTO() {
+        super();
     }
 
     public String getName() {
@@ -70,11 +59,6 @@ public class Action extends BaseEntity {
         this.status = status;
     }
 
-    public Set<Mean> getMeans() {
-        return means;
-    }
-
-
     public String getTheme() {
         return theme;
     }
@@ -83,5 +67,15 @@ public class Action extends BaseEntity {
         this.theme = theme;
     }
 
-    public void addMean(Mean mean) { means.add(mean); }
+    public List<Long> getMeans() {
+        return means;
+    }
+
+    public void setMeans(List<Long> means) {
+        this.means = means;
+    }
+
+    public void addMean(Long meanId) {
+        means.add(meanId);
+    }
 }

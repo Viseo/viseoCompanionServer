@@ -24,7 +24,10 @@ public class MeanDAO {
 
     public List<Mean> getMeans () {
         return em.createQuery(
-                "select distinct a from Mean a", Mean.class)
-                .getResultList();
+                "select distinct a from Mean a", Mean.class).getResultList();
+    }
+
+    public Mean getMeanById(long id) {
+        return em.find(Mean.class, id);
     }
 }
