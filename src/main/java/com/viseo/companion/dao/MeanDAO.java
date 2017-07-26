@@ -13,8 +13,6 @@ import java.util.List;
 @Transactional
 public class MeanDAO {
 
-    @Autowired
-    MeanDAO meanDAO;
 
     @PersistenceContext
     EntityManager em;

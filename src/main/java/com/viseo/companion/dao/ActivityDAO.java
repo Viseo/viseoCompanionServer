@@ -1,7 +1,6 @@
 package com.viseo.companion.dao;
 
 import com.viseo.companion.domain.Activity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,8 +11,6 @@ import javax.persistence.PersistenceContext;
 @Transactional
 public class ActivityDAO {
 
-    @Autowired
-    ActivityDAO activityDAO;
 
     @PersistenceContext
     EntityManager em;

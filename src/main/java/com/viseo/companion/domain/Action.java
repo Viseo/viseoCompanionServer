@@ -1,9 +1,10 @@
 package com.viseo.companion.domain;
-
+import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+@Entity
 public class Action extends BaseEntity {
 
     private String name;
@@ -13,13 +14,14 @@ public class Action extends BaseEntity {
     private boolean status;
 
     @ManyToMany
-    private List<String> meanIds = new ArrayList<String>();
+    private Set<Mean> meanIds = new HashSet<Mean>();
+
     private String theme;
 
     public Action() {
     }
 
-    public Action(String name, String detail, double minGain, double maxGain, boolean status, List<String> meanIds, String theme) {
+    public Action(String name, String detail, double minGain, double maxGain, boolean status, Set<Mean> meanIds, String theme) {
         this.name = name;
         this.detail = detail;
         this.minGain = minGain;
@@ -69,13 +71,10 @@ public class Action extends BaseEntity {
         this.status = status;
     }
 
-    public List<String> getMeanIds() {
+    public Set<Mean> getMeanIds() {
         return meanIds;
     }
 
-    public void setMeanIds(List<String> meanIds) {
-        this.meanIds = meanIds;
-    }
 
     public String getTheme() {
         return theme;

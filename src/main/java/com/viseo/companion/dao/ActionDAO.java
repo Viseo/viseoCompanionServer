@@ -13,8 +13,6 @@ import java.util.List;
 @Transactional
 public class ActionDAO {
 
-    @Autowired
-    ActionDAO actionDAO;
 
     @PersistenceContext
     EntityManager em;

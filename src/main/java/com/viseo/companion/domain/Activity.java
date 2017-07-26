@@ -1,13 +1,16 @@
 package com.viseo.companion.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 
+
+@Entity
 public class Activity extends BaseEntity {
 
     @ManyToOne

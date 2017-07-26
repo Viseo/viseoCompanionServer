@@ -1,5 +1,8 @@
 package com.viseo.companion.domain;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Mean extends BaseEntity {
 
     private String type;
