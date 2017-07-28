@@ -13,6 +13,7 @@ public class Action extends BaseEntity {
     private double maxGain;
     private boolean status;
     private String theme;
+    private boolean asEvent;
 
     @ManyToMany
     private Set<Mean> means = new HashSet<Mean>();
@@ -20,7 +21,7 @@ public class Action extends BaseEntity {
     public Action() {
     }
 
-    public Action(String name, String detail, double minGain, double maxGain, boolean status, Set<Mean> meanIds, String theme) {
+    public Action(String name, String detail, double minGain, double maxGain, boolean status, Set<Mean> meanIds, String theme, boolean asEvent) {
         this.name = name;
         this.detail = detail;
         this.minGain = minGain;
@@ -28,6 +29,7 @@ public class Action extends BaseEntity {
         this.status = status;
         this.means = means;
         this.theme = theme;
+        this.asEvent = asEvent;
     }
 
     public String getName() {
@@ -84,4 +86,12 @@ public class Action extends BaseEntity {
     }
 
     public void addMean(Mean mean) { means.add(mean); }
+
+    public boolean isAsEvent() {
+        return asEvent;
+    }
+
+    public void setAsEvent(boolean asEvent) {
+        this.asEvent = asEvent;
+    }
 }

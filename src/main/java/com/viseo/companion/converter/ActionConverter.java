@@ -17,6 +17,7 @@ public class ActionConverter {
         dto.setStatus(action.isStatus());
         action.getMeans().stream().forEach(m -> dto.addMean(m.getId()));
         dto.setTheme(action.getTheme());
+        dto.setAsEvent(action.isAsEvent());
 
         return dto;
     }
@@ -32,6 +33,7 @@ public class ActionConverter {
         action.setMaxGain(dto.getMaxGain());
         action.setStatus(dto.isStatus());
         action.setTheme(dto.getTheme());
+        action.setAsEvent(dto.isAsEvent());
     }
 
 

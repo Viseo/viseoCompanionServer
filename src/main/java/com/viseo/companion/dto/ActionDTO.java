@@ -12,6 +12,7 @@ public class ActionDTO extends BaseDTO {
     private double maxGain;
     private boolean status;
     private String theme;
+    private boolean asEvent;
 
     private List<Long> means = new ArrayList<Long>();
 
@@ -77,5 +78,13 @@ public class ActionDTO extends BaseDTO {
 
     public void addMean(Long meanId) {
         means.add(meanId);
+    }
+
+    public boolean isAsEvent() {
+        return asEvent;
+    }
+
+    public void setAsEvent(boolean asEvent) {
+        this.asEvent = asEvent;
     }
 }
