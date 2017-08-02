@@ -19,13 +19,13 @@ public class Activity extends BaseEntity {
     @ManyToOne
     private User user;
 
-    @OneToMany
+    @ManyToMany
     private List<Mean> means=new ArrayList<Mean>();
 
     private String title;
     private String description;
 
-    private String etat; // init by default with the value Etat.WAITING.toString();
+    private String etat;
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateStart = new Date();
     @Temporal(TemporalType.TIMESTAMP)
@@ -35,7 +35,7 @@ public class Activity extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateEnd = new Date();
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dateCreation = new Date(); // init by default with the current date
+    private Date dateCreation = new Date();
 
     private String address;
     private int vizzWon = 0;

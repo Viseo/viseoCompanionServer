@@ -7,6 +7,8 @@ import com.viseo.companion.dto.ActivityDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ActivityService {
 
@@ -26,9 +28,11 @@ public class ActivityService {
         try {
             Activity activity = toActivity(activityDTO);
             if (activity != null) {
-                activity = activityDAO.addActivity(activity);
 
                 activity.getMeans().stream().forEach(m -> activityDTO.addMean(m.getId()));
+
+                activity = activityDAO.addActivity(activity);
+
 
                 return activityDTO;
             }
@@ -36,6 +40,10 @@ public class ActivityService {
             throw new RuntimeException(ex);
         }
         return null;
+    }
+
+    public List<Activity> getActivities() {
+        return activityDAO.getActivities();
     }
 
     private Activity toActivity(ActivityDTO activityDTO) {
