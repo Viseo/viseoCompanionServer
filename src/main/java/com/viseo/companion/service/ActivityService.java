@@ -2,7 +2,9 @@ package com.viseo.companion.service;
 
 import com.viseo.companion.converter.ActivityConverter;
 import com.viseo.companion.dao.ActivityDAO;
+import com.viseo.companion.dao.ActivityMeansDAO;
 import com.viseo.companion.domain.Activity;
+import com.viseo.companion.domain.ActivityMeans;
 import com.viseo.companion.dto.ActivityDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ public class ActivityService {
     private UserService userService;
     @Autowired
     private MeanService meanService;
+    @Autowired
+    private ActivityMeansDAO activitynMeansDAO;
 
 
     private ActivityConverter converter = new ActivityConverter();
@@ -28,11 +32,12 @@ public class ActivityService {
         try {
             Activity activity = toActivity(activityDTO);
             if (activity != null) {
-
-                activity.getMeans().stream().forEach(m -> activityDTO.addMean(m.getId()));
-
+                long idActivity=activity.getId();
+                activityDTO.getMeans().stream().forEach((m) -> {
+                    ActivityMeans activityMean = new ActivityMeans( activityDAO.getActivityById(idActivity), meanService.getMeanById(m.getMeanId()) , m.getQuantity());
+                    activitynMeansDAO.addMeansByActivity(activityMean);
+                });
                 activity = activityDAO.addActivity(activity);
-
 
                 return activityDTO;
             }
@@ -50,7 +55,6 @@ public class ActivityService {
         Activity activity = new Activity();
         activity.setAction(actionService.getActionById(activityDTO.getActionId()));
         activity.setUser(userService.getUser(activityDTO.getUserId()));
-        activityDTO.getMeans().stream().forEach(m -> activity.addMean(meanService.getMeanById(m)));
         if (activityDTO != null) {
             converter.apply(activityDTO, activity);
             return activity;

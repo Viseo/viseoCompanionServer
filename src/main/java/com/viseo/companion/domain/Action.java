@@ -1,8 +1,6 @@
 package com.viseo.companion.domain;
+
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Action extends BaseEntity {
@@ -15,19 +13,15 @@ public class Action extends BaseEntity {
     private String theme;
     private boolean asEvent;
 
-    @ManyToMany
-    private Set<Mean> means = new HashSet<Mean>();
-
     public Action() {
     }
 
-    public Action(String name, String detail, double minGain, double maxGain, boolean status, Set<Mean> meanIds, String theme, boolean asEvent) {
+    public Action(String name, String detail, double minGain, double maxGain, boolean status, String theme, boolean asEvent) {
         this.name = name;
         this.detail = detail;
         this.minGain = minGain;
         this.maxGain = maxGain;
         this.status = status;
-        this.means = means;
         this.theme = theme;
         this.asEvent = asEvent;
     }
@@ -72,11 +66,6 @@ public class Action extends BaseEntity {
         this.status = status;
     }
 
-    public Set<Mean> getMeans() {
-        return means;
-    }
-
-
     public String getTheme() {
         return theme;
     }
@@ -85,8 +74,6 @@ public class Action extends BaseEntity {
         this.theme = theme;
     }
 
-    public void addMean(Mean mean) { means.add(mean); }
-
     public boolean isAsEvent() {
         return asEvent;
     }
@@ -94,4 +81,6 @@ public class Action extends BaseEntity {
     public void setAsEvent(boolean asEvent) {
         this.asEvent = asEvent;
     }
+
+
 }

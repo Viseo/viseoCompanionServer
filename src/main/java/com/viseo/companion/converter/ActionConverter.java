@@ -1,13 +1,16 @@
 package com.viseo.companion.converter;
 
 import com.viseo.companion.domain.Action;
+import com.viseo.companion.domain.ActionMeans;
 import com.viseo.companion.dto.ActionDTO;
+
+import java.util.List;
 
 public class ActionConverter {
     static private long NULL = -1;
     static private long NEW = 0;
 
-    public ActionDTO getDTO(Action action) {
+    public ActionDTO getDTO(Action action, List<ActionMeans> means) {
         ActionDTO dto = new ActionDTO();
         dto.setId(action.getId());
         dto.setName(action.getName());
@@ -15,7 +18,7 @@ public class ActionConverter {
         dto.setMinGain(action.getMinGain());
         dto.setMaxGain(action.getMaxGain());
         dto.setStatus(action.isStatus());
-        action.getMeans().stream().forEach(m -> dto.addMean(m.getId()));
+       // action.getMeans().stream().forEach(m -> dto.addMean(m.getId()));
         dto.setTheme(action.getTheme());
         dto.setAsEvent(action.isAsEvent());
 

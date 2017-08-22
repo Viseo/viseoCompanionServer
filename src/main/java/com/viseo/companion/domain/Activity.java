@@ -2,10 +2,11 @@ package com.viseo.companion.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.persistence.*;
-import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
-import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 
@@ -19,8 +20,6 @@ public class Activity extends BaseEntity {
     @ManyToOne
     private User user;
 
-    @ManyToMany
-    private List<Mean> means=new ArrayList<Mean>();
 
     private String title;
     private String description;
@@ -64,13 +63,13 @@ public class Activity extends BaseEntity {
     public Activity() {
     }
 
-    public Activity(Action action, User user, List<Mean> means, String title, String description, String etat,
+    public Activity(Action action, User user , String title, String description, String etat,
                     Date dateStart, Date dateRelease, Date dateValidation, Date dateEnd, Date dateCreation,
                     String address, int vizzWon, Boolean practice, String readingTime,
                     String recurrence, String publicationType) {
         this.action = action;
         this.user = user;
-        this.means = means;
+
         this.title = title;
         this.description = description;
         this.etat = etat;
@@ -181,13 +180,6 @@ public class Activity extends BaseEntity {
         this.dateValidation = dateValidation;
     }
 
-    public List<Mean> getMeans() {
-        return means;
-    }
-
-    public void setMeans(List<Mean> means) {
-        this.means = means;
-    }
 
     public int getVizzWon() {
         return vizzWon;
@@ -213,13 +205,5 @@ public class Activity extends BaseEntity {
         this.readingTime = readingTime;
     }
 
-    public void addMean(Mean mean) { means.add(mean); }
 
-    public int numberOfVizzs() {
-        int numberOfVizzs = 0;
-        for (Mean mean : this.means) {
-            numberOfVizzs += mean.getVizzsPerMean();
-        }
-        return numberOfVizzs;
-    }
 }

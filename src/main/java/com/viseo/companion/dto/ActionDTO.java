@@ -1,7 +1,5 @@
 package com.viseo.companion.dto;
 
-import com.viseo.companion.domain.Mean;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +11,7 @@ public class ActionDTO extends BaseDTO {
     private boolean status;
     private String theme;
     private boolean asEvent;
-
-    private List<Long> means = new ArrayList<Long>();
+    private List<ActionMeansDTO> means = new ArrayList<ActionMeansDTO>();
 
     public ActionDTO() {
         super();
@@ -68,16 +65,16 @@ public class ActionDTO extends BaseDTO {
         this.theme = theme;
     }
 
-    public List<Long> getMeans() {
+    public List<ActionMeansDTO> getMeans() {
         return means;
     }
 
-    public void setMeans(List<Long> means) {
+    public void setMeans(List<ActionMeansDTO> means) {
         this.means = means;
     }
 
-    public void addMean(Long meanId) {
-        means.add(meanId);
+    public void addMean(ActionMeansDTO mean) {
+        means.add(mean);
     }
 
     public boolean isAsEvent() {

@@ -24,7 +24,7 @@ public class ActionDAO {
 
     public List<Action> getActions () {
         return em.createQuery(
-                "select distinct a from Action a", Action.class)
+                "select distinct a from Action a  ", Action.class)
                 .getResultList();
     }
 

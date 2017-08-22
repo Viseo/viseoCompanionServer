@@ -1,5 +1,6 @@
 package com.viseo.companion.dao;
 
+import com.viseo.companion.domain.Action;
 import com.viseo.companion.domain.Activity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,5 +26,9 @@ public class ActivityDAO {
         return em.createQuery(
                 "select distinct a from Activity a", Activity.class)
                 .getResultList();
+    }
+
+    public Activity getActivityById (long id) {
+        return em.find(Activity.class, id);
     }
 }

@@ -27,7 +27,7 @@ public class ActivityConverter {
 
         dto.setActionId(activity.getAction().getId());
         dto.setUserId(activity.getUser().getId());
-        activity.getMeans().stream().forEach(m -> dto.addMean(m.getId()));
+        //activity.getMeans().stream().forEach(m -> dto.addMean(m.getId()));
         return dto;
     }
 

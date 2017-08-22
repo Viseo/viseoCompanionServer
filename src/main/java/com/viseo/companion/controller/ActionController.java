@@ -1,13 +1,13 @@
 package com.viseo.companion.controller;
 
-import com.viseo.companion.domain.Action;
 import com.viseo.companion.dto.ActionDTO;
 import com.viseo.companion.service.ActionService;
-import com.viseo.companion.service.MeanService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -33,7 +33,8 @@ public class ActionController {
 
     @CrossOrigin
     @RequestMapping(value = "${endpoint.getActions}", method = GET)
-    public List<Action> getActions() {
+    public List<ActionDTO> getActions() {
+
         return actionService.getActions();
     }
 }

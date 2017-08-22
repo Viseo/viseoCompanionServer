@@ -15,7 +15,7 @@ public class User extends BaseEntity {
     String firstName;
     String lastName;
     private String imageUrl = "";
-
+    private Integer solde;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
 
@@ -23,6 +23,16 @@ public class User extends BaseEntity {
     private Set<Role> roles;
 
     public User() {
+    }
+
+    public User(String email, String firstName, String lastName, String imageUrl, Integer solde, String password, Set<Role> roles) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.imageUrl = imageUrl;
+        this.solde = solde;
+        this.password = password;
+        this.roles = roles;
     }
 
     public User(String email, String firstName, String lastName, String password, String imageUrl) {
@@ -83,4 +93,13 @@ public class User extends BaseEntity {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    public Integer getSolde() {
+        return solde;
+    }
+
+    public void setSolde(Integer solde) {
+        this.solde = solde;
+    }
+
 }

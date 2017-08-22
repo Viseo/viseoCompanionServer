@@ -11,7 +11,7 @@ public class ActivityDTO extends BaseDTO{
     private String title;
     private String description;
     private String etat;
-    private List<Long> means=new ArrayList<Long>();
+    private List<ActivityMeansDTO> means=new ArrayList<ActivityMeansDTO>();
     private Date dateStart=new Date();
     private Date dateRelease=new Date();
     private Date dateValidation=new Date();
@@ -68,11 +68,11 @@ public class ActivityDTO extends BaseDTO{
         this.etat = etat;
     }
 
-    public List<Long> getMeans() {
+    public List<ActivityMeansDTO> getMeans() {
         return means;
     }
 
-    public void setMeans(List<Long> means) {
+    public void setMeans(List<ActivityMeansDTO> means) {
         this.means = means;
     }
 
@@ -164,7 +164,7 @@ public class ActivityDTO extends BaseDTO{
         this.publicationType = publicationType;
     }
 
-    public void addMean(Long meanId) {
+    public void addMean(ActivityMeansDTO meanId) {
         means.add(meanId);
     }
 }
