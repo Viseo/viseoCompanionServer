@@ -31,13 +31,13 @@ public class ActivityService {
     public ActivityDTO addActivity(ActivityDTO activityDTO) {
         try {
             Activity activity = toActivity(activityDTO);
+            activity = activityDAO.addActivity(activity);
             if (activity != null) {
                 long idActivity=activity.getId();
                 activityDTO.getMeans().stream().forEach((m) -> {
                     ActivityMeans activityMean = new ActivityMeans( activityDAO.getActivityById(idActivity), meanService.getMeanById(m.getMeanId()) , m.getQuantity());
                     activitynMeansDAO.addMeansByActivity(activityMean);
                 });
-                activity = activityDAO.addActivity(activity);
 
                 return activityDTO;
             }

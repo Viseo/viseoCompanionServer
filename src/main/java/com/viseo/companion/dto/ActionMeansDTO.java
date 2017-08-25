@@ -6,6 +6,14 @@ public class ActionMeansDTO extends BaseDTO {
     long meanId;
     Integer quantity;
 
+    public ActionMeansDTO(){
+
+    }
+
+    public ActionMeansDTO(long id,Integer quantity){
+        this.meanId=id;
+        this.quantity=quantity;
+    }
     public long getMeanId() {
         return meanId;
     }
