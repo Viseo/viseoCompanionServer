@@ -19,7 +19,6 @@ public class ActionController {
     @Autowired
     private ActionService actionService;
 
-
     @CrossOrigin
     @RequestMapping(value = "${endpoint.addAction}", method = POST)
     public ActionDTO addAction(@RequestBody ActionDTO action) {
