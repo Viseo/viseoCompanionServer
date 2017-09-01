@@ -31,4 +31,8 @@ public class ActivityDAO {
     public Activity getActivityById (long id) {
         return em.find(Activity.class, id);
     }
+
+    public Activity updateActivity(Activity activity) {
+        return em.merge(activity);
+    }
 }

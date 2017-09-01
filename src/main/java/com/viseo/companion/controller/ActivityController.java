@@ -1,6 +1,7 @@
 package com.viseo.companion.controller;
 
 import com.viseo.companion.domain.Activity;
+import com.viseo.companion.dto.ActionDTO;
 import com.viseo.companion.dto.ActivityDTO;
 import com.viseo.companion.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @RestController
 public class ActivityController {
@@ -41,5 +43,11 @@ public class ActivityController {
     @RequestMapping(value = "${endpoint.getActivities}", method = GET)
     public List<Activity> getActivities() {
         return activityService.getActivities();
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "${endpoint.updateActivity}", method = PUT)
+    public ActivityDTO updateActivity(@RequestBody ActivityDTO activityDTO) {
+        return  activityService.updateActivity(activityDTO);
     }
 }
