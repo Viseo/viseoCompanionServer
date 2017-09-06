@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.viseo.companion.dao.EventDAO;
 import com.viseo.companion.domain.Event;
+import com.viseo.companion.domain.Notification;
 import com.viseo.companion.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,8 +37,8 @@ public class EventService {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        /*Notification notif = new Notification(event, "/topics/newEvent/");
-        notif.sendNotification();*/
+        Notification notif = new Notification(event, "/topics/newEvent");
+        notif.sendNotification();
         return event;
     }
 
