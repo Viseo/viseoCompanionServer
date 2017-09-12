@@ -1,6 +1,7 @@
 package com.viseo.companion.controller;
 
 import com.viseo.companion.dto.ActionDTO;
+import com.viseo.companion.dto.CommentDTO;
 import com.viseo.companion.service.ActionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @RestController
 public class ActionController {

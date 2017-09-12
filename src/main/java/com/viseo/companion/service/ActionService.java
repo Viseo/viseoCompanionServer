@@ -6,7 +6,9 @@ import com.viseo.companion.dao.ActionMeansDAO;
 import com.viseo.companion.dao.MeanDAO;
 import com.viseo.companion.domain.Action;
 import com.viseo.companion.domain.ActionMeans;
+import com.viseo.companion.domain.Comment;
 import com.viseo.companion.dto.ActionDTO;
+import com.viseo.companion.dto.CommentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

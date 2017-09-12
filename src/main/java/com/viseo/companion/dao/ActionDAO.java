@@ -1,6 +1,7 @@
 package com.viseo.companion.dao;
 
 import com.viseo.companion.domain.Action;
+import com.viseo.companion.domain.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
