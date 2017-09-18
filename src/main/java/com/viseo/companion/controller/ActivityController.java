@@ -1,22 +1,14 @@
 package com.viseo.companion.controller;
 
 import com.viseo.companion.domain.Activity;
-import com.viseo.companion.dto.ActionDTO;
 import com.viseo.companion.dto.ActivityDTO;
 import com.viseo.companion.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-
-import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 public class ActivityController {
@@ -50,4 +42,12 @@ public class ActivityController {
     public ActivityDTO updateActivity(@RequestBody ActivityDTO activityDTO) {
         return  activityService.updateActivity(activityDTO);
     }
+
+
+    @CrossOrigin
+    @RequestMapping(value = "${endpoint.deleteActivity}", method = DELETE)
+    public void removeActivity(@PathVariable("activityId") long activityId) {
+        activityService.deleteActivity(activityId);
+    }
+
 }

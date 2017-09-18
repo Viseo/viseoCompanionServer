@@ -22,6 +22,10 @@ public class ActionDAO {
         em.persist(action);
         return action;
     }
+    public void deleteAction(Action action) {
+        action = em.find(Action.class, action.getId());
+        em.remove(action);
+    }
 
     public List<Action> getActions () {
         return em.createQuery(

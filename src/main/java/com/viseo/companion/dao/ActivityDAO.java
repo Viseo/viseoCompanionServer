@@ -27,7 +27,10 @@ public class ActivityDAO {
                 "select distinct a from Activity a", Activity.class)
                 .getResultList();
     }
-
+    public void deleteActivity(Activity activity) {
+        activity = em.find(Activity.class, activity.getId());
+        em.remove(activity);
+    }
     public Activity getActivityById (long id) {
         return em.find(Activity.class, id);
     }

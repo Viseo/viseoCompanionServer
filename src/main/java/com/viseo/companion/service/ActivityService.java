@@ -3,10 +3,8 @@ package com.viseo.companion.service;
 import com.viseo.companion.converter.ActivityConverter;
 import com.viseo.companion.dao.ActivityDAO;
 import com.viseo.companion.dao.ActivityMeansDAO;
-import com.viseo.companion.domain.Action;
 import com.viseo.companion.domain.Activity;
 import com.viseo.companion.domain.ActivityMeans;
-import com.viseo.companion.dto.ActionDTO;
 import com.viseo.companion.dto.ActivityDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,6 +62,16 @@ public class ActivityService {
         return null;
     }
 
+    public void deleteActivity(Long activityId) {
+        try {
+            Activity activity = activityDAO.getActivityById(activityId);
+            if (activity != null) {
+                activityDAO.deleteActivity(activity);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
     public ActivityDTO updateActivity(ActivityDTO activityDTO) {
         try {
             Activity activity = activityDAO.getActivityById(activityDTO.getId());
