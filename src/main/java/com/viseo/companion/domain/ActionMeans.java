@@ -5,7 +5,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 @Entity
 public class ActionMeans extends BaseEntity {
-
     @ManyToOne
     @JoinColumn(name = "action_id")
     private Action action;
